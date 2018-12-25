@@ -16,7 +16,7 @@ public class Constants {
     public static final String SP_TRANSPARENT_GUIDE = "SP_TRANSPARENT_GUIDE";
     public static final String CIRCLE_GUIDE = "CIRCLE_GUIDE";
     public static final int PAGE_SIZE = 10;
-    //分享目标
+    //share
     public static final int SHARE_TO_WX = 1;
     public static final int SHARE_TO_QQ = 2;
     public static final int SHARE_TO_WCIR = 3;

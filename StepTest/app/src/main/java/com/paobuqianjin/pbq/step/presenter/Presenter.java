@@ -292,8 +292,8 @@ public final class Presenter {
         engine.getNearByPeople(latitude, longitude, page, pagesize, nearByInterface);
     }
 
-    public void registerByPhoneNumber(String[] userInfo) {
-        engine.registerByPhoneNumber(userInfo);
+    public void registerByPhoneNumber(String[] userInfo, String pbqj_no) {
+        engine.registerByPhoneNumber(userInfo, pbqj_no);
     }
 
     public void refreshPassWord() {

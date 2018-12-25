@@ -416,5 +416,7 @@ public class NetApi {
     //店铺审核结果
     public final static String urlShopApplyRes = url + "v1/Zcomposite/shopApplyRes";
     //添加用户分享记录
-    public final static String urlShareRecord = url+"v1/UserShare";
+    public final static String urlShareRecord = url + "v1/UserShare";
+    //是否可以发精准红包
+    public final static String urlPreLeg = url + "v1/RedpacketMap/hasSavePriviLege";
 }

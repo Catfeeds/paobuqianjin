@@ -8,6 +8,7 @@
     <string name="try_ones">榜单</string>
     <string name="login_account">账号登录</string>
     <string name="login_phoneNum">请输入手机号码</string>
+    <string name="friend_code">请输入您的邀请码</string>
     <string name="logine_phone_or_num">请输入手机号码/跑步钱进号</string>
     <string name="login_phonePwd">请输入8-16位密码</string>
     <string name="new_phonePwd">请输入8-16位密码</string>

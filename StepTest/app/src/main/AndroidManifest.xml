@@ -31,6 +31,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+
     <uses-feature android:name="android.hardware.nfc.hce" />
 
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
@@ -594,7 +595,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.VipActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.GODEN_VIP_ACTION"></action>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.activity.SponsorSelectActivity"
             android:screenOrientation="portrait">

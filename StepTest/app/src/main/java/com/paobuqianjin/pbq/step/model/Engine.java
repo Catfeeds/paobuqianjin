@@ -27,6 +27,7 @@ import com.baidu.location.BDLocation;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.builder.PostFormBuilder;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
@@ -854,7 +855,7 @@ public final class Engine {
     }
 
     //手机号码注册
-    public void registerByPhoneNumber(String[] userInfo) {
+    public void registerByPhoneNumber(String[] userInfo, String pbqj_no) {
         LocalLog.d(TAG, "registerByPhoneNumber() enter");
         if (userInfo[0] == null && !isPhone(userInfo[0])) {
             Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
@@ -871,14 +872,17 @@ public final class Engine {
             return;
         }
         LocalLog.d(TAG, userInfo[0] + " ," + userInfo[2] + "," + userInfo[1]);
-        OkHttpUtils
+        PostFormBuilder postFormBuilder = OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
                 .url(urlRegisterPhone)
                 .addParams("mobile", userInfo[0])
                 .addParams("password", MD5.md5Slat(userInfo[2]))
-                .addParams("code", userInfo[1])
-                .build()
+                .addParams("code", userInfo[1]);
+        if (!TextUtils.isEmpty(pbqj_no)) {
+            postFormBuilder.addParams("pbqj_no", pbqj_no);
+        }
+        postFormBuilder.build()
                 .execute(new NetStringCallBack(phoneSignInterface, COMMAND_REG_BY_PHONE));
     }
 

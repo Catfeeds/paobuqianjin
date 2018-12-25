@@ -54,6 +54,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CommonGoodResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepReWardResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskNumResponse;
@@ -229,6 +230,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
     private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
+    private final static String GOLDEN_VIP_ACTION = "com.paobuqianjin.pbq.step.GODEN_VIP_ACTION";
     private final static int REQUEST_AROUND = 101;
     public static int lastStep = 0;
     private int showStep = 0;
@@ -266,6 +268,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private double[] currentLocation = {0, 0};
     private double[] nowLocation = {0, 0};
     private TencentMap tencentMap;
+    private final static int PRE_LEG = -111;
 
     private static class ErrorBean {
         private String title;
@@ -1611,6 +1614,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         TextView textTile = (TextView) vipView.findViewById(R.id.quit_title);
         TextView textDes = (TextView) vipView.findViewById(R.id.read_des);
         TextView textLeft = (TextView) vipView.findViewById(R.id.read_des_left);
+        View centerLine = (View) vipView.findViewById(R.id.center_line);
         LocalLog.d(TAG, "error_code = " + errorCode);
         switch (errorCode) {
             case -1:
@@ -1628,6 +1632,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                         startActivityForResult(intentAround, REQUEST_AROUND);
                     }
                 });
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
@@ -1641,7 +1646,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 textDes.setText("去开通");
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
-
+                centerLine.setVisibility(View.VISIBLE);
                 textDes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1668,6 +1673,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     }
                 });
                 textLeft.setVisibility(View.VISIBLE);
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
             case 3:
@@ -1686,6 +1692,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     }
                 });
                 textLeft.setVisibility(View.VISIBLE);
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
             case 4:
@@ -1704,6 +1711,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     }
                 });
                 textLeft.setVisibility(View.VISIBLE);
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
             case 5:
@@ -1729,6 +1737,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                         }
                     }
                 });
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
@@ -1748,6 +1757,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 });
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
+                centerLine.setVisibility(View.VISIBLE);
                 break;
             case 7:
                 textTile.setGravity(Gravity.CENTER);
@@ -1768,6 +1778,24 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     @Override
                     public void onClick(View v) {
                         vipPopWnd.dismiss();
+                    }
+                });
+                break;
+            case PRE_LEG:
+                centerLine.setVisibility(View.VISIBLE);
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("去开通");
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        Intent intent = new Intent();
+                        intent.setAction(GOLDEN_VIP_ACTION);
+                        intent.setClass(getContext(), VipActivity.class);
+                        startActivity(intent);
                     }
                 });
                 break;
@@ -1828,6 +1856,33 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         }
     }
 
+
+    private void canReleasePkg() {
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPreLeg, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    PreliveLegResponse preliveLegResponse = new Gson().fromJson(s, PreliveLegResponse.class);
+                    if (preliveLegResponse.getData().getHas_privilege() == 1) {
+                        Intent intentAround = new Intent();
+                        intentAround.setAction(SEND_ACTION);
+                        intentAround.setClass(getContext(), AddAroundRedBagActivity.class);
+                        startActivityForResult(intentAround, REQUEST_AROUND);
+                    } else {
+                        popVipWindow(preliveLegResponse.getData().getTip_msg(), PRE_LEG);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
     @OnClick({R.id.go_shoping_tv, R.id.release_goods, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.tianmao,
             R.id.jingdong, R.id.weipinghui, R.id.pingduoduo, R.id.mogu, R.id.scan_mark_home, R.id.push_red_pkg, R.id.history_record})
     public void onClick(View view) {
@@ -1839,10 +1894,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 startActivity(hisIntent);
                 break;
             case R.id.push_red_pkg:
-                Intent intentAround = new Intent();
-                intentAround.setAction(SEND_ACTION);
-                intentAround.setClass(getContext(), AddAroundRedBagActivity.class);
-                startActivityForResult(intentAround, REQUEST_AROUND);
+                canReleasePkg();
                 break;
             case R.id.go_shoping_tv:
                 if (!TextUtils.isEmpty(shopUrl))

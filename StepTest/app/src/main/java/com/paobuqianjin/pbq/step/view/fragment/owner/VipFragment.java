@@ -47,8 +47,10 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     TabLayout vipTabBar;
     @Bind(R.id.vip_viewpager)
     ViewPager vipViewpager;
-    String[] titles = {"个人会员", "金牌会员", "联盟商家", "优选商家"};
     private int selectPage = 0;
+    private final static String GOLDEN_VIP_ACTION = "com.paobuqianjin.pbq.step.GODEN_VIP_ACTION";
+    private TabAdapter tabAdapter;
+    private String[] titleTop;
 
     @Override
     protected int getLayoutResId() {
@@ -62,36 +64,49 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected void initView(final View viewRoot) {
-
-        PersonVipFragment personVipFragment = new PersonVipFragment();
+        Intent intent = getActivity().getIntent();
         List<Fragment> fragments = new ArrayList<>();
-
-        fragments.add(personVipFragment);
-        for (int i = 0; i < 3; i++) {
-            if (i == 0) {
-                H5VipFragment h5VipFragmentA = new H5VipFragment();
-                h5VipFragmentA.setUrl(NetApi.urlGoldenH5);
-                fragments.add(h5VipFragmentA);
-            } else if (i == 1) {
-                H5VipFragment h5VipFragmentB = new H5VipFragment();
-                h5VipFragmentB.setUrl(NetApi.urlUnionH5);
-                fragments.add(h5VipFragmentB);
-            } else if (i == 2) {
-                H5VipFragment h5VipFragmentC = new H5VipFragment();
-                h5VipFragmentC.setUrl(NetApi.urlGoodSelectH5);
-                fragments.add(h5VipFragmentC);
+        if (GOLDEN_VIP_ACTION.equals(intent.getAction())) {
+            String[] titles = {"金牌会员"};
+            H5VipFragment h5VipFragmentA = new H5VipFragment();
+            h5VipFragmentA.setUrl(NetApi.urlGoldenH5);
+            fragments.add(h5VipFragmentA);
+            tabAdapter = new TabAdapter(getContext()
+                    , getActivity().getSupportFragmentManager(), fragments, titles);
+            titleTop = titles;
+        } else {
+            String[] titles = {"个人会员", "金牌会员", "联盟商家", "优选商家"};
+            PersonVipFragment personVipFragment = new PersonVipFragment();
+            fragments.add(personVipFragment);
+            for (int i = 0; i < 3; i++) {
+                if (i == 0) {
+                    H5VipFragment h5VipFragmentA = new H5VipFragment();
+                    h5VipFragmentA.setUrl(NetApi.urlGoldenH5);
+                    fragments.add(h5VipFragmentA);
+                } else if (i == 1) {
+                    H5VipFragment h5VipFragmentB = new H5VipFragment();
+                    h5VipFragmentB.setUrl(NetApi.urlUnionH5);
+                    fragments.add(h5VipFragmentB);
+                } else if (i == 2) {
+                    H5VipFragment h5VipFragmentC = new H5VipFragment();
+                    h5VipFragmentC.setUrl(NetApi.urlGoodSelectH5);
+                    fragments.add(h5VipFragmentC);
+                }
             }
+
+            tabAdapter = new TabAdapter(getContext()
+                    , getActivity().getSupportFragmentManager(), fragments, titles);
+            titleTop = titles;
         }
 
-        TabAdapter tabAdapter = new TabAdapter(getContext()
-                , getActivity().getSupportFragmentManager(), fragments, titles);
+
         vipTabBar = (TabLayout) viewRoot.findViewById(R.id.vip_tab_bar);
         vipViewpager = (ViewPager) viewRoot.findViewById(R.id.vip_viewpager);
         vipViewpager.setAdapter(tabAdapter);
         vipTabBar.setupWithViewPager(vipViewpager);
         for (int i = 0; i < vipTabBar.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
-            vipTabBar.getTabAt(i).setCustomView(getTabView(i));
+            vipTabBar.getTabAt(i).setCustomView(getTabView(i, titleTop));
         }
         vipTabBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -156,21 +171,25 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
         }
     }
 
-    private View getTabView(int position) {
+    private View getTabView(int position, String[] titles) {
         RelativeLayout view = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.text_tab, null);
         TextView textView = (TextView) view.findViewById(R.id.tab_text);
-        if (position == 0) {
-            textView.setText(titles[0]);
-            view.setGravity(Gravity.CENTER);
-        } else if (position == 1) {
-            textView.setText(titles[1]);
-            view.setGravity(Gravity.CENTER);
-        } else if (position == 2) {
-            textView.setText(titles[2]);
-            view.setGravity(Gravity.CENTER);
-        } else if (position == 3) {
-            textView.setText(titles[3]);
-            view.setGravity(Gravity.CENTER);
+        try {
+            if (position == 0) {
+                textView.setText(titles[0]);
+                view.setGravity(Gravity.CENTER);
+            } else if (position == 1) {
+                textView.setText(titles[1]);
+                view.setGravity(Gravity.CENTER);
+            } else if (position == 2) {
+                textView.setText(titles[2]);
+                view.setGravity(Gravity.CENTER);
+            } else if (position == 3) {
+                textView.setText(titles[3]);
+                view.setGravity(Gravity.CENTER);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return view;
     }

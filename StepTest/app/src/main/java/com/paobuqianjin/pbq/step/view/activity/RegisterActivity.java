@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -31,7 +30,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.PhoneSignInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
@@ -48,6 +46,8 @@ import static com.paobuqianjin.pbq.step.R.id.user_read_choose;
 
 public class RegisterActivity extends BaseActivity implements PhoneSignInterface {
     private final static String TAG = RegisterActivity.class.getSimpleName();
+    @Bind(R.id.invite_code)
+    EditText inviteCode;
     private boolean showLoginPass = false, showSignPass = false;
 
     private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
@@ -262,7 +262,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
                     PaoToastUtils.showLongToast(this, "请阅读《跑步钱进服务协议》");
                 } else {
                     showProgressDialog("请稍等");
-                    Presenter.getInstance(getApplicationContext()).registerByPhoneNumber(collectSignUserInfo());
+                    Presenter.getInstance(getApplicationContext()).registerByPhoneNumber(collectSignUserInfo(),inviteCode.getText().toString().trim());
                 }
                 break;
         }

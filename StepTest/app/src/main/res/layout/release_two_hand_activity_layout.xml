@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/bar_return_a_style" />
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@id/rl_bar"
+        android:paddingBottom="5dp"
+        android:visibility="gone"></com.youth.banner.Banner>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linear_rel"
+        android:layout_below="@+id/banner"
+        android:scrollbars="none">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:gravity="left"
+                android:hint="*请描述一下您的宝贝"
+                android:minHeight="100dp"
+                android:padding="8dp"
+                android:paddingTop="5dp"
+                android:textColorHint="@color/color_8a8a8a"
+                android:textSize="15dp" />
+
+            <!--<GridView-->
+            <io.rong.imkit.model.RongGridView
+                android:id="@+id/grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_information"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:numColumns="3"
+                android:padding="16dp"
+                android:scrollbars="none"
+                android:verticalSpacing="8dp"
+                android:visibility="gone"
+                tools:listitem="@layout/item_add_pic_grid2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:hint="必填一张图片"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:textSize="12dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/price_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="原价"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/full_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="物品原价"
+                    android:textColor="#ff161727"
+                    android:textColorHint="#ff8a8a8a"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="14dp"
+                    android:text="元"
+                    android:textColor="#ff111111"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/step_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="步币"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/need_step_dollar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="14dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="请输入步币"
+                    android:textColor="#ff161727"
+                    android:textColorHint="#ff8a8a8a"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/tri_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="邮费"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/need_triff_dollar"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="请输入邮费"
+                    android:textColor="#ff161727"
+                    android:textColorHint="#ff8a8a8a"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/yuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="元"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="14dp"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/select_icon"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:background="@drawable/circle_outline" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="包邮"
+                        android:textColor="#ff8a8a8a"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/type_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="1"
+                    android:text="分类"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="13dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/go_to" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_d9d9d9" />
+
+
+            <LinearLayout
+                android:id="@+id/pay_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_weight="1"
+                    android:text="交易方式"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/pay_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:text="邮寄"
+                    android:textColor="#ff8a8a8a" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linear_rel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_no_corner"
+            android:stateListAnimator="@null"
+            android:text="确定发布"
+            android:textColor="@color/color_fefefe"
+            android:textSize="16dp" />
+    </LinearLayout>
+</RelativeLayout>

@@ -43,6 +43,42 @@
 
         >
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/login_invite_img"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/invit_code"
+
+                />
+
+            <EditText
+                android:id="@+id/invite_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/login_invite_img"
+                android:background="@null"
+                android:inputType="number"
+                android:drawablePadding="15dp"
+                android:hint="@string/friend_code"
+                android:singleLine="true"
+                android:textSize="14dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/invite_code"
+                android:layout_marginTop="11dp"
+                android:background="#d9d9d9" />
+
+        </RelativeLayout>
         <!-- android:drawableLeft="@drawable/login_sccounty"-->
         <RelativeLayout
             android:layout_width="match_parent"
@@ -206,13 +242,13 @@
         android:gravity="center">
 
         <ToggleButton
-            android:padding="10dp"
             android:id="@+id/user_read_choose"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:background="@drawable/nochoose"
             android:onClick="onViewClicked"
+            android:padding="10dp"
             android:textOff=""
             android:textOn="" />
 
