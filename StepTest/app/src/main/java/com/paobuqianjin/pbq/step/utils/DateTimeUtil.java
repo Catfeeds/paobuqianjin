@@ -582,13 +582,13 @@ public final class DateTimeUtil {
      * 获取两个日期的时间差
      */
     @SuppressLint("SimpleDateFormat")
-    public static int getTimeInterval(String date) {
+    public static long getTimeInterval(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        int interval = 0;
+        long interval = 0;
         try {
             Date currentTime = new Date();// 获取现在的时间
             Date beginTime = dateFormat.parse(date);
-            interval = (int) ((beginTime.getTime() - currentTime.getTime()) / (1000));// 时间差
+            interval = ((beginTime.getTime() - currentTime.getTime()) / (1000));// 时间差
             // 单位秒
         } catch (ParseException e) {
             e.printStackTrace();

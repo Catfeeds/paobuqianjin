@@ -1088,6 +1088,15 @@
         <activity
             android:name=".view.activity.shop.TianMaoDetailActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activity.exchange.TwoHandReleaseActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.EDIT_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.RELEASE_ACTION"></action>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

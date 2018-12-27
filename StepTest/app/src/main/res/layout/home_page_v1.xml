@@ -28,15 +28,6 @@
                     android:layout_alignParentTop="true"
                     android:scaleType="fitXY" />
 
-                <ImageView
-                    android:src="@color/color_800000"
-                    android:id="@+id/moon_white_bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="265dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:scaleType="fitXY" />
-
                 <LinearLayout
                     android:id="@+id/home_data_linear"
                     android:layout_width="wrap_content"
@@ -51,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="今日步数"
-                        android:textColor="@color/white"
+                        android:textColor="#ff333333"
                         android:textSize="12dp" />
 
                     <TextView
@@ -59,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/home_element_white"
+                        android:background="@drawable/home_ban_bg"
                         android:gravity="center"
                         android:minWidth="67dp"
                         android:paddingLeft="8dp"
@@ -75,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="今日步币"
-                        android:textColor="@color/white"
+                        android:textColor="#ff333333"
                         android:textSize="12dp" />
 
                     <TextView
@@ -83,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/home_element_white"
+                        android:background="@drawable/home_ban_bg"
                         android:gravity="center"
                         android:minWidth="67dp"
                         android:paddingLeft="8dp"
@@ -98,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="今日现金"
-                        android:textColor="@color/white"
+                        android:textColor="#ff333333"
                         android:textSize="12dp" />
 
                     <TextView
@@ -106,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/home_element_white"
+                        android:background="@drawable/home_ban_bg"
                         android:gravity="center"
                         android:minWidth="67dp"
                         android:paddingLeft="8dp"
@@ -153,7 +144,8 @@
                         android:paddingRight="8dp"
                         android:text="查记录"
                         android:textColor="@color/color_f8"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -614,13 +606,14 @@
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
-                        android:background="@color/yellow0" />
+                        android:background="@color/yellow0"
+                        android:visibility="gone" />
 
                     <ImageView
-                        android:layout_width="183dp"
-                        android:layout_height="29dp"
+                        android:layout_width="289dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:scaleType="centerCrop"
+                        android:scaleType="centerInside"
                         android:src="@drawable/exchange_bar" />
 
                     <View
@@ -628,7 +621,8 @@
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="8dp"
-                        android:background="@color/yellow0" />
+                        android:background="@color/yellow0"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -674,13 +668,13 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:textSize="14dp"
-            android:textColor="@color/white"
             android:id="@+id/city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/color_ff333333"
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/app_name"
@@ -690,8 +684,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="跑步钱进"
-            android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textColor="@color/color_ff333333"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/scan_mark_home"
@@ -701,7 +696,7 @@
             android:layout_marginRight="10dp"
             android:padding="5dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/scan" />
+            android:src="@drawable/scan_withe_day" />
     </LinearLayout>
 
 

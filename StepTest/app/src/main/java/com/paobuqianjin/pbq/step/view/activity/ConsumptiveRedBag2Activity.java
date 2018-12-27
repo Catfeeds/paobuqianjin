@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AroundRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -93,6 +94,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
     private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
     private final static String NEAR_RED_RULE = "com.paobuqianjin.pbq.step.NEAR_RED_RULE";
+    private final static String GOLDEN_VIP_ACTION = "com.paobuqianjin.pbq.step.GODEN_VIP_ACTION";
     @Bind(R.id.mapview)
     MapView mapview;
     @Bind(R.id.iv_location)
@@ -147,6 +149,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private boolean isVip;
     private String current_rec_id = "";
     private ErrorBean errorBean = new ErrorBean();
+    private final static int PRE_LEG = -111;
 
     @Override
     protected String title() {
@@ -175,6 +178,41 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         initMapView(savedInstanceState);
         currentLocation = Presenter.getInstance(this).getLocation();
         loadBanner();
+        canReleasePkg(false);
+    }
+
+    /*如果通过点击则弹框，否则不弹框*/
+    private void canReleasePkg(final boolean isClick) {
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlPreLeg, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    PreliveLegResponse preliveLegResponse = new Gson().fromJson(s, PreliveLegResponse.class);
+                    if (preliveLegResponse.getData().getRecord_btn_show() == 1) {
+                        linearHistory.setVisibility(View.VISIBLE);
+                    } else {
+                        linearHistory.setVisibility(View.GONE);
+                    }
+                    if (preliveLegResponse.getData().getHas_privilege() == 1 && isClick) {
+                        Intent intentAround = new Intent();
+                        intentAround.setAction(SEND_ACTION);
+                        intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
+                        startActivityForResult(intentAround, REQUEST_AROUND);
+                    } else {
+                        if (isClick) {
+                            popVipWindow(preliveLegResponse.getData().getTip_msg(), PRE_LEG);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     private void getVipStatus() {
@@ -723,6 +761,24 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                     @Override
                     public void onClick(View v) {
                         vipPopWnd.dismiss();
+                    }
+                });
+                break;
+            case PRE_LEG:
+                centerLine.setVisibility(View.VISIBLE);
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("去开通");
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        Intent intent = new Intent();
+                        intent.setAction(GOLDEN_VIP_ACTION);
+                        intent.setClass(ConsumptiveRedBag2Activity.this, VipActivity.class);
+                        startActivity(intent);
                     }
                 });
                 break;
@@ -1302,10 +1358,11 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 startActivity(hisIntent);
                 break;
             case R.id.iv_send_red_bag:
-                Intent intentAround = new Intent();
+/*                Intent intentAround = new Intent();
                 intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
                 intentAround.setAction(SEND_ACTION);
-                startActivityForResult(intentAround, REQUEST_AROUND);
+                startActivityForResult(intentAround, REQUEST_AROUND);*/
+                canReleasePkg(true);
                 break;
         }
     }

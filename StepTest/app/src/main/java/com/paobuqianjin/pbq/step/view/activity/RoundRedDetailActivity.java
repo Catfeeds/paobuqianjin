@@ -311,7 +311,7 @@ public class RoundRedDetailActivity extends BaseActivity {
             web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
             web.setTitle("走路就能领红包的APP");
             web.setThumb(new UMImage(this, R.mipmap.app_icon));
-            web.setDescription("邀请好友成功注册,陆续将获得三十元奖励");
+
         }
 
         contentRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RoundRedDetailActivity.this, contentRecycler, new RecyclerItemClickListener.OnItemClickListener() {
@@ -347,6 +347,9 @@ public class RoundRedDetailActivity extends BaseActivity {
                         spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("¥" + red_result).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         redResult.setText(spannableString);
                         intoWallet.setVisibility(View.VISIBLE);
+                        if (web != null) {
+                            web.setDescription("我在跑步钱进app领到了" + showResult + "的红包，快来一起抢红包吧!注册邀请码:" + userInfo.getNo());
+                        }
                     } else if (type == 2) {
                         int credit = (int) red_result;
                         String showResult = credit + "步币";
@@ -355,6 +358,9 @@ public class RoundRedDetailActivity extends BaseActivity {
                         spannableString.setSpan(new AbsoluteSizeSpan(14, true), String.valueOf(credit).length(), showResult.length(), SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
                         redResult.setText(spannableString);
                         intoWallet.setVisibility(View.INVISIBLE);
+                        if (web != null) {
+                            web.setDescription("我在跑步钱进app领到了" + showResult + "的红包,快来一起抢红包吧!注册邀请码:" + userInfo.getNo());
+                        }
                     }
 
                 } catch (Exception e) {

@@ -27,6 +27,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/two_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/two_hand_title"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/length_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp"
+                    android:text="32" />
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/et_information"
                 android:layout_width="match_parent"
@@ -34,12 +62,14 @@
                 android:background="@color/white"
                 android:backgroundTint="@color/white"
                 android:gravity="left"
-                android:hint="*请描述一下您的宝贝"
+                android:hint="@string/two_hand_des"
+                android:maxLength="2000"
                 android:minHeight="100dp"
                 android:padding="8dp"
                 android:paddingTop="5dp"
+                android:textColor="@color/color_161727"
                 android:textColorHint="@color/color_8a8a8a"
-                android:textSize="15dp" />
+                android:textSize="14dp" />
 
             <!--<GridView-->
             <io.rong.imkit.model.RongGridView
@@ -55,7 +85,6 @@
                 android:padding="16dp"
                 android:scrollbars="none"
                 android:verticalSpacing="8dp"
-                android:visibility="gone"
                 tools:listitem="@layout/item_add_pic_grid2" />
 
             <TextView
@@ -70,6 +99,45 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/title_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="宝贝标题"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/good_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="14dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="宝贝标题 品牌型号不可少"
+                    android:maxLength="32"
+                    android:maxLines="1"
+                    android:textColor="#ff161727"
+                    android:textColorHint="#ff8a8a8a"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:background="@color/color_d9d9d9" />
 
             <LinearLayout
@@ -96,6 +164,7 @@
                     android:background="@null"
                     android:gravity="right"
                     android:hint="物品原价"
+                    android:inputType="number"
                     android:textColor="#ff161727"
                     android:textColorHint="#ff8a8a8a"
                     android:textSize="15dp" />
@@ -143,6 +212,7 @@
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入步币"
+                    android:inputType="number"
                     android:textColor="#ff161727"
                     android:textColorHint="#ff8a8a8a"
                     android:textSize="15dp" />
@@ -180,6 +250,7 @@
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入邮费"
+                    android:inputType="numberDecimal"
                     android:textColor="#ff161727"
                     android:textColorHint="#ff8a8a8a"
                     android:textSize="15dp" />
@@ -199,8 +270,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="14dp"
-                    android:gravity="right"
+                    android:layout_marginRight="8dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -212,11 +282,21 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="14dp"
                         android:text="包邮"
                         android:textColor="#ff8a8a8a"
                         android:textSize="15sp" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/triff_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="14dp"
+                    android:gravity="right"
+                    android:text="运费提示"
+                    android:textColor="#ff0284fd" />
             </LinearLayout>
 
             <View
@@ -257,7 +337,8 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:background="@color/color_d9d9d9" />
+                android:background="@color/color_d9d9d9"
+                android:visibility="gone" />
 
 
             <LinearLayout
@@ -286,6 +367,10 @@
                     android:text="邮寄"
                     android:textColor="#ff8a8a8a" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
         </LinearLayout>
     </ScrollView>
 

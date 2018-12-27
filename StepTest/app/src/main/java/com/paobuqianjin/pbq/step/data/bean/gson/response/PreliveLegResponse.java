@@ -8,7 +8,7 @@ public class PreliveLegResponse {
     /**
      * error : 0
      * message : success
-     * data : {"has_privilege":1,"tip_msg":""}
+     * data : {"has_privilege":1,"tip_msg":"","record_btn_show" : 1}
      */
 
     private int error;
@@ -43,10 +43,17 @@ public class PreliveLegResponse {
         /**
          * has_privilege : 1
          * tip_msg :
+         * record_btn_show: 1
          */
 
         private int has_privilege;
         private String tip_msg;
+
+        public int getRecord_btn_show() {
+            return record_btn_show;
+        }
+
+        private int record_btn_show;
 
         public int getHas_privilege() {
             return has_privilege;

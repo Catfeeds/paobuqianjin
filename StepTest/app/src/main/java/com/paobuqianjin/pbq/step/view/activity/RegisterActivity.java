@@ -78,7 +78,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
 
 
     private String[] userInfo;
-    private boolean isBool;
+    private boolean isBool = true;
     private ProgressDialog progressDialog;
 
     @Override
@@ -88,6 +88,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
         ButterKnife.bind(this);
         Presenter.getInstance(this).attachUiInterface(this);
         progressDialog = new ProgressDialog(this);
+        userreadchoose.setBackgroundResource(R.drawable.choose);
         newAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -299,6 +300,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
     @Override
     public void response(ErrorCode errorCode) {
         PaoToastUtils.showLongToast(this, errorCode.getMessage());
+        newBtnRegister.setEnabled(true);
     }
 
     @Override

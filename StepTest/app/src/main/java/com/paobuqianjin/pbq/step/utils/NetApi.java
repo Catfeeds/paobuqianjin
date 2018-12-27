@@ -419,4 +419,8 @@ public class NetApi {
     public final static String urlShareRecord = url + "v1/UserShare";
     //是否可以发精准红包
     public final static String urlPreLeg = url + "v1/RedpacketMap/hasSavePriviLege";
+    //刷新token接口
+    public final static String urlRefreshToken = url + "v1/user/refreshToken";
+    //添加公益商品兑换
+    public final static String urlAddExChange = url + "v1/secondHandExchange";
 }

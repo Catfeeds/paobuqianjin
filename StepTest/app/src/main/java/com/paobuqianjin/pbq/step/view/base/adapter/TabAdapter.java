@@ -19,8 +19,8 @@ public class TabAdapter extends FragmentPagerAdapter {
     public TabAdapter(Context context, FragmentManager fm, List<Fragment> fragments, Object[] title) {
         super(fm);
         this.context = context;
-        this.fragments = fragments;
         tableTitle = title;
+        this.fragments = fragments;
     }
 
     @Override

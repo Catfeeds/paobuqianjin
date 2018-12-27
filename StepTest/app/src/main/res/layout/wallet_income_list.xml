@@ -6,32 +6,39 @@
     <RelativeLayout
         android:id="@+id/income_list_item"
         android:layout_width="match_parent"
-        android:layout_height="65dp">
+        android:layout_height="55dp">
 
-        <TextView
-            android:id="@+id/date"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:text=""
-            android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/income_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="22dp"
-            android:layout_toRightOf="@+id/date"
-            android:ellipsize="end"
-            android:maxEms="12"
-            android:maxLines="1"
-            android:text=""
-            android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            <TextView
+                android:id="@+id/income_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
+                android:maxEms="12"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/color_161727"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text=""
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/add_income"
@@ -47,7 +54,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignLeft="@+id/date"
+            android:layout_marginLeft="14dp"
             android:layout_alignParentBottom="true"
             android:background="@color/color_ebebed" />
     </RelativeLayout>

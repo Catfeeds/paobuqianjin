@@ -307,4 +307,6 @@
     <string name="new_s">最新\n资讯</string>
     <string name="red_num_des_money">最高2万个(每个红包≥0.02元)</string>
     <string name="red_num_des_step">最高2万个(每个红包≥2步币)</string>
+    <string name="two_hand_title">宝贝标题 品牌型号不可少</string>
+    <string name="two_hand_des">在这里详细描述一下宝贝的\n转手原因、入手渠道、尺寸规格、新旧程度和使用体验吧~</string>
 </resources>

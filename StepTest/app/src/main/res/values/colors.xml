@@ -26,7 +26,7 @@
     <color name="color_feb913">#fffeb913</color>
     <color name="coloe_fec742">#ffc742</color>
     <color name="color_d6d6d6">#ffd6d6d6</color>
-    <color name="color_232433">#ff232433</color>
+    <color name="color_232433">#FF442B</color>
     <color name="color_161727">#ff161727</color>
     <color name="color_golden">#FFD700</color>
     <color name="color_353132">#ff353132</color>
@@ -131,4 +131,5 @@
     <color name="blue">#2A8EE3</color>
     <color name="linechart_back">#4949BE</color>
     <color name="cloor_3b33b3b">#3b3b3b</color>
+    <color name="color_ff333333">#ff333333</color>
 </resources>

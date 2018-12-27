@@ -2,14 +2,20 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +41,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MyBankCardActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
+import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -56,6 +63,8 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     private final static String TAG = MyWalletFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
+    @Bind(R.id.time_wait)
+    TextView timeWait;
     @Bind(R.id.button_return_bar)
     RelativeLayout buttonReturnBar;
     @Bind(R.id.bar_title)
@@ -68,31 +77,36 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     TextView totalIncomeDes;
     @Bind(R.id.total_income_num)
     TextView totalIncomeNum;
-    @Bind(R.id.line_total)
-    ImageView lineTotal;
+    @Bind(R.id.crash_bar)
+    Button crashBar;
+    @Bind(R.id.money_span)
+    LinearLayout moneySpan;
     @Bind(R.id.total_span)
     RelativeLayout totalSpan;
     @Bind(R.id.step_dollor_num_des)
     TextView stepDollorNumDes;
     @Bind(R.id.step_dollor_num)
     TextView stepDollorNum;
-    @Bind(R.id.line_current)
-    ImageView lineCurrent;
-    @Bind(R.id.step_dollor_span)
-    RelativeLayout yesterdaySpan;
-    @Bind(R.id.income_outline)
-    LinearLayout incomeOutline;
-    @Bind(R.id.income_container)
-    RelativeLayout incomeContainer;
     @Bind(R.id.charge_bar)
     Button chargeBar;
+    @Bind(R.id.step_span)
+    LinearLayout stepSpan;
+    @Bind(R.id.step_dollor_span)
+    RelativeLayout stepDollorSpan;
+    @Bind(R.id.income_outline)
+    LinearLayout incomeOutline;
+    @Bind(R.id.wallet_all)
+    RelativeLayout walletAll;
+    @Bind(R.id.tablayout)
+    TabLayout tablayout;
+    @Bind(R.id.income_container)
+    RelativeLayout incomeContainer;
 
     private View popWalletBar;
     private PopupWindow popupWalletWindow;
     private TranslateAnimation animationCircleType;
     private int mIndex;//当前收入页面索引
     private Fragment[] fragments;
-    private ImageView[] lines;
     private int mCurrentIndex = 0;
     private AllIncomeFragment allIncomeFragment = new AllIncomeFragment();
     private StepDollarDetailFragment stepDollarDetailFragment = new StepDollarDetailFragment();
@@ -102,12 +116,14 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     ArrayList<AllIncomeResponse.DataBeanX.DataBean> allData = new ArrayList<>();
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
-    /*    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";*/
+    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private int pageIndexAll = 1;
     private int pageAllCount = 0;
     public final static int REQUEST_CRASH = 231;
     private float totalMoney = 0.0f;
     private final int REQUEST_RECHARGE = 223;
+    private String[] titles = {"现金明细", "步币明细"};
+    private String money = "";
 
     @Override
     protected int getLayoutResId() {
@@ -203,9 +219,95 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
 
     @Override
     protected void initView(View viewRoot) {
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            money = intent.getStringExtra("total");
+        }
         incomeRel = (RelativeLayout) viewRoot.findViewById(R.id.income_rel);
         setToolBarListener(toolBarListener);
         fragments = new Fragment[]{allIncomeFragment, stepDollarDetailFragment};
+        tablayout = (TabLayout) viewRoot.findViewById(R.id.tablayout);
+        ViewPager viewPager = new ViewPager(getContext());
+        viewPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return titles.length;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                try {
+                    return titles[position];
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        });
+        tablayout.setupWithViewPager(viewPager);
+        for (int i = 0; i < tablayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tablayout.getTabAt(i);
+            if (tab != null) {
+                TextView textView = new TextView(getContext());
+                textView.setTypeface(Typeface.DEFAULT_BOLD);
+                textView.setWidth(280);
+                textView.setText(titles[i]);
+                textView.setGravity(Gravity.CENTER);
+                textView.setTextSize(14);
+                tab.setCustomView(textView);
+                if (i == 0) {
+                    textView.setTextColor(ContextCompat.getColor(getContext(), R.color.color_161727));
+                }
+                if (tab.getCustomView() != null) {
+                    View tabView = (View) tab.getCustomView().getParent();
+                    tabView.setTag(i);
+                }
+            }
+        }
+
+        tablayout.getTabAt(0).select();
+        mCurrentIndex = 0;
+        tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                try {
+                    LocalLog.d(TAG, "postion =" + tab.getPosition());
+                    View customView = tab.getCustomView();
+                    onTabIndex(tab.getPosition());
+                    try {
+                        if (customView != null && customView instanceof TextView) {
+                            ((TextView) customView).setTextColor(ContextCompat.getColor(getContext(), R.color.color_232433));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                View customView = tab.getCustomView();
+                try {
+                    if (customView != null && customView instanceof TextView) {
+                        ((TextView) customView).setTextColor(ContextCompat.getColor(getContext(), R.color.color_646464));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.income_container, allIncomeFragment)
                 .add(R.id.income_container, stepDollarDetailFragment)
@@ -218,9 +320,6 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         stepDollorNum = (TextView) viewRoot.findViewById(R.id.step_dollor_num);
         allIncomeFragment.setAdapter(allAdapter);
         allIncomeFragment.listen(mLoadMoreListener);
-        lineCurrent = (ImageView) viewRoot.findViewById(R.id.line_current);
-        lineTotal = (ImageView) viewRoot.findViewById(R.id.line_total);
-        lines = new ImageView[]{lineTotal, lineCurrent};
         loadAllData(allData);
         Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
         mIndex = 0;
@@ -231,10 +330,15 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.charge_bar, R.id.total_span, R.id.step_dollor_span, R.id.step_span, R.id.money_span})
+    @OnClick({R.id.charge_bar, R.id.total_span, R.id.step_dollor_span, R.id.step_span, R.id.money_span,R.id.crash_bar})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -247,16 +351,14 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
                 intent.setAction(PAY_RECHARGE);
                 startActivityForResult(intent, REQUEST_RECHARGE);
                 break;
-            case R.id.total_span:
-            case R.id.money_span:
-                LocalLog.d(TAG, "总收入");
-                mIndex = 0;
-                onTabIndex(mIndex);
-                break;
-            case R.id.step_dollor_span:
-            case R.id.step_span:
-                mIndex = 1;
-                onTabIndex(mIndex);
+            case R.id.crash_bar:
+                LocalLog.d(TAG, "提现");
+                if (!TextUtils.isEmpty(money)) {
+                    intent.putExtra("total", money);
+                    intent.setAction(CRASH_ACTION);
+                    intent.setClass(getContext(), TransferActivity.class);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;
@@ -277,12 +379,6 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
                 trx.add(R.id.fragment_container, fragments[fragmentIndex]);
             }
             trx.show(fragments[fragmentIndex]).commit();
-            if (lines[mCurrentIndex].getVisibility() == View.VISIBLE) {
-                lines[mCurrentIndex].setVisibility(View.INVISIBLE);
-            }
-            if (lines[fragmentIndex].getVisibility() != View.VISIBLE) {
-                lines[fragmentIndex].setVisibility(View.VISIBLE);
-            }
         }
         mCurrentIndex = fragmentIndex;
     }

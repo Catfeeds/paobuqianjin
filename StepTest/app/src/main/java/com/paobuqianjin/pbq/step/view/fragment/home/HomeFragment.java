@@ -85,6 +85,7 @@ import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.TwoHandReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
@@ -168,8 +169,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     ImageView shopPing;
     @Bind(R.id.go_shoping_tv)
     TextView goShopingTv;
-    @Bind(R.id.moon_white_bg)
-    ImageView moonWhiteBg;
     @Bind(R.id.toay_step_dollor)
     TextView toayStepDollor;
     @Bind(R.id.home_data_linear)
@@ -231,6 +230,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
     private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
     private final static String GOLDEN_VIP_ACTION = "com.paobuqianjin.pbq.step.GODEN_VIP_ACTION";
+    private final static String RELEASE_ACTION = "com.paobuqianjin.pbq.step.RELEASE_ACTION";
     private final static int REQUEST_AROUND = 101;
     public static int lastStep = 0;
     private int showStep = 0;
@@ -565,7 +565,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             arrayList.add(dataBean);
         }
         goodGrid.setAdapter(gridGoodAdpter);
-        moonWhiteBg = (ImageView) viewRoot.findViewById(R.id.moon_white_bg);
         redLayout = (RelativeLayout) viewRoot.findViewById(R.id.red_pkg_sq);
         goodGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -599,10 +598,14 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
                 if (Utils.px2dip(getContext(), (float) t) > 64 / 2) {
                     barHome.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_232433));
-/*                    scanMarkHome.setImageResource(R.drawable.scan);
-                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));*/
+                    scanMarkHome.setImageResource(R.drawable.scan);
+                    cityName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
+                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
                 } else {
                     barHome.setBackground(null);
+                    scanMarkHome.setImageResource(R.drawable.scan_withe_day);
+                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff333333));
+                    cityName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff333333));
                     /*if (isWhite()) {
                         scanMarkHome.setImageResource(R.drawable.scan_withe_day);
                         appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
@@ -631,6 +634,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         }
         updateUiTime();*/
         shopApplyUrl();
+        canReleasePkg(false);
     }
 
     private void shopApplyUrl() {
@@ -654,7 +658,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private void updateUiTime() {
         if (isWhite()) {
             LocalLog.d(TAG, "白天");
-            moonWhiteBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.white_day));
             todayIncomeNum.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
             todayIncomeNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
             toayStep.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
@@ -668,7 +671,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             setLabelColor(ContextCompat.getColor(getContext(), R.color.color_161727));
         } else {
             LocalLog.d(TAG, "黑夜");
-            moonWhiteBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.moon_day));
             todayIncomeNum.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
             todayIncomeNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
             toayStep.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
@@ -1311,13 +1313,17 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         copyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(urlShopApply)) {
+/*                if (!TextUtils.isEmpty(urlShopApply)) {
                     ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData textClipData = ClipData.newPlainText("Label", urlShopApply);
                     cmb.setPrimaryClip(textClipData);
                     LocalLog.d(TAG, "  msg = " + cmb.getText());
                     PaoToastUtils.showLongToast(getActivity(), "网址复制成功");
-                }
+                }*/
+                Intent intent = new Intent();
+                intent.setAction(RELEASE_ACTION);
+                intent.setClass(getContext(), TwoHandReleaseActivity.class);
+                startActivity(intent);
                 popupRedPkgWindow.dismiss();
 
             }
@@ -1856,20 +1862,27 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         }
     }
 
-
-    private void canReleasePkg() {
+    /*如果通过点击则弹框，否则不弹框*/
+    private void canReleasePkg(final boolean isClick) {
         Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPreLeg, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     PreliveLegResponse preliveLegResponse = new Gson().fromJson(s, PreliveLegResponse.class);
-                    if (preliveLegResponse.getData().getHas_privilege() == 1) {
+                    if (preliveLegResponse.getData().getRecord_btn_show() == 1) {
+                        historyRecord.setVisibility(View.VISIBLE);
+                    } else {
+                        historyRecord.setVisibility(View.GONE);
+                    }
+                    if (preliveLegResponse.getData().getHas_privilege() == 1 && isClick) {
                         Intent intentAround = new Intent();
                         intentAround.setAction(SEND_ACTION);
                         intentAround.setClass(getContext(), AddAroundRedBagActivity.class);
                         startActivityForResult(intentAround, REQUEST_AROUND);
                     } else {
-                        popVipWindow(preliveLegResponse.getData().getTip_msg(), PRE_LEG);
+                        if (isClick) {
+                            popVipWindow(preliveLegResponse.getData().getTip_msg(), PRE_LEG);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1894,7 +1907,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 startActivity(hisIntent);
                 break;
             case R.id.push_red_pkg:
-                canReleasePkg();
+                canReleasePkg(true);
                 break;
             case R.id.go_shoping_tv:
                 if (!TextUtils.isEmpty(shopUrl))

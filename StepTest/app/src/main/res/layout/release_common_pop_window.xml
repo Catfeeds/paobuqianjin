@@ -49,10 +49,10 @@
             android:lineSpacingExtra="8dp"
             android:text="手机发布暂时不能使用，请您在电脑登录以下网址即可免费发布置换物品。"
             android:textColor="#343434"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:visibility="gone" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/text_web"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,9 +60,11 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:gravity="center"
             android:text=""
             android:textColor="#FD1616"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/copy_button"
@@ -72,7 +74,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/home_element_white"
             android:gravity="center"
-            android:text="点击复制"
+            android:text="去发布"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
     </LinearLayout>

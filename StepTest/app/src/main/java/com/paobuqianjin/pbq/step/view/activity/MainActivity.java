@@ -37,6 +37,7 @@ import com.paobuqianjin.pbq.step.view.fragment.chat.MyConversationListFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.PaoBuShopFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.ShopLiveFragment;
+import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerCenterFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 import com.tot.badges.IconBadgeNumManager;
 
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     //Fragment页面索引
     private HomeFragment mHomePageFragment;
     private PaoBuShopFragment paoBuShopFragment;
-    private OwnerFragment mOwnerFragment;
+    private OwnerCenterFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
     private TextView[] mTabSelect;
@@ -151,7 +152,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         initConversationList();
         shopLiveFragment = new ShopLiveFragment();
         paoBuShopFragment = new PaoBuShopFragment();
-        mOwnerFragment = new OwnerFragment();
+        mOwnerFragment = new OwnerCenterFragment();
         mFragments = new Fragment[]{mHomePageFragment, shopLiveFragment, mConversationListFragment, paoBuShopFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mHomePageFragment)
