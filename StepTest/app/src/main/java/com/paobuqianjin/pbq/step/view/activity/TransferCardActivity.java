@@ -2,18 +2,29 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -51,18 +62,42 @@ import io.rong.imkit.model.RongGridView;
 public class TransferCardActivity extends BaseBarActivity {
     private final static String TAG = TransferCardActivity.class.getSimpleName();
     private static final int REQ_ADD_CARD = 1;
-    @Bind(R.id.rv_bank)
-    RecyclerView rvBank;
-    @Bind(R.id.btn_transfer)
-    Button btnTransfer;
-    @Bind(R.id.cb_agree)
-    CheckBox cbAgree;
-    @Bind(R.id.transfer_limit)
-    TextView transferLimit;
-    @Bind(R.id.grid_view)
-    RongGridView gridView;
+    @Bind(R.id.bar_return_drawable)
+    ImageView barReturnDrawable;
+    @Bind(R.id.time_wait)
+    TextView timeWait;
+    @Bind(R.id.button_return_bar)
+    RelativeLayout buttonReturnBar;
+    @Bind(R.id.bar_title)
+    TextView barTitle;
+    @Bind(R.id.bar_tv_right)
+    TextView barTvRight;
+    @Bind(R.id.shuoming)
+    ImageView shuoming;
+    @Bind(R.id.had_money)
+    RelativeLayout hadMoney;
     @Bind(R.id.wallet_money)
     TextView walletMoney;
+    @Bind(R.id.wallet_money_span)
+    RelativeLayout walletMoneySpan;
+    @Bind(R.id.crash_des)
+    TextView crashDes;
+    @Bind(R.id.grid_view)
+    RongGridView gridView;
+    @Bind(R.id.rv_bank)
+    RecyclerView rvBank;
+    @Bind(R.id.view)
+    View view;
+    @Bind(R.id.linear_item_more)
+    LinearLayout linearItemMore;
+    @Bind(R.id.linearLayout2)
+    LinearLayout linearLayout2;
+    @Bind(R.id.cb_agree)
+    CheckBox cbAgree;
+    @Bind(R.id.tv_protocol)
+    TextView tvProtocol;
+    @Bind(R.id.btn_transfer)
+    Button btnTransfer;
     private List<BankListResponse.CardBean> listData = new ArrayList<>();
     private BankSelectAdapter adapter;
     private float canCrashNum;
@@ -73,6 +108,9 @@ public class TransferCardActivity extends BaseBarActivity {
     private String crashMoney;//选择提现的金额
     GridMoneyAdapter gridMoneyAdapter;
     List<String> rules = new ArrayList<>();
+    private String ruleString = "";
+    private PopupWindow popupRedPkgWindow;
+    private TranslateAnimation animationCircleType;
 
     @Override
     protected String title() {
@@ -88,12 +126,10 @@ public class TransferCardActivity extends BaseBarActivity {
         Intent intent = getIntent();
         if (intent != null) {
             canCrashNum = Float.parseFloat(intent.getStringExtra("total"));
-/*            String canCrashStrFormat = getString(R.string.can_crash);
-            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
-            walletMoney.setText(canCrashStr);*/
-/*            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
-            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);*/
-            walletMoney.setText("钱包余额: " + String.valueOf(canCrashNum));
+            SpannableString spannableString = new SpannableString(String.valueOf(canCrashNum) + "元");
+            spannableString.setSpan(new AbsoluteSizeSpan(15, true), String.valueOf(canCrashNum).length(), (String.valueOf(canCrashNum) + "元").length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            walletMoney.setText(spannableString);
         }
 
         rvBank.setLayoutManager(new LinearLayoutManager(this));
@@ -127,6 +163,43 @@ public class TransferCardActivity extends BaseBarActivity {
         initGrid();
         initData();
     }
+
+    /*运动步币奖励*/
+    private void showCrashRule() {
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "红包在显示");
+            return;
+        }
+        View popRedPkgView = View.inflate(this, R.layout.crash_rule_window, null);
+        TextView textView = (TextView) popRedPkgView.findViewById(R.id.rule_text);
+        textView.setText(ruleString);
+        Button button = (Button) popRedPkgView.findViewById(R.id.i_known);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setDuration(200);
+        popupRedPkgWindow.showAtLocation(findViewById(R.id.activity_transfer), Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
+    }
+
 
     private void initGrid() {
         Map<String, String> param = new HashMap<>();
@@ -182,7 +255,7 @@ public class TransferCardActivity extends BaseBarActivity {
                         for (int line = 0; line < rules.size(); line++) {
                             ruleStr += String.valueOf(line + 1) + ". " + rules.get(line) + "\n";
                         }
-                        transferLimit.setText(ruleStr);
+                        ruleString = ruleStr;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -219,9 +292,14 @@ public class TransferCardActivity extends BaseBarActivity {
         });
     }
 
-    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more})
+    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more, R.id.had_money})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.had_money:
+                if (!TextUtils.isEmpty(ruleString)) {
+                    showCrashRule();
+                }
+                break;
             case R.id.btn_transfer:
                 String transferMoneyStr = crashMoney;
                 if (TextUtils.isEmpty(transferMoneyStr)) {

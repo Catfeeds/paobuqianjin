@@ -3,18 +3,26 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,12 +78,22 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     private final static String TAG = CrashFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
+    @Bind(R.id.time_wait)
+    TextView timeWait;
     @Bind(R.id.button_return_bar)
     RelativeLayout buttonReturnBar;
     @Bind(R.id.bar_title)
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
+    @Bind(R.id.shuoming)
+    ImageView shuoming;
+    @Bind(R.id.had_money)
+    RelativeLayout hadMoney;
+    @Bind(R.id.wallet_money)
+    TextView walletMoney;
+    @Bind(R.id.wallet_money_span)
+    RelativeLayout walletMoneySpan;
     @Bind(R.id.wechat_pay_icon)
     ImageView wechatPayIcon;
     @Bind(R.id.wx_dear_name)
@@ -84,22 +102,19 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     ImageView goToWx;
     @Bind(R.id.wechat_pay)
     RelativeLayout wechatPay;
-    @Bind(R.id.protocl_text)
-    TextView protoclText;
-    @Bind(R.id.protocl_pay)
-    RelativeLayout protoclPay;
-    @Bind(R.id.confirm_crash)
-    Button confirmCrash;
-    @Bind(R.id.select_icon)
-    ImageView selectIcon;
-    @Bind(R.id.wallet_money)
-    TextView walletMoney;
     @Bind(R.id.crash_des)
     TextView crashDes;
     @Bind(R.id.grid_view)
     RongGridView gridView;
-    @Bind(R.id.des_more)
-    TextView desMore;
+    @Bind(R.id.protocl_text)
+    TextView protoclText;
+    @Bind(R.id.select_icon)
+    ImageView selectIcon;
+    @Bind(R.id.protocl_pay)
+    RelativeLayout protoclPay;
+    @Bind(R.id.confirm_crash)
+    Button confirmCrash;
+
     private float canCrashNum;
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static int CRASH_PROTOCAL = 206;
@@ -113,6 +128,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     List<DrawMoneyListResponse.DataBean> listData = new ArrayList<>();
     private String crashMoney;//选择提现的金额
     List<String> rules = new ArrayList<>();
+    private PopupWindow popupRedPkgWindow;
+    private TranslateAnimation animationCircleType;
+    private String ruleString = "";
 
     @Override
     protected String title() {
@@ -147,7 +165,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         wxDearName = (TextView) viewRoot.findViewById(R.id.wx_dear_name);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
         gridView = (RongGridView) viewRoot.findViewById(R.id.grid_view);
-        desMore = (TextView) viewRoot.findViewById(R.id.des_more);
+        hadMoney = (RelativeLayout) viewRoot.findViewById(R.id.had_money);
         if (!Presenter.getInstance(getActivity()).getReadCrashProtocol(getActivity())) {
             LocalLog.d(TAG, "未阅读过提现协议");
             confirmCrash.setEnabled(false);
@@ -161,9 +179,10 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             canCrashNum = Float.parseFloat(intent.getStringExtra("total"));
-/*            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
-            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);*/
-            walletMoney.setText("钱包余额: " + String.valueOf(canCrashNum));
+            SpannableString spannableString = new SpannableString(String.valueOf(canCrashNum) + "元");
+            spannableString.setSpan(new AbsoluteSizeSpan(15, true), String.valueOf(canCrashNum).length(), (String.valueOf(canCrashNum) + "元").length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            walletMoney.setText(spannableString);
         }
         String part1 = "我已认真阅读", part2 = "《提现协议》";
         String protoclStr = part1 + part2;
@@ -236,7 +255,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                         for (int line = 0; line < rules.size(); line++) {
                             ruleStr += String.valueOf(line + 1) + ". " + rules.get(line) + "\n";
                         }
-                        desMore.setText(ruleStr);
+                        ruleString = ruleStr;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -250,6 +269,45 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 }
             }
         });
+    }
+
+    /*运动步币奖励*/
+    private void showCrashRule() {
+        if (!isAdded()) {
+            return;
+        }
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "红包在显示");
+            return;
+        }
+        View popRedPkgView = View.inflate(getContext(), R.layout.crash_rule_window, null);
+        TextView textView = (TextView) popRedPkgView.findViewById(R.id.rule_text);
+        textView.setText(ruleString);
+        Button button = (Button) popRedPkgView.findViewById(R.id.i_known);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setDuration(200);
+        popupRedPkgWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
     }
 
     @Override
@@ -310,9 +368,14 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         }
     }
 
-    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon})
+    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon, R.id.had_money})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.had_money:
+                if (!TextUtils.isEmpty(ruleString)) {
+                    showCrashRule();
+                }
+                break;
             case R.id.wechat_pay:
                 LocalLog.d(TAG, "绑定微信或者更换绑定的微信");
                 if (!isauthWx) {
@@ -527,6 +590,15 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             SocializeUtils.safeCloseDialog(dialog);
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (popupRedPkgWindow != null) {
+            popupRedPkgWindow.dismiss();
+            popupRedPkgWindow = null;
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

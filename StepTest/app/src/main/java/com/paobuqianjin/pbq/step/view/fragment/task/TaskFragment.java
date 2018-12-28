@@ -364,13 +364,13 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     private void setCurrentIndexStateUnSelect() {
         if (mCurrentIndex == 0) {
             taskAll.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangele_four_full_r_unselected));
-            taskAll.setTextColor(ContextCompat.getColor(getContext(), R.color.color_161727));
+            taskAll.setTextColor(ContextCompat.getColor(getContext(), R.color.color_232433));
         } else if (mCurrentIndex == 1) {
             taskUnFinish.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_four_fill_outline_unselected));
-            taskUnFinish.setTextColor(ContextCompat.getColor(getContext(), R.color.color_161727));
+            taskUnFinish.setTextColor(ContextCompat.getColor(getContext(), R.color.color_232433));
         } else if (mCurrentIndex == 2) {
             taskFinished.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rectangle_four_full_left_unselect));
-            taskFinished.setTextColor(ContextCompat.getColor(getContext(), R.color.color_161727));
+            taskFinished.setTextColor(ContextCompat.getColor(getContext(), R.color.color_232433));
         }
     }
 

@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
@@ -11,15 +12,12 @@ import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -154,6 +152,8 @@ public class OwnerCenterFragment extends BaseFragment {
     TextView walletMoney;
     @Bind(R.id.wallet_step)
     TextView walletStep;
+    @Bind(R.id.wallet_detail_button)
+    TextView walletDetailButton;
     private String userAvatar;
     ImageView friends;
     private int vip = 0;
@@ -209,6 +209,8 @@ public class OwnerCenterFragment extends BaseFragment {
         goldenSponsor = (ImageView) viewRoot.findViewById(R.id.golden_sponsor);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
         walletStep = (TextView) viewRoot.findViewById(R.id.wallet_step);
+        walletDetailButton = (TextView)viewRoot.findViewById(R.id.wallet_detail_button);
+        walletDetailButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
     @Override
@@ -219,7 +221,7 @@ public class OwnerCenterFragment extends BaseFragment {
 
 
     @OnClick({R.id.his_span, R.id.user_icon, R.id.wallet_span_a, R.id.wallet_span_b, R.id.gonggao_span, R.id.dynamic_span, R.id.suggestion_span, R.id.reward_span, R.id.circle_rel, R.id.setting_icon, R.id.vip_span,
-            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.friend_span, R.id.invite_people_span, R.id.qrcode})
+            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.friend_span, R.id.invite_people_span, R.id.qrcode, R.id.wallet_detail_button})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -325,6 +327,9 @@ public class OwnerCenterFragment extends BaseFragment {
                     intent.setClass(getContext(), TransferActivity.class);
                     startActivity(intent);
                 }
+                break;
+            case R.id.wallet_detail_button:
+                startActivity(InoutcomDetailActivity.class, null);
                 break;
             default:
                 break;

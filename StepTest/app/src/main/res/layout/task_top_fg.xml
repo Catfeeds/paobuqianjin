@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_below="@+id/task_bar"
-        android:paddingBottom="5dp"
         android:background="@color/color_f6f6f6"
+        android:paddingBottom="5dp"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -53,7 +53,7 @@
             android:background="@drawable/rectangle_four_fill_outline_unselected"
             android:stateListAnimator="@null"
             android:text="完成专享"
-            android:textColor="@color/color_161727"
+            android:textColor="#FFFD403F"
             android:textSize="16dp" />
 
         <Button
@@ -64,7 +64,7 @@
             android:background="@drawable/rectangle_four_full_left_unselect"
             android:stateListAnimator="@null"
             android:text="已发专享"
-            android:textColor="@color/color_161727"
+            android:textColor="#FFFD403F"
             android:textSize="16dp" />
     </LinearLayout>
 

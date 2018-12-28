@@ -48,7 +48,7 @@ public class GridMoneyAdapter extends BaseAdapter {
                     textView.setBackground(ContextCompat.getDrawable(context,R.drawable.crash_money_slecter));
                     textView.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
                 } else {
-                    textView.setBackground(ContextCompat.getDrawable(context,R.drawable.rect_out_white_shape));
+                    textView.setBackground(ContextCompat.getDrawable(context,R.drawable.rect_out_gray_line_shape));
                     textView.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
                 }
             }
