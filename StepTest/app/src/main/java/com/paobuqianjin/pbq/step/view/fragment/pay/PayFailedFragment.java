@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExpayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -91,6 +92,14 @@ public class PayFailedFragment extends BaseBarStyleTextViewFragment {
     @OnClick(R.id.repay_button)
     public void onClick() {
         LocalLog.d(TAG, "重新支付!");
-        ((PaoBuPayActivity) getActivity()).showRePayFragment(PayFailedFragment.this);
+        try {
+            if (getActivity() instanceof PaoBuPayActivity) {
+                ((PaoBuPayActivity) getActivity()).showRePayFragment(PayFailedFragment.this);
+            } else if (getActivity() instanceof ExpayActivity) {
+                ((ExpayActivity) getActivity()).showRePayFragment(PayFailedFragment.this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

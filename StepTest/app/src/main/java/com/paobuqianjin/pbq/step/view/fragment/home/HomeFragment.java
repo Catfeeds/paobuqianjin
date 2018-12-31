@@ -1320,11 +1320,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     LocalLog.d(TAG, "  msg = " + cmb.getText());
                     PaoToastUtils.showLongToast(getActivity(), "网址复制成功");
                 }*/
-                Intent intent = new Intent();
-                intent.setAction(RELEASE_ACTION);
-                intent.setClass(getContext(), TwoHandReleaseActivity.class);
-                startActivity(intent);
-                popupRedPkgWindow.dismiss();
+
 
             }
         });
@@ -1915,7 +1911,11 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 break;
             case R.id.release_goods:
                 //发布步币兑换商品
-                releaseGoods();
+           /*     releaseGoods();*/
+                Intent intent = new Intent();
+                intent.setAction(RELEASE_ACTION);
+                intent.setClass(getContext(), TwoHandReleaseActivity.class);
+                startActivity(intent);
                 break;
             case R.id.parent_red:
                 bundle.putInt("style", 5);

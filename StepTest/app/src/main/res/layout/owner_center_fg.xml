@@ -159,20 +159,20 @@
                             android:layout_height="25dp"
                             android:layout_marginRight="14dp"
                             android:background="@drawable/crash_button"
+                            android:gravity="center"
                             android:stateListAnimator="@null"
                             android:text="提现"
-                            android:gravity="center"
                             android:textColor="#fffb270b"
                             android:textSize="14dp" />
 
                         <TextView
                             android:id="@+id/wallet_detail_button"
-                            android:layout_marginTop="4dp"
                             android:layout_width="70dp"
                             android:layout_height="25dp"
                             android:layout_marginRight="14dp"
-                            android:text="明细"
+                            android:layout_marginTop="4dp"
                             android:gravity="center"
+                            android:text="明细"
                             android:textColor="#ffffffff"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -265,6 +265,125 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:background="@color/color_f8"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ex_release"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ex_release_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0"
+                        android:textColor="#ff111111"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="我发布的"
+                        android:textColor="#ff999999"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ex_sale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ex_sale_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0"
+                        android:textColor="#ff111111"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="卖出管理"
+                        android:textColor="#ff999999"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ex_buy_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ex_buy_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0"
+                        android:textColor="#ff111111"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="买到管理"
+                        android:textColor="#ff999999"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ex_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ex_save_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0"
+                        android:textColor="#ff111111"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="收藏夹"
+                        android:textColor="#ff999999"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/color_f8"
                 android:orientation="horizontal">
 

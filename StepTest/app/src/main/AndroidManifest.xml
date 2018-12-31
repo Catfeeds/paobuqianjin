@@ -1097,6 +1097,38 @@
                 <action android:name="com.paobuqianjin.pbq.step.RELEASE_ACTION"></action>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.activity.exchange.ExchangeInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.ExReleaseHisActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.ExTriffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.ExchangeGoodDeatilActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.AddExTriffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.ConfirmOrderExActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.ExchangeOutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.ExpayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.SelectAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.AddExAddrActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

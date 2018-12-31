@@ -42,6 +42,9 @@ import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExReleaseHisActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeInActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeOutActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -154,6 +157,22 @@ public class OwnerCenterFragment extends BaseFragment {
     TextView walletStep;
     @Bind(R.id.wallet_detail_button)
     TextView walletDetailButton;
+    @Bind(R.id.ex_release_num)
+    TextView exReleaseNum;
+    @Bind(R.id.ex_release)
+    LinearLayout exRelease;
+    @Bind(R.id.ex_sale_out)
+    TextView exSaleOut;
+    @Bind(R.id.ex_sale)
+    LinearLayout exSale;
+    @Bind(R.id.ex_buy_num)
+    TextView exBuyNum;
+    @Bind(R.id.ex_buy_in)
+    LinearLayout exBuyIn;
+    @Bind(R.id.ex_save_num)
+    TextView exSaveNum;
+    @Bind(R.id.ex_save)
+    LinearLayout exSave;
     private String userAvatar;
     ImageView friends;
     private int vip = 0;
@@ -209,8 +228,12 @@ public class OwnerCenterFragment extends BaseFragment {
         goldenSponsor = (ImageView) viewRoot.findViewById(R.id.golden_sponsor);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
         walletStep = (TextView) viewRoot.findViewById(R.id.wallet_step);
-        walletDetailButton = (TextView)viewRoot.findViewById(R.id.wallet_detail_button);
+        walletDetailButton = (TextView) viewRoot.findViewById(R.id.wallet_detail_button);
         walletDetailButton.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        exReleaseNum = (TextView) viewRoot.findViewById(R.id.ex_release_num);
+        exSaleOut = (TextView) viewRoot.findViewById(R.id.ex_sale_out);
+        exBuyNum = (TextView) viewRoot.findViewById(R.id.ex_buy_num);
+        exSaveNum = (TextView) viewRoot.findViewById(R.id.ex_save_num);
     }
 
     @Override
@@ -221,7 +244,7 @@ public class OwnerCenterFragment extends BaseFragment {
 
 
     @OnClick({R.id.his_span, R.id.user_icon, R.id.wallet_span_a, R.id.wallet_span_b, R.id.gonggao_span, R.id.dynamic_span, R.id.suggestion_span, R.id.reward_span, R.id.circle_rel, R.id.setting_icon, R.id.vip_span,
-            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.friend_span, R.id.invite_people_span, R.id.qrcode, R.id.wallet_detail_button})
+            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.friend_span, R.id.invite_people_span, R.id.qrcode, R.id.wallet_detail_button, R.id.ex_release, R.id.ex_sale, R.id.ex_buy_in, R.id.ex_save})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -330,6 +353,17 @@ public class OwnerCenterFragment extends BaseFragment {
                 break;
             case R.id.wallet_detail_button:
                 startActivity(InoutcomDetailActivity.class, null);
+                break;
+            case R.id.ex_release:
+                startActivity(ExReleaseHisActivity.class, null);
+                break;
+            case R.id.ex_sale:
+                startActivity(ExchangeOutActivity.class, null);
+                break;
+            case R.id.ex_buy_in:
+                startActivity(ExchangeInActivity.class, null);
+                break;
+            case R.id.ex_save:
                 break;
             default:
                 break;

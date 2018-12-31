@@ -423,4 +423,21 @@ public class NetApi {
     public final static String urlRefreshToken = url + "v1/user/refreshToken";
     //添加公益商品兑换
     public final static String urlAddExChange = url + "v1/secondHandExchange";
+    //我发布的宝贝列表(包括下架宝贝)
+    public final static String ulrExchangePub = url + "v1/secondHandExchange/myPublishList";
+    //上下架公益宝贝
+    public final static String urlExUpDown = url + "v1/secondHandExchange/communityAction";
+    //公益宝贝删除
+    public final static String urlExDelete = url + "v1/secondHandExchange/communityDelete";
+    //查看公益物品详情
+    public final static String urlExDetail = url + "v1/secondHandExchange/";
+    //新加收货地址
+    public final static String urlAddExAddress = url + "v1/secondHandExchange/addExpressAddr";
+    //收货地址列表
+    public final static String urlExAddressList = url + "v1/secondHandExchange/expressAddrList";
+    //修改默认地址
+    public final static String urlExSetDefaultAddress = url + "v1/secondHandExchange/chooseDefaultAddr";
+    //拍下宝贝，代付款
+    public final static String urlExOrderNum = url + "v1/secondHandExchange/takeCommunity";
+    //
 }

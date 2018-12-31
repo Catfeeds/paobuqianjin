@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f9f9f9"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_return_a_style" />
+
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/address_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_f9f9f9">
+
+    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+    <TextView
+        android:id="@+id/not_found_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="还没有地址"
+        android:textColor="@color/color_161727"
+        android:visibility="gone" />
+</LinearLayout>

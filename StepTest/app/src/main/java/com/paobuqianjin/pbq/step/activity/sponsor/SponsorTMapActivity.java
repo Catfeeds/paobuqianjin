@@ -81,6 +81,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
     private TencentSearch tencentSearch;
     private String cityCode;
     private SearchPositionAdapter<SelectPoisitonListBean> adapter;
+    private String defaultEmptyAddress = "";
     private TencentMap.OnMapCameraChangeListener onMapCameraChangeListener = new TencentMap.OnMapCameraChangeListener() {
         @Override
         public void onCameraChange(CameraPosition cameraPosition) {
@@ -97,7 +98,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             LocalLog.d(TAG, "onFinish2" + (float) mCurrentLat + "---" + (float) mCurrentLon);
             LocalLog.d(TAG, "onFinish" + cameraPosition.toString());
             if (isEqualsTo((float) locLat, (float) cameraPosition.getTarget().getLatitude()) &&
-                    isEqualsTo((float) locLng ,(float) cameraPosition.getTarget().getLongitude())) {
+                    isEqualsTo((float) locLng, (float) cameraPosition.getTarget().getLongitude())) {
                 ivLocation.setImageResource(R.mipmap.current_position);
             } else {
                 ivLocation.setImageResource(R.mipmap.nocurrent);
@@ -149,7 +150,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                 Intent intent = getIntent();
                 intent.putExtra("city", city);
                 intent.putExtra("cityCode", cityCode);
-                intent.putExtra("address",address);
+                intent.putExtra("address", address);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 setResult(TargetPeopleActivity.RES_POSITION, intent);
@@ -365,10 +366,9 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                 if (oj.result != null) {
                     city = oj.result.ad_info.city;
                     cityCode = oj.result.ad_info.adcode;
-                    address = oj.result.formatted_addresses.recommend;
+                    address = oj.result.address;
                     StringBuilder sb = new StringBuilder();
                     sb.append("\nname：").append(oj.result.ad_info.adcode);
-
                     sb.append("\nname：").append(oj.result.ad_info.name);
                     sb.append("\n地址：").append(oj.result.address);
                     sb.append("\nrecommend：").append(oj.result.formatted_addresses.recommend);
@@ -405,8 +405,12 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             Object o = adapter.getData().get(i);
             adapter.setSelect(i);
             if (o != null) {
-                address = ((SelectPoisitonListBean) o).getAddress();
-                LocalLog.d(TAG,"address = " +address);
+                if (!TextUtils.isEmpty(((SelectPoisitonListBean) o).getAddress())) {
+                    address = ((SelectPoisitonListBean) o).getAddress();
+                }else{
+
+                }
+                LocalLog.d(TAG, "address = " + address);
                 setPosition(((SelectPoisitonListBean) o).getLat(), ((SelectPoisitonListBean) o).getLon(), true, false);
             }
         }

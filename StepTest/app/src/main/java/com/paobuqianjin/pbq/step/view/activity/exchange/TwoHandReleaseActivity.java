@@ -154,10 +154,12 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             LocalLog.d(TAG, "包邮");
             selectIcon.setImageResource(R.drawable.selected_icon);
             needStepDollar.setEnabled(false);
+            needStepDollar.setFocusable(false);
         } else {
             LocalLog.d(TAG, "不包邮");
             selectIcon.setImageDrawable(null);
             needStepDollar.setEnabled(true);
+            needStepDollar.setFocusable(true);
         }
         this.isFreeTrf = isFreeTrf;
     }
@@ -332,7 +334,7 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
                 }
             } else {
                 PaoToastUtils.showLongToast(this, "邮费必填");
-                return;
+                express_status = 0;
             }
         } else {
             express_status = 2;
@@ -369,10 +371,10 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
         });
     }
 
-    @OnClick({R.id.triff_des, R.id.btn_confirm, R.id.select_ico})
+    @OnClick({R.id.triff_des, R.id.btn_confirm, R.id.select_span})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.select_ico:
+            case R.id.select_span:
                 setFreeTrf(!isFreeTrf);
                 break;
             case R.id.triff_des:
