@@ -439,5 +439,6 @@ public class NetApi {
     public final static String urlExSetDefaultAddress = url + "v1/secondHandExchange/chooseDefaultAddr";
     //拍下宝贝，代付款
     public final static String urlExOrderNum = url + "v1/secondHandExchange/takeCommunity";
-    //
+    //售卖订单管理
+    public final static String urlExOrderOut = url + "v1/secondHandExchange/mySaleOrders";
 }

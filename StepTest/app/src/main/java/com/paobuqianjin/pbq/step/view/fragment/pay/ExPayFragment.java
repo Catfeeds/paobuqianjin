@@ -278,7 +278,6 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
         param.put("userid", String.valueOf(Presenter.getInstance(getContext()).getId()));
         param.put("total_fee", money);
         param.put("comm_order_id", orderNo);
-        param.put("comm_order_id", String.valueOf(1));
         String payment_type = "";
         if (style == 0) {
             payment_type = "wx";
@@ -314,6 +313,7 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                     } else if (type.equals("wallet")) {
                         Presenter.getInstance(getContext()).setTradeStyle("comm_id");
                         WalletPayOrderResponse walletPayOrderResponse = new Gson().fromJson(s, WalletPayOrderResponse.class);
+
                         ((ExpayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
                     }
                 } catch (Exception e) {
@@ -327,6 +327,8 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
             }
         });
     }
+
+
 
     private void payEx(final String addr_id, final String comm_id) {
         Map<String, String> param = new HashMap<>();
