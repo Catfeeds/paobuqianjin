@@ -24,8 +24,8 @@ public final class R {
     public static final class color {
         public static int notification_action_color_filter = 0x7f060001;
         public static int notification_icon_bg_color = 0x7f060002;
-        public static int ripple_material_light = 0x7f06003e;
-        public static int secondary_text_default_material_light = 0x7f060040;
+        public static int ripple_material_light = 0x7f06003f;
+        public static int secondary_text_default_material_light = 0x7f060041;
     }
     public static final class dimen {
         public static int compat_button_inset_horizontal_material = 0x7f080001;
@@ -105,13 +105,13 @@ public final class R {
         public static int status_bar_notification_info_overflow = 0x7f150115;
     }
     public static final class style {
-        public static int TextAppearance_Compat_Notification = 0x7f16000e;
-        public static int TextAppearance_Compat_Notification_Info = 0x7f16000f;
-        public static int TextAppearance_Compat_Notification_Line2 = 0x7f160011;
-        public static int TextAppearance_Compat_Notification_Time = 0x7f160014;
-        public static int TextAppearance_Compat_Notification_Title = 0x7f160016;
-        public static int Widget_Compat_NotificationActionContainer = 0x7f160018;
-        public static int Widget_Compat_NotificationActionText = 0x7f160019;
+        public static int TextAppearance_Compat_Notification = 0x7f16000f;
+        public static int TextAppearance_Compat_Notification_Info = 0x7f160010;
+        public static int TextAppearance_Compat_Notification_Line2 = 0x7f160012;
+        public static int TextAppearance_Compat_Notification_Time = 0x7f160015;
+        public static int TextAppearance_Compat_Notification_Title = 0x7f160017;
+        public static int Widget_Compat_NotificationActionContainer = 0x7f160019;
+        public static int Widget_Compat_NotificationActionText = 0x7f16001a;
     }
     public static final class styleable {
         public static int[] FontFamily = { 0x7f040009, 0x7f04000a, 0x7f04000b, 0x7f04000c, 0x7f04000d, 0x7f04000e };

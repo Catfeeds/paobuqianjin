@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\svn\\StepTest\\IMLib\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-hr\\values-hr.xml",
+            "outputFile": "/home/hqp/work/paobuqianjin/StepTest/IMLib/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-hr/values-hr.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pbq\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\fbf675f84847ffc1a32360b353784897\\res\\values-hr\\values-hr.xml",
+                    "source": "/home/hqp/.gradle/caches/transforms-1/files-1.1/support-compat-26.0.0.aar/8edf00a5cd0b43655fca159cc61a495c/res/values-hr/values-hr.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

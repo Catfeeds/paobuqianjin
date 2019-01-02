@@ -361,7 +361,7 @@ public class OwnerCenterFragment extends BaseFragment {
                 startActivity(ExchangeOutActivity.class, null);
                 break;
             case R.id.ex_buy_in:
-                /*startActivity(ExchangeInActivity.class, null);*/
+                startActivity(ExchangeInActivity.class, null);
                 break;
             case R.id.ex_save:
                 break;

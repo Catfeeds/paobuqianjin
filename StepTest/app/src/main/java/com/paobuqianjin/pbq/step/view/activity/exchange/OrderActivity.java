@@ -142,8 +142,8 @@ public class OrderActivity extends BaseBarActivity {
         Presenter.getInstance(OrderActivity.this).postPaoBuSimple(NetApi.urlExQuitOrder, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                finish();
                 setResult(Activity.RESULT_OK);
+                finish();
             }
 
             @Override

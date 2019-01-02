@@ -10,7 +10,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/IMKit" />
             <option value="$PROJECT_DIR$/IMLib" />
+            <option value="$PROJECT_DIR$/MPChartLib" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/badges" />
             <option value="$PROJECT_DIR$/okhttppaobu" />
             <option value="$PROJECT_DIR$/todaystepcounterlib" />
           </set>

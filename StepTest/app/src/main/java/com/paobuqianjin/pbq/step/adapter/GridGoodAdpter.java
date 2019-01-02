@@ -74,7 +74,7 @@ public class GridGoodAdpter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.good_grid_item, parent, false);
         holder = new GoodViewHolder(convertView);
         holder.goodsName.setText(mData.get(position).getGoods_name());
-        Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, mData.get(position).getPic_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
+        Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, mData.get(position).getPic_url(), R.drawable.null_bitmap, R.drawable.null_bitmap);
         Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.bubi);
         drawable.setBounds(0, 0, 30, 30);
         PaoImageSpan imageSpan = new PaoImageSpan(drawable);

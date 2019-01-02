@@ -43,7 +43,7 @@ public class ExTrAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 exTrViewHolder.img.setImageResource(R.drawable.yi);
             }
             exTrViewHolder.desc.setText(((TriResponse.DataBean.TracesBean) data.get(position)).getAcceptStation());
-            exTrViewHolder.timeCreate.setText(((TriResponse.DataBean.TracesBean) data.get(position)).getAcceptStation());
+            exTrViewHolder.timeCreate.setText(((TriResponse.DataBean.TracesBean) data.get(position)).getAcceptTime());
         }
     }
 

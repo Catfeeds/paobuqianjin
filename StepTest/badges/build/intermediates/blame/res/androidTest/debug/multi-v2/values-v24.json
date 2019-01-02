@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\Android\\StepTest\\badges\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v24\\values-v24.xml",
+            "outputFile": "/home/hqp/work/paobuqianjin/StepTest/badges/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\pbq\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.0.0.aar\\ca251a5c99912a8c0950f3712afb58cf\\res\\values-v24\\values-v24.xml",
+                    "source": "/home/hqp/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.0.0.aar/1e155c2f741937c00e096ee99009014e/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\pbq\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.0.0.aar\\1cf89fd02569ca2ac6207dcc8bfab1eb\\res\\values-v24\\values-v24.xml",
+                    "source": "/home/hqp/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.0.0.aar/be6efa74d9f0979aa3dae63ce0fad60c/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

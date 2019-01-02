@@ -83,7 +83,7 @@ public class CommonGoodAdapter extends BaseAdapter {
         if (mData != null && mData.size() > 0 && mData.get(position) instanceof CommonGoodResponse.DataBeanX.DataBean) {
             LocalLog.d("getView","CommonGoodResponse ");
             holder.goodsName.setText(mData.get(position).getGoods_name());
-            Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, mData.get(position).getPic_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, mData.get(position).getPic_url(), R.drawable.null_bitmap, R.drawable.null_bitmap);
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.bubi);
             drawable.setBounds(0, 0, 30, 30);
             PaoImageSpan imageSpan = new PaoImageSpan(drawable);
@@ -143,7 +143,7 @@ public class CommonGoodAdapter extends BaseAdapter {
         } else if (data != null && data.size() > 0 && data.get(position) instanceof ExListResponse.DataBeanX.DataBean) {
             LocalLog.d("getView","ExListResponse ");
             holder.goodsName.setText(data.get(position).getName());
-            Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, data.get(position).getImg_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, data.get(position).getImg_url(), R.drawable.null_bitmap, R.drawable.null_bitmap);
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.bubi);
             drawable.setBounds(0, 0, 30, 30);
             PaoImageSpan imageSpan = new PaoImageSpan(drawable);

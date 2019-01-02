@@ -73,6 +73,7 @@
         <activity
             android:name="io.rong.imkit.mention.MemberMentionedActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/RCTheme.PaoBu"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name="io.rong.imkit.activity.FileManagerActivity" />
         <activity android:name="io.rong.imkit.activity.FileListActivity" />
