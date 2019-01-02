@@ -10,8 +10,8 @@ public class NetApi {
     获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
     获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
     获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
-/*    public final static String url = "https://api.runmoneyin.com/";*/
-    public final static String url = "http://api-test1.runmoneyin.com/";
+    public final static String url = "https://api.runmoneyin.com/";
+/*    public final static String url = "http://api-test1.runmoneyin.com/";*/
     //        public final static String url = "http://api-test.runmoneyin.com/";
     /*public final static String url = "http://119.29.10.64/";*/
     public static String urlShareHead = "http://share.runmoneyin.com/";
@@ -441,4 +441,18 @@ public class NetApi {
     public final static String urlExOrderNum = url + "v1/secondHandExchange/takeCommunity";
     //售卖订单管理
     public final static String urlExOrderOut = url + "v1/secondHandExchange/mySaleOrders";
+    //发货时获取买家收货信息和物流公司列表
+    public final static String urlExCommIdInfo = url + "v1/secondHandExchange/expressList";
+    //卖家确认发货
+    public final static String urlExReleaseTr = url + "v1/secondHandExchange/orderShipping";
+    //取消订单/关闭订单 (待付款时)
+    public final static String urlExCancel = url + "v1/secondHandExchange/cancelOrderAction";
+    //卖家确认退款
+    public final static String urlExQuitOrder = url + "v1/secondHandExchange/confirmRefound";
+    //订单详情
+    public final static String urlExOrderDetail = url + "v1/secondHandExchange/orderDetails";
+    //物流信息
+    public final static String urlWuLiu = url + "v1/secondHandExchange/shippingInfo";
+    //公益换接口
+    public final static String urlExchangeList = url + "v1/secondHandExchange";
 }

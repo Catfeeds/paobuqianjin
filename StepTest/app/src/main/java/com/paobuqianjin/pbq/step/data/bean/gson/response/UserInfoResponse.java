@@ -96,10 +96,31 @@ public class UserInfoResponse {
          * gvip:0
          * firstred:1
          * friendCount: 2 互相关注
+         * "publish_count":8,"buy_count":11,"sale_count":11,"collect_count":0
          */
 
         private int id;
 
+        public int getPublish_count() {
+            return publish_count;
+        }
+
+        public int getBuy_count() {
+            return buy_count;
+        }
+
+        public int getSale_count() {
+            return sale_count;
+        }
+
+        public int getCollect_count() {
+            return collect_count;
+        }
+
+        private int publish_count;
+        private int buy_count;
+        private int sale_count;
+        private int collect_count;
         public String getNo() {
             return no;
         }

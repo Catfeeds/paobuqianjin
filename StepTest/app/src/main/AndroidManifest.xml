@@ -1128,7 +1128,9 @@
         <activity
             android:name=".view.activity.exchange.AddExAddrActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".view.activity.exchange.OrderActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

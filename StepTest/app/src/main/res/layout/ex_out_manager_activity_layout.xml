@@ -11,7 +11,6 @@
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@+id/wallet_all"
         android:layout_centerHorizontal="true"
         app:tabIndicatorColor="@color/color_232433"
         app:tabMode="scrollable"
@@ -19,5 +18,13 @@
         app:tabTextColor="@color/color_d9d9d9">
 
     </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tablayout">
+
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>

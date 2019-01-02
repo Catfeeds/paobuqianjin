@@ -270,7 +270,7 @@
 
                 <LinearLayout
                     android:id="@+id/ex_release"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -281,7 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="0"
+                        android:text=""
                         android:textColor="#ff111111"
                         android:textSize="24dp" />
 
@@ -297,7 +297,7 @@
 
                 <LinearLayout
                     android:id="@+id/ex_sale"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -325,7 +325,7 @@
 
                 <LinearLayout
                     android:id="@+id/ex_buy_in"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -353,7 +353,7 @@
 
                 <LinearLayout
                     android:id="@+id/ex_save"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -389,7 +389,7 @@
 
                 <LinearLayout
                     android:id="@+id/friend_span"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -416,7 +416,7 @@
 
                 <LinearLayout
                     android:id="@+id/vip_span"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -443,7 +443,7 @@
 
                 <LinearLayout
                     android:id="@+id/circle_rel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -469,7 +469,7 @@
 
                 <LinearLayout
                     android:id="@+id/dynamic_span"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"

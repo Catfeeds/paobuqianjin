@@ -361,7 +361,7 @@ public class OwnerCenterFragment extends BaseFragment {
                 startActivity(ExchangeOutActivity.class, null);
                 break;
             case R.id.ex_buy_in:
-                startActivity(ExchangeInActivity.class, null);
+                /*startActivity(ExchangeInActivity.class, null);*/
                 break;
             case R.id.ex_save:
                 break;
@@ -402,6 +402,10 @@ public class OwnerCenterFragment extends BaseFragment {
                 walletStep.setText(creditString);
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("跑步钱进号:" + userInfoResponse.getData().getNo());
+                exReleaseNum.setText(String.valueOf(userInfoResponse.getData().getPublish_count()));
+                exSaleOut.setText(String.valueOf(userInfoResponse.getData().getSale_count()));
+                exBuyNum.setText(String.valueOf(userInfoResponse.getData().getBuy_count()));
+                exSaveNum.setText(String.valueOf(userInfoResponse.getData().getCollect_count()));
                 urlIcon = userInfoResponse.getData().getAvatar();
                 vip = userInfoResponse.getData().getVip();
                 cVip = userInfoResponse.getData().getCusvip();

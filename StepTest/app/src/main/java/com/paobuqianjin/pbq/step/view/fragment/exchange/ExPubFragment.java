@@ -91,6 +91,20 @@ public class ExPubFragment extends BaseFragment implements SwipeMenuRecyclerView
             }
         };
         reFresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.re_fresh);
+        recyclerOut.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                reFresh.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getActivity());
         recyclerOut.addFooterView(loadMoreView); // 添加为Footer。
         recyclerOut.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
@@ -238,13 +252,14 @@ public class ExPubFragment extends BaseFragment implements SwipeMenuRecyclerView
                         if (page == 1) {
                             listData.clear();
                             recyclerOut.loadMoreFinish(false, true);
+                            exPubAdapter.notifyDataSetChanged();
                         }
 
                         if (exPublistResponse.getData().getData().size() > 0) {
                             listData.addAll(exPublistResponse.getData().getData());
                             exPubAdapter.notifyDataSetChanged();
                         } else {
-                            recyclerOut.loadMoreFinish(false, false);
+                            recyclerOut.loadMoreFinish(true, false);
                         }
                         reFresh.setRefreshing(false);
                         if (recyclerOut.getVisibility() == View.GONE) {

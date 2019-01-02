@@ -31,38 +31,43 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/status_str"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="待评价"
+                        android:text=""
                         android:textColor="#fffb2003"
                         android:textSize="16dp" />
 
                     <TextView
+                        android:id="@+id/order_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="订单编号：10334347889945332"
+                        android:text=""
                         android:textColor="#ff999999"
                         android:textSize="14dp" />
 
                     <TextView
+                        android:id="@+id/time_str"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="下单时间：2018-12-25  12:20:08"
+                        android:text=""
                         android:textColor="#ff999999"
                         android:textSize="14dp" />
 
                     <TextView
+                        android:id="@+id/pay_way"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="支付方式：微信支付"
+                        android:text=""
                         android:textColor="#ff999999"
                         android:textSize="14dp" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/copy"
                     android:layout_width="52dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -92,6 +97,7 @@
                     android:src="@drawable/kuaidi_ic" />
 
                 <LinearLayout
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -99,19 +105,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/wuliu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="[深圳市] 快件离开[深圳中心]发往[南山]"
+                        android:text=""
                         android:textColor="#ff111111"
                         android:textSize="15dp" />
 
                     <TextView
+                        android:id="@+id/time_stmap"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="2018-12-26 12:08"
+                        android:text=""
                         android:textColor="#ff999999"
-                        android:textSize="13dp" />
+                        android:textSize="13dp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <ImageView
@@ -119,7 +128,8 @@
                     android:layout_height="13dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="14dp"
-                    android:src="@drawable/more" />
+                    android:src="@drawable/more"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -156,7 +166,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="收货人"
+                            android:text=""
                             android:textColor="#ff111111"
                             android:textSize="15dp" />
 
@@ -166,25 +176,27 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="134****6029"
+                            android:text=""
                             android:textColor="#ff111111"
                             android:textSize="15dp" />
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
                         android:maxLength="30"
                         android:maxLines="1"
-                        android:text="新增地址"
+                        android:text=""
                         android:textColor="#ff111111"
                         android:textSize="15dp" />
                 </LinearLayout>
 
 
                 <ImageView
+                    android:visibility="gone"
                     android:layout_width="7dp"
                     android:layout_height="13dp"
                     android:layout_gravity="center_vertical"
@@ -221,7 +233,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
-                        android:text="123走"
+                        android:text=""
                         android:textColor="#ff313131"
                         android:textSize="15dp" />
                 </LinearLayout>
@@ -261,7 +273,7 @@
                             android:layout_gravity="top"
                             android:layout_weight="1"
                             android:paddingTop="5dp"
-                            android:text="名门闺秀化妆品套装"
+                            android:text=""
                             android:textColor="#ff303030"
                             android:textSize="15dp" />
 
@@ -273,19 +285,21 @@
                             android:paddingBottom="5dp">
 
                             <TextView
+                                android:id="@+id/step_dollars"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:text="100步币"
+                                android:text=""
                                 android:textColor="#fffb2003"
                                 android:textSize="15dp" />
 
                             <TextView
+                                android:id="@+id/src_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="14dp"
-                                android:text="原价243元"
+                                android:text=""
                                 android:textColor="#ff7b7b7b"
                                 android:textSize="12dp" />
                         </LinearLayout>
@@ -350,7 +364,7 @@
                         android:id="@+id/step_dollar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="100步币"
+                        android:text=""
                         android:textColor="#ff333333"
                         android:textSize="15dp" />
 
@@ -359,7 +373,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="+¥10.00"
+                        android:text=""
                         android:textColor="#ff333333"
                         android:textSize="15dp" />
                 </LinearLayout>
@@ -374,12 +388,23 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/left_tv"
             android:layout_width="81dp"
             android:layout_height="30dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#ff333333"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/right_tv"
+            android:layout_width="81dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="14dp"
             android:background="@drawable/rect_out_gray"
             android:gravity="center"
-            android:text="查看物流"
+            android:text=""
             android:textColor="#ff333333"
             android:textSize="15sp" />
     </LinearLayout>

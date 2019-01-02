@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AroundRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CommonGoodResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ExListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
@@ -85,6 +86,7 @@ import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeGoodDeatilActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.TwoHandReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -569,12 +571,17 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         goodGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < gridGoodAdpter.getData().size()) {
+                if (gridGoodAdpter.getData().size() > 0 && position < gridGoodAdpter.getData().size()) {
                     if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getTarget_url())) {
                         String goodUrl = gridGoodAdpter.getData().get(position).getTarget_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
                         startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url",
                                 goodUrl));
                     }
+                } else if (gridGoodAdpter.getExData().size() > 0 && position < gridGoodAdpter.getExData().size()) {
+                    Intent intent = new Intent();
+                    intent.putExtra("ex_id", String.valueOf(gridGoodAdpter.getExData().get(position).getId()));
+                    intent.setClass(getContext(), ExchangeGoodDeatilActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -585,7 +592,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
                 } else if (topOrBottom == 1) {
                     if (currentPage < pageCount && !isLoadingData) {
-                        initGridGood(currentPage + 1);
+                        /*initGridGood(currentPage + 1);*/
+                        getExGood(currentPage + 1);
                     } else {
                         LocalLog.d(TAG, "正在加载或没有更多数据了");
                     }
@@ -618,7 +626,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         });
         loadTextBanner();
         //loadBanner();
-        initGridGood(1);
+        /*initGridGood(1);*/
+        getExGood(1);
         shopPing = (ImageView) viewRoot.findViewById(R.id.release_goods);
         goShopingTv = (TextView) viewRoot.findViewById(R.id.go_shoping_tv);
         SpannableString spannableString = new SpannableString("去商城逛逛 查看更多");
@@ -689,6 +698,38 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         todayStepLabel.setTextColor(Color);
         todayDollLabel.setTextColor(Color);
         todayCrashLabel.setTextColor(Color);
+    }
+
+    private void getExGood(final int page) {
+        LocalLog.d(TAG, "getExGood() enter");
+        currentPage = page;
+        Map<String, String> param = new HashMap<>();
+        param.put("page", String.valueOf(page));
+        param.put("pagesize", String.valueOf(12));
+        isLoadingData = true;
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlExchangeList, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (!isAdded()) {
+                    return;
+                }
+                try {
+                    ExListResponse exListResponse = new Gson().fromJson(s, ExListResponse.class);
+                    pageCount = exListResponse.getData().getPagenation().getTotalPage();
+                    gridGoodAdpter.setData(exListResponse.getData().getData());
+                    isLoadingData = false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (page == 1) {
+                    initGridGood(page);
+                }
+            }
+        });
     }
 
     private void initGridGood(final int page) {

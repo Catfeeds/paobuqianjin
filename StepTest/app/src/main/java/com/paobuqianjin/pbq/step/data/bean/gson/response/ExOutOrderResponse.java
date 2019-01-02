@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -113,7 +114,7 @@ public class ExOutOrderResponse {
             }
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable{
             /**
              * id : 49
              * comm_no : COM20181231055146269
@@ -132,6 +133,7 @@ public class ExOutOrderResponse {
              * old_price : 10.00
              * name : 测试付款
              * comm_id : 21
+             * content:111
              * order_status_text : 待发货
              * img_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101734173869.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101734600197.jpg"]
              */
@@ -156,6 +158,11 @@ public class ExOutOrderResponse {
             private String order_status_text;
             private List<String> img_arr;
 
+            public String getContent() {
+                return content;
+            }
+
+            private String content;
             public int getId() {
                 return id;
             }

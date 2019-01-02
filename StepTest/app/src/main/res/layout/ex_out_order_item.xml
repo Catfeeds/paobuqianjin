@@ -17,7 +17,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="交易单号 223243454541"
+            android:text=""
             android:textColor="#ff999999"
             android:textSize="13dp" />
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
-            android:text="待发货"
+            android:text=""
             android:textColor="#fffb2003"
             android:textSize="13dp" />
     </LinearLayout>
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLength="15"
-                android:text="11111111111111"
+                android:text=""
                 android:textColor="#ff111111"
                 android:textSize="15dp" />
 
@@ -75,7 +75,7 @@
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLength="15"
-                android:text="1111111111111111"
+                android:text=""
                 android:textColor="#ff999999"
                 android:textSize="13dp" />
         </LinearLayout>
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLength="15"
-                android:text="11111111111111"
+                android:text=""
                 android:textColor="#ff111111"
                 android:textSize="15dp" />
 
@@ -135,7 +135,7 @@
                 android:id="@+id/good_jian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="共1件商品"
+                android:text=""
                 android:textColor="#ff999999"
                 android:textSize="13sp" />
 
@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="合计¥10"
+                android:text=""
                 android:textColor="#ff999999"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -161,7 +161,7 @@
                 android:layout_width="81dp"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="退款"
+                android:text=""
                 android:textColor="#ff333333"
                 android:textSize="15dp" />
 
@@ -171,7 +171,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
-                android:text="立即发货"
+                android:text=""
                 android:textColor="#fffb2003"
                 android:textSize="15sp" />
         </LinearLayout>

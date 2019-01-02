@@ -118,7 +118,7 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
                 stepDollars.setText(stepDollarSpan);
                 stepDollar.setText(stepDollarSpan);
                 Presenter.getInstance(this).getPlaceErrorImage(goodPicture, goodBean.getImgs_arr().get(0)
-                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
+                        , R.drawable.bitmap_null, R.drawable.bitmap_null);
                 if (Float.parseFloat(goodBean.getOld_price()) > 0.0f) {
                     srcPrice.setText("原价" + goodBean.getOld_price() + "元");
                     srcPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
