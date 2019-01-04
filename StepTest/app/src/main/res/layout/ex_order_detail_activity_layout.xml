@@ -80,11 +80,13 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/view_line1"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:background="@color/color_f9f9f9" />
 
             <LinearLayout
+                android:id="@+id/wu_liu_pan"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:orientation="horizontal">
@@ -97,10 +99,10 @@
                     android:src="@drawable/kuaidi_ic" />
 
                 <LinearLayout
-                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -172,9 +174,9 @@
 
                         <TextView
                             android:id="@+id/phone"
-                            android:layout_marginRight="14dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="14dp"
                             android:layout_weight="1"
                             android:gravity="end"
                             android:text=""
@@ -186,9 +188,9 @@
                         android:id="@+id/address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="14dp"
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
-                        android:layout_marginRight="14dp"
                         android:maxLength="30"
                         android:maxLines="1"
                         android:text=""
@@ -198,12 +200,12 @@
 
 
                 <ImageView
-                    android:visibility="gone"
                     android:layout_width="7dp"
                     android:layout_height="13dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="14dp"
-                    android:src="@drawable/more" />
+                    android:src="@drawable/more"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -404,10 +406,9 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="14dp"
-            android:background="@drawable/rect_out_gray"
             android:gravity="center"
             android:text=""
-            android:textColor="#ff333333"
+            android:textColor="@color/color_232433"
             android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.exchange;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,10 +14,15 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExGoodDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeGoodDeatilActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.exchange.ExMoreAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.umeng.commonsdk.debug.E;
+import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +45,8 @@ public class SaleManFragment extends BaseFragment {
     TextView saleOut;
     @Bind(R.id.grid_view)
     SwipeMenuRecyclerView gridView;
+    private List<ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean> listData = new ArrayList<>();
+    private ExMoreAdapter exMoreAdapter;
     private ExGoodDetailResponse.DataBean.UserInfoBean userInfoBean;
 
     public void setUserInfo(ExGoodDetailResponse.DataBean.UserInfoBean userInfo) {
@@ -63,14 +71,24 @@ public class SaleManFragment extends BaseFragment {
                     R.drawable.default_head_ico, R.drawable.default_head_ico);
 
             dearName.setText(userInfoBean.getNickname());
-            saleOut.setText(String.valueOf(userInfoBean.getSale_count()));
-            saleIn.setText(String.valueOf(userInfoBean.getTrade_count()));
-            ExMoreAdapter exMoreAdapter = new ExMoreAdapter(getContext(), userInfoBean.getOther_commnuity());
+            saleOut.setText(String.valueOf(userInfoBean.getTrade_count()));
+            saleIn.setText(String.valueOf(userInfoBean.getSale_count()));
+            listData = userInfoBean.getOther_commnuity();
+            exMoreAdapter = new ExMoreAdapter(getContext(), userInfoBean.getOther_commnuity());
             gridView.setLayoutManager(linearLayoutManager);
             gridView.setHasFixedSize(true);
             gridView.setNestedScrollingEnabled(false);
             gridView.setAdapter(exMoreAdapter);
             gridView.addItemDecoration(new SpaceItemDecoration(7));
+            gridView.setSwipeItemClickListener(new SwipeItemClickListener() {
+                @Override
+                public void onItemClick(View itemView, int position) {
+                    Intent intent = new Intent();
+                    intent.putExtra("ex_id", String.valueOf(listData.get(position).getId()));
+                    intent.setClass(getContext(), ExchangeGoodDeatilActivity.class);
+                    startActivity(intent);
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();

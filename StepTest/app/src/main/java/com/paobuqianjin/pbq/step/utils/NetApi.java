@@ -457,4 +457,9 @@ public class NetApi {
     public final static String urlExchangeList = url + "v1/secondHandExchange";
     //
     public final static String urlExIn = url + "v1/secondHandExchange/myBuyOrders";
+    //买家申请退款
+    public final static String urlExQuit = url + "v1/secondHandExchange/applyRefound";
+    //买家确认收货
+    public final static String urlExRecConfirm = url + "v1/secondHandExchange/confirmReceive";
+
 }

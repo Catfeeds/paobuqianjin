@@ -179,6 +179,10 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
                 break;
             case R.id.confirm_order:
                 UserInfoResponse.DataBean userInfo = Presenter.getInstance(this).getCurrentUser();
+                if(dataBean == null){
+                    PaoToastUtils.showLongToast(this, "请先选择地址！");
+                    return;
+                }
                 if (userInfo != null && goodBean != null && dataBean != null) {
                     if (userInfo.getCredit() < goodBean.getCredit()) {
                         PaoToastUtils.showLongToast(this, "步币数量不足！");
@@ -197,7 +201,7 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_SELECT_ADDR && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_SELECT_ADDR) {
             getAddDefault(1);
         } else if (requestCode == REQUEST_PAY && resultCode == Activity.RESULT_OK) {
             confirmOrder.setText("已购买");

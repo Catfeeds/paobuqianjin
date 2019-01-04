@@ -634,7 +634,7 @@
             android:background="@drawable/rectangle_zero_dp"
             android:stateListAnimator="@null"
             android:text="预览"
-            android:textColor="@color/color_6c71c4"
+            android:textColor="@color/color_232433"
             android:textSize="16dp" />
 
         <Button

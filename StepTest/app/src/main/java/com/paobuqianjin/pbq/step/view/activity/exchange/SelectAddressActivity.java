@@ -102,8 +102,8 @@ public class SelectAddressActivity extends BaseBarActivity implements BaseBarAct
             @Override
             protected void onSuc(String s) {
                 setResult(Activity.RESULT_OK);
+                PaoToastUtils.showLongToast(SelectAddressActivity.this,"默认地址设置成功");
                 finish();
-                PaoToastUtils.showLongToast(SelectAddressActivity.this,"默认地址设置成功！");
             }
 
             @Override
@@ -183,6 +183,7 @@ public class SelectAddressActivity extends BaseBarActivity implements BaseBarAct
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_ADDRESS && resultCode == Activity.RESULT_OK) {
             getAddRList(1);
+            setResult(Activity.RESULT_OK);
         }
     }
 }

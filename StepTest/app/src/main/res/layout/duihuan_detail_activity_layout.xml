@@ -9,10 +9,11 @@
         layout="@layout/bar_return_b_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/good_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/bar"
-        android:paddingBottom="50dp">
+        android:layout_marginBottom="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"

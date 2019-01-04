@@ -47,6 +47,13 @@ public class ExMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Drawable drawable = ContextCompat.getDrawable(context, R.drawable.bubi);
                 drawable.setBounds(0, 0, 30, 30);
                 PaoImageSpan imageSpan = new PaoImageSpan(drawable);
+                if (((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getExpress_status() == 1) {
+                    ((ExMoreViewHolder) holder).triffPay.setText("不包邮");
+                } else if (((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getExpress_status() == 2) {
+                    ((ExMoreViewHolder) holder).triffPay.setText("包邮");
+                } else {
+                    ((ExMoreViewHolder) holder).triffPay.setText("待议");
+                }
                 //
                 if (Float.parseFloat(((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getOld_price()) > 0) {
                     ((ExMoreViewHolder) holder).price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -60,12 +67,9 @@ public class ExMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (Float.parseFloat(((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getExpress_price()) > 0) {
                         ((ExMoreViewHolder) holder).promotionPrice.setVisibility(View.VISIBLE);
                         ((ExMoreViewHolder) holder).pointExchange.setVisibility(View.GONE);
-                        String showNowMoney = "¥" + ((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getOld_price() + " + " + " " + " "
-                                + ((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getOld_price();
+                        String showNowMoney = "  " + ((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getCredit();
                         SpannableString showSpan = new SpannableString(showNowMoney);
-                        showSpan.setSpan(imageSpan, ("¥" + ((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getOld_price()
-                                + " + ").length(), ("¥" + ((ExGoodDetailResponse.DataBean.UserInfoBean.OtherCommnuityBean) data.get(position)).getOld_price() +
-                                " + " + " ").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        showSpan.setSpan(imageSpan, 0, "  ".length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         ((ExMoreViewHolder) holder).promotionPrice.setText(showSpan);
                         //特殊处理
                         ((ExMoreViewHolder) holder).pointExchange.setVisibility(View.VISIBLE);

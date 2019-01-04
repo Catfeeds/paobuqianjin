@@ -311,7 +311,6 @@ public class RoundRedDetailActivity extends BaseActivity {
             web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
             web.setTitle("走路就能领红包的APP");
             web.setThumb(new UMImage(this, R.mipmap.app_icon));
-
         }
 
         contentRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RoundRedDetailActivity.this, contentRecycler, new RecyclerItemClickListener.OnItemClickListener() {

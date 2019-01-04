@@ -23,7 +23,7 @@ import java.util.List;
  * Created by hqp on 19-1-3.
  */
 
-public class ExInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class ExInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public Context context;
     private List<?> data;
     private UpItemInterface upItemInterface;
@@ -71,33 +71,45 @@ public class ExInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                 case 0:
                     exOutViewHolder.statusStr.setText("待付款");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
-                    exOutViewHolder.rightTv.setText("取消订单");
+                    exOutViewHolder.leftTv.setText("取消订单");
+                    exOutViewHolder.rightTv.setText("立即支付");
+                    exOutViewHolder.leftTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     /*exOutViewHolder.rightTv.setBackground();*/
                     break;
                 case 1:
                     exOutViewHolder.statusStr.setText("待发货");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
-                    exOutViewHolder.leftTv.setText("退款");
+                    exOutViewHolder.rightTv.setText("退款");
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     break;
                 case 2:
                     exOutViewHolder.statusStr.setText("待收货");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
+                    exOutViewHolder.leftTv.setText("确认收货");
                     exOutViewHolder.rightTv.setText("查看物流");
+                    exOutViewHolder.leftTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     break;
                 case 3:
                     exOutViewHolder.statusStr.setText("待评价");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
-                    exOutViewHolder.rightTv.setText("查看物流");
+                    exOutViewHolder.leftTv.setText("查看物流");
+                    exOutViewHolder.rightTv.setText("去评价");
+                    exOutViewHolder.leftTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     break;
                 case 4:
                     exOutViewHolder.statusStr.setText("交易成功");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
                     exOutViewHolder.rightTv.setText("查看物流");
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     break;
                 case 5:
                     exOutViewHolder.statusStr.setText("已关闭");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
                     exOutViewHolder.rightTv.setText("查看物流");
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     break;
             }
             exOutViewHolder.leftTv.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +130,7 @@ public class ExInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ExOutAdapter.ExOutViewHolder(LayoutInflater.from(context).inflate(R.layout.ex_out_order_item, parent, false));
+        return new ExInViewHolder(LayoutInflater.from(context).inflate(R.layout.ex_out_order_item, parent, false));
     }
 
     @Override

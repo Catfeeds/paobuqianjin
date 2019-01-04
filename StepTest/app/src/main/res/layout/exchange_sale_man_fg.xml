@@ -39,7 +39,7 @@
                 android:id="@+id/dear_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="123走"
+                android:text=""
                 android:textColor="#ff111111"
                 android:textSize="15dp" />
 
@@ -55,6 +55,7 @@
         </LinearLayout>
 
         <ImageView
+            android:visibility="gone"
             android:layout_width="7dp"
             android:layout_height="13dp"
             android:layout_gravity="center_vertical"
@@ -82,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="2"
+                android:text=""
                 android:textColor="#ff111111"
                 android:textSize="15dp" />
 
@@ -108,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="2"
+                android:text=""
                 android:textColor="#ff111111"
                 android:textSize="15dp" />
 

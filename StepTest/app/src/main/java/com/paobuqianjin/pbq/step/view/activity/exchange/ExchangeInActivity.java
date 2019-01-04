@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
+import com.paobuqianjin.pbq.step.view.fragment.exchange.ExInFragment;
 import com.paobuqianjin.pbq.step.view.fragment.exchange.ExOutFragment;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class ExchangeInActivity extends BaseBarActivity {
 
     private void initTab() {
         for (int i = 0; i < titles.length; i++) {
-            ExOutFragment fragment = new ExOutFragment();
+            ExInFragment fragment = new ExInFragment();
             if (!fragment.isAdded())
                 fragment.setAction(titles[i]);
             fragments.add(fragment);

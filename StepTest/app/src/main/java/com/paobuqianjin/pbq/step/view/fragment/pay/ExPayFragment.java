@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExGoodDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ExInOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExOrderNumResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
@@ -99,6 +100,9 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
     private float payFloat = 0.0f;
     private String addr_id;
     private PayReq req;
+    private String payOrderNo;
+    private ExInOrderResponse.DataBeanX.DataBean dataBean;
+    private String express_price;
 
     @Override
     protected String title() {
@@ -148,13 +152,14 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
             goodBean = (ExGoodDetailResponse.DataBean) intent.getSerializableExtra("good_detail");
             addr_id = intent.getStringExtra("addr_id");
             LocalLog.d(TAG, "addr_id =" + addr_id);
+            dataBean = (ExInOrderResponse.DataBeanX.DataBean) intent.getSerializableExtra("ex_in_pay");
             if (goodBean != null && !TextUtils.isEmpty(addr_id)) {
                 SpannableString stepDollarSpan = new SpannableString(String.valueOf(goodBean.getCredit()) + "步币");
                 stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(goodBean.getCredit()).length(),
                         (String.valueOf(goodBean.getCredit()) + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
                 stepDollar.setText(stepDollarSpan);
                 Presenter.getInstance(getContext()).getPlaceErrorImage(goodPicture, goodBean.getImgs_arr().get(0)
-                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
+                        , R.drawable.null_bitmap, R.drawable.null_bitmap);
                 if (Float.parseFloat(goodBean.getExpress_price()) > 0.0f) {
                     price.setText("快递:" + goodBean.getExpress_price() + "元");
                  /*   price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);*/
@@ -162,6 +167,24 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                     payWx.setVisibility(View.GONE);
                 }
                 goodName.setText(goodBean.getName());
+                express_price = goodBean.getExpress_price();
+            } else if (dataBean != null) {
+                LocalLog.d(TAG, "从未支付订单跳转来");
+                SpannableString stepDollarSpan = new SpannableString(dataBean.getCredit_total() + "步币");
+                stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(dataBean.getCredit_total()).length(),
+                        (dataBean.getCredit_total() + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                stepDollar.setText(stepDollarSpan);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(goodPicture, dataBean.getImg_arr().get(0)
+                        , R.drawable.null_bitmap, R.drawable.null_bitmap);
+                express_price = dataBean.getExpress_price();
+                payOrderNo = dataBean.getId();
+                if (Float.parseFloat(dataBean.getExpress_price()) > 0.0f) {
+                    price.setText("快递:" + dataBean.getExpress_price() + "元");
+                 /*   price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);*/
+                } else {
+                    payWx.setVisibility(View.GONE);
+                }
+                goodName.setText(dataBean.getName());
             }
         }
     }
@@ -225,6 +248,7 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                 @Override
                 public void onYesClick() {
                     normalDialog.dismiss();
+                    getActivity().finish();
                 }
             });
             normalDialog.setNoOnclickListener(this.getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
@@ -289,6 +313,7 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
         final String type = payment_type;
         if (TextUtils.isEmpty(type)) {
             PaoToastUtils.showLongToast(getContext(), "请选择支付方式!");
+            return;
         }
         Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPayOrder, param, new PaoCallBack() {
             @Override
@@ -329,7 +354,6 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
     }
 
 
-
     private void payEx(final String addr_id, final String comm_id) {
         Map<String, String> param = new HashMap<>();
         param.put("addr_id", addr_id);
@@ -339,6 +363,8 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
             protected void onSuc(String s) {
                 try {
                     ExOrderNumResponse orderNumResponse = new Gson().fromJson(s, ExOrderNumResponse.class);
+                    payOrderNo = orderNumResponse.getData().getComm_order_id();
+                    payFloat = Float.parseFloat(orderNumResponse.getData().getShipping_money());
                     payOrder(orderNumResponse.getData().getComm_order_id(), orderNumResponse.getData().getShipping_money());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -499,12 +525,16 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                     return;
                 }
                 if (getSelect() == 1) {
-                    if (!canUseWallet(Float.parseFloat(goodBean.getExpress_price()))) {
+                    if (!canUseWallet(Float.parseFloat(express_price))) {
                         LocalLog.d(TAG, "余额不足");
                         return;
                     }
                 }
-                realPay();
+                if (TextUtils.isEmpty(payOrderNo)) {
+                    realPay();
+                } else {
+                    payOrder(payOrderNo, String.valueOf(express_price));
+                }
                 break;
         }
     }

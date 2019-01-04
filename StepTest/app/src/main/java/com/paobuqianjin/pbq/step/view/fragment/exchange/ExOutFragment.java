@@ -73,7 +73,7 @@ public class ExOutFragment extends BaseFragment implements SwipeMenuRecyclerView
                 this.action = "unconsigner";
                 break;
             case "待收货":
-                this.action = "unreceive";
+                this.action = "unrecrive";
                 break;
             case "待评价":
                 this.action = "uncoment";

@@ -103,7 +103,10 @@ public class AddExAddrActivity extends BaseBarActivity implements BaseBarActivit
             param.put("zip_code", code.getText().toString().trim());
         }
 
-        if (!TextUtils.isEmpty(detailAdd.getText().toString().trim())) {
+        if (TextUtils.isEmpty(detailAdd.getText().toString().trim())) {
+            PaoToastUtils.showLongToast(this, "详细地址必填");
+            return;
+        } else {
             param.put("address", detailAdd.getText().toString().trim());
         }
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlAddExAddress, param, new PaoCallBack() {

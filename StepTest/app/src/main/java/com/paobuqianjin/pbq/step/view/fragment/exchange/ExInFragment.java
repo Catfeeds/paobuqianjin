@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.exchange.AddExTriffActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExTriffActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExpayActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.OrderActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.exchange.ExInAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.exchange.ExOutAdapter;
@@ -52,6 +53,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
     protected int getLayoutResId() {
         return R.layout.ex_out_manager_fg;
     }
+
     private final static String TAG = ExOutFragment.class.getSimpleName();
     @Bind(R.id.recycler_out)
     SwipeMenuRecyclerView recyclerOut;
@@ -65,6 +67,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
     //发货
     private final int RELEASE_TR = 4;
     private final int ORDER_DETAIL = 5;
+    private final int REQUEST_PAY = 6;
 
     public void setAction(String action) {
         switch (action) {
@@ -78,7 +81,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
                 this.action = "unconsigner";
                 break;
             case "待收货":
-                this.action = "unreceive";
+                this.action = "unrecrive";
                 break;
             case "待评价":
                 this.action = "uncoment";
@@ -197,7 +200,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
                     LocalLog.d(TAG, "查看详情");
                     Intent intent = new Intent();
                     intent.setClass(getContext(), OrderActivity.class);
-                    intent.putExtra("comm_order_no", listData.get(position));
+                    intent.putExtra("comm_order_no_in", listData.get(position));
                     startActivityForResult(intent, ORDER_DETAIL);
                 }
             }
@@ -228,7 +231,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
     private void cancelOrder(String comm_id) {
         Map<String, String> param = new HashMap<>();
         param.put("comm_order_id", comm_id);
-        param.put("type", "sale");
+        param.put("type", "buy");
         Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlExCancel, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -247,7 +250,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
     private void quitOrder(String comm_id) {
         Map<String, String> param = new HashMap<>();
         param.put("comm_order_id", comm_id);
-        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlExQuitOrder, param, new PaoCallBack() {
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlExQuit, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 getExOrderByAction(1);
@@ -262,6 +265,26 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
         });
     }
 
+    private void confirmRec(String comm_id) {
+        Map<String, String> param = new HashMap<>();
+        param.put("comm_order_id", comm_id);
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlExRecConfirm, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (!isAdded()) {
+                    return;
+                }
+                getExOrderByAction(1);
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(getContext(), errorBean.getMessage());
+                }
+            }
+        });
+    }
 
     @Override
     public void updateItem(int position, String opStr) {
@@ -273,16 +296,19 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
                 case "退款":
                     quitOrder(String.valueOf(listData.get(position).getId()));
                     break;
-                case "立即发货":
+                case "立即支付":
                     Intent intentRe = new Intent();
-                    intentRe.setClass(getContext(), AddExTriffActivity.class);
-                    intentRe.putExtra("comm_order_id", String.valueOf(listData.get(position).getId()));
-                    startActivityForResult(intentRe, RELEASE_TR);
+                    intentRe.setClass(getContext(), ExpayActivity.class);
+                    intentRe.putExtra("ex_in_pay", listData.get(position));
+                    startActivityForResult(intentRe, REQUEST_PAY);
+                    break;
+                case "确认收货":
+                    confirmRec(listData.get(position).getId());
                     break;
                 case "查看物流":
                     Intent intentTr = new Intent();
                     intentTr.setClass(getContext(), ExTriffActivity.class);
-                    intentTr.putExtra("comm_order_no", listData.get(position));
+                    intentTr.putExtra("comm_order_no_in", listData.get(position));
                     startActivity(intentTr);
                     break;
 
@@ -320,6 +346,8 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
         if (requestCode == RELEASE_TR && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
         } else if (requestCode == ORDER_DETAIL && requestCode == Activity.RESULT_OK) {
+            getExOrderByAction(1);
+        } else if (requestCode == REQUEST_PAY && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
         }
     }

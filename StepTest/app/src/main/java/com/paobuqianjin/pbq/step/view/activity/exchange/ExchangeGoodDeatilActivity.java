@@ -1,8 +1,11 @@
 package com.paobuqianjin.pbq.step.view.activity.exchange;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -18,9 +21,14 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,18 +36,33 @@ import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExGoodDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ShareResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
-import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.RoundRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.fragment.exchange.ExgoodDetailFragment;
 import com.paobuqianjin.pbq.step.view.fragment.exchange.SaleManFragment;
-import com.umeng.commonsdk.debug.I;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -89,6 +112,8 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     Button buyButtone;
     @Bind(R.id.attion)
     TextView attion;
+    @Bind(R.id.good_scroll)
+    BounceScrollView goodScroll;
     private String[] titles = {"商品详情", "关于商家"};
     private Fragment[] fragments;
     private int mCurrentIndex = 0;
@@ -98,16 +123,28 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     private String talkName;
     private ExGoodDetailResponse.DataBean dataBean;
     private final static int REQUEST_CONFIRM = 3;
+    //分享
+    private SHARE_MEDIA share_media;
+    private UMImage umImage;
+    private TranslateAnimation animationCircleType;
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.duihuan_detail_activity_layout);
         ButterKnife.bind(this);
+        buttonReturnBar.setOnClickListener(onClickListener);
+        barTvRight.setOnClickListener(onClickListener);
         barTvRight.setImageResource(R.drawable.share_icon);
         SpannableString string = new SpannableString("注:个人闲置物品，不喜勿拍，拍下需自付邮费。");
         string.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_232433)), 0, 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         attion.setText(string);
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(this);
         Intent intent = getIntent();
         if (intent != null) {
             String ex_id = intent.getStringExtra("ex_id");
@@ -116,6 +153,167 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
             }
         }
     }
+
+
+    private Bitmap getScrollView(BounceScrollView bounceScrollView) {
+        int h = 0;
+        Bitmap bitmap = null;
+        for (int i = 0; i < bounceScrollView.getChildCount(); i++) {
+            h += bounceScrollView.getChildAt(i).getHeight();
+            bounceScrollView.getChildAt(i).setBackgroundColor(ContextCompat.getColor(this, R.color.color_f8));
+        }
+
+        bitmap = Bitmap.createBitmap(bounceScrollView.getWidth(), h, Bitmap.Config.RGB_565);
+        final Canvas canvas = new Canvas(bitmap);
+        bounceScrollView.draw(canvas);
+        return bitmap;
+    }
+
+    private void selectShare() {
+        umImage = new UMImage(this, getScrollView(goodScroll));
+        popupCircleTypeView = View.inflate(this, R.layout.share_pop_window, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        RelativeLayout friendCircle = (RelativeLayout) popupCircleTypeView.findViewById(R.id.friend_circle);
+        RelativeLayout wechat = (RelativeLayout) popupCircleTypeView.findViewById(R.id.we_chat);
+        RelativeLayout qq_icon = (RelativeLayout) popupCircleTypeView.findViewById(R.id.qq_icon);
+        friendCircle.setOnClickListener(onClickListener);
+        wechat.setOnClickListener(onClickListener);
+        qq_icon.setOnClickListener(onClickListener);
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.button_return_bar:
+                    onBackPressed();
+                    break;
+                case R.id.bar_tv_right:
+                    LocalLog.d(TAG, "分享");
+                    selectShare();
+                    break;
+                case R.id.friend_circle:
+                    if (popupCircleTypeWindow != null) {
+                        popupCircleTypeWindow.dismiss();
+                    }
+                    share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
+                    if (umImage == null) {
+                        PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "分享失败");
+                        return;
+                    }
+                    new ShareAction(ExchangeGoodDeatilActivity.this).withMedia(umImage)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
+                    break;
+                case R.id.we_chat:
+                    share_media = SHARE_MEDIA.WEIXIN;
+                    if (popupCircleTypeWindow != null) {
+                        popupCircleTypeWindow.dismiss();
+                    }
+                    if (umImage == null) {
+                        PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "分享失败");
+                        return;
+                    }
+                    new ShareAction(ExchangeGoodDeatilActivity.this).withMedia(umImage)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
+                    break;
+                case R.id.qq_icon:
+                    if (popupCircleTypeWindow != null) {
+                        popupCircleTypeWindow.dismiss();
+                    }
+                    requestPermission(Permission.Group.STORAGE);
+                    break;
+            }
+        }
+    };
+
+
+
+        /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        LocalLog.d(TAG, "获取权限成功");
+                        share_media = SHARE_MEDIA.QQ;
+                        if (umImage == null) {
+                            PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "分享失败");
+                            return;
+                        }
+                        new ShareAction(ExchangeGoodDeatilActivity.this).withMedia(umImage)
+                                .setPlatform(share_media)
+                                .setCallback(shareListener).share();
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(ExchangeGoodDeatilActivity.this, permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+
+    }
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LocalLog.d(TAG, share_media.toString() + "开始分享");
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "分享成功");
+            if (popupCircleTypeWindow != null) {
+                popupCircleTypeWindow.dismiss();
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "失败");
+            if (popupCircleTypeWindow != null) {
+                popupCircleTypeWindow.dismiss();
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "取消分享");
+            if (popupCircleTypeWindow != null) {
+                popupCircleTypeWindow.dismiss();
+            }
+        }
+    };
+
 
     private void intTabLayout(String desc, List<String> img, ExGoodDetailResponse.DataBean.UserInfoBean userInfo) {
         exgoodDetailFragment = new ExgoodDetailFragment();
@@ -258,6 +456,23 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                     intTabLayout(exGoodDetailResponse.getData().getContent(),
                             exGoodDetailResponse.getData().getImgs_arr(), exGoodDetailResponse.getData().getUser_info());
                     dataBean = exGoodDetailResponse.getData();
+                    if (exGoodDetailResponse.getData().getStatus() == 1) {
+                        if(exGoodDetailResponse.getData().getIs_trading() == 1){
+                            buyButtone.setText("交易中");
+                            buyButtone.setEnabled(false);
+                            buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this,R.drawable.buy_unenable));
+                        }else{
+
+                        }
+                    } else if (exGoodDetailResponse.getData().getStatus() == 1) {
+                        buyButtone.setText("已下架");
+                        buyButtone.setEnabled(false);
+                        buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this,R.drawable.buy_unenable));
+                    } else if (exGoodDetailResponse.getData().getStatus() == 2) {
+                        buyButtone.setText("已下架");
+                        buyButtone.setEnabled(false);
+                        buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this,R.drawable.buy_unenable));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -288,7 +503,7 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.putExtra("good_detail", dataBean);
                 intent.setClass(this, ConfirmOrderExActivity.class);
-                startActivityForResult(intent,REQUEST_CONFIRM);
+                startActivityForResult(intent, REQUEST_CONFIRM);
                 break;
         }
     }
@@ -296,6 +511,5 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 }

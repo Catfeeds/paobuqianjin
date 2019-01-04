@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ExInOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExOutOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TriResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -21,7 +22,9 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.exchange.ExTrAdapter;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -55,6 +58,7 @@ public class ExTriffActivity extends BaseBarActivity {
     @Bind(R.id.recycler_msg)
     SwipeMenuRecyclerView recyclerMsg;
     private ExOutOrderResponse.DataBeanX.DataBean dataBean;
+    private ExInOrderResponse.DataBeanX.DataBean inBean;
     private ExTrAdapter exTrAdapter;
 
     @Override
@@ -72,8 +76,11 @@ public class ExTriffActivity extends BaseBarActivity {
         Intent intent = getIntent();
         if (intent != null) {
             dataBean = (ExOutOrderResponse.DataBeanX.DataBean) intent.getSerializableExtra("comm_order_no");
+            inBean = (ExInOrderResponse.DataBeanX.DataBean) intent.getSerializableExtra("comm_order_no_in");
             if (dataBean != null && !TextUtils.isEmpty(dataBean.getComm_no())) {
                 getWuLiu(dataBean.getComm_no());
+            } else if (inBean != null && !TextUtils.isEmpty(inBean.getComm_no())) {
+                getWuLiu(inBean.getComm_no());
             }
         }
     }
@@ -96,7 +103,9 @@ public class ExTriffActivity extends BaseBarActivity {
                     commNo.setText("订单号:" + common_no);
                     compyName.setText("快递公司:" + triResponse.getData().getCompany_name());
                     triNo.setText("快递单号:" + triResponse.getData().getLogisticCode());
-                    exTrAdapter = new ExTrAdapter(ExTriffActivity.this,triResponse.getData().getTraces());
+                    List<?> data = triResponse.getData().getTraces();
+                    Collections.reverse(data);
+                    exTrAdapter = new ExTrAdapter(ExTriffActivity.this, data);
                     recyclerMsg.setAdapter(exTrAdapter);
                 } catch (Exception e) {
                     e.printStackTrace();

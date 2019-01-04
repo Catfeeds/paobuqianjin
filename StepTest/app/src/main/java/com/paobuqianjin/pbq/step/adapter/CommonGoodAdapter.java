@@ -51,7 +51,7 @@ public class CommonGoodAdapter extends BaseAdapter {
     }
 
     public void setData(List<ExListResponse.DataBeanX.DataBean> list) {
-        LocalLog.d("setData()","setData()  enter");
+        LocalLog.d("setData()", "setData()  enter");
         data.addAll(list);
         notifyDataSetChanged();
     }
@@ -81,7 +81,7 @@ public class CommonGoodAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.common_good_grid_item, parent, false);
         holder = new GoodViewHolder(convertView);
         if (mData != null && mData.size() > 0 && mData.get(position) instanceof CommonGoodResponse.DataBeanX.DataBean) {
-            LocalLog.d("getView","CommonGoodResponse ");
+            LocalLog.d("getView", "CommonGoodResponse ");
             holder.goodsName.setText(mData.get(position).getGoods_name());
             Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, mData.get(position).getPic_url(), R.drawable.null_bitmap, R.drawable.null_bitmap);
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.bubi);
@@ -141,7 +141,7 @@ public class CommonGoodAdapter extends BaseAdapter {
                 }
             }
         } else if (data != null && data.size() > 0 && data.get(position) instanceof ExListResponse.DataBeanX.DataBean) {
-            LocalLog.d("getView","ExListResponse ");
+            LocalLog.d("getView", "ExListResponse ");
             holder.goodsName.setText(data.get(position).getName());
             Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, data.get(position).getImg_url(), R.drawable.null_bitmap, R.drawable.null_bitmap);
             Drawable drawable = ContextCompat.getDrawable(mContext, R.drawable.bubi);
@@ -153,6 +153,21 @@ public class CommonGoodAdapter extends BaseAdapter {
                 holder.price.setText("原价" + data.get(position).getOld_price() + "元");
             } else {
                 holder.price.setVisibility(View.GONE);
+            }
+            if (Float.parseFloat(data.get(position).getCredit()) > 0) {
+                holder.allBuBiTv.setVisibility(View.GONE);
+                if (Float.parseFloat(data.get(position).getCredit()) > 0) {
+                    holder.promotionPrice.setVisibility(View.VISIBLE);
+                    holder.pointExchange.setVisibility(View.GONE);
+                    String showNowMoney = "  " + data.get(position).getCredit();
+                    SpannableString showSpan = new SpannableString(showNowMoney);
+                    showSpan.setSpan(imageSpan, 0, "  ".length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.promotionPrice.setText(showSpan);
+                    //特殊处理
+                    holder.pointExchange.setVisibility(View.VISIBLE);
+                    holder.pointExchange.setText(showSpan);
+                    holder.promotionPrice.setVisibility(View.GONE);
+                }
             }
 
             if (data.get(position).getExpress_status() == 1) {

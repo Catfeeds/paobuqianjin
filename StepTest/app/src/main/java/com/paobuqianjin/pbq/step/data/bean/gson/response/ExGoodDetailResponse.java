@@ -43,6 +43,10 @@ public class ExGoodDetailResponse {
     }
 
     public static class DataBean implements Serializable {
+        public int getIs_trading() {
+            return is_trading;
+        }
+
         /**
          * id : 7
          * userid : 35905
@@ -58,9 +62,11 @@ public class ExGoodDetailResponse {
          * imgs_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/8/35905201901081145950904.jpg"]
          * is_need : 0
          * need_count : 0
+         * is_trading: 0
          * user_info : {"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/5/35905201901051655987828.jpg","nickname":"呵呵哒","sale_count":3,"trade_count":0,"other_commnuity":[{"id":5,"userid":35905,"name":"路虎","old_price":"1223.00","credit":1000,"number":1,"express_status":1,"express_price":"10.00","img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/8/35905201901081111520394.jpg"]},{"id":6,"userid":35905,"name":"路虎","old_price":"30.00","credit":300,"number":1,"express_status":2,"express_price":"0.00","img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/8/35905201901081140993534.jpg"]}]}
          */
 
+        private int is_trading;
         private int id;
         private int userid;
         private String name;
