@@ -1130,6 +1130,9 @@
         <activity
             android:name=".view.activity.exchange.OrderActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.exchange.TrifficSuggestActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
 import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ExPublistResponse;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -129,8 +130,10 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
     //邮寄状态: 0.待议 1.不包邮 2.包邮
     private int express_status = 0;
     private boolean isFreeTrf;//是否包邮
+    private ExPublistResponse.DataBeanX.DataBean dataBean;
 
     @Override
+
     protected String title() {
         return "发布";
     }
@@ -144,8 +147,14 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
         dialog.setMessage("上传中");
         dialog.setCancelable(false);
         cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
-        initAdapter();
-        setFreeTrf(false);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            dataBean = (ExPublistResponse.DataBeanX.DataBean) intent.getSerializableExtra("data");
+            initAdapter();
+            setFreeTrf(false);
+        }
+
     }
 
 
@@ -212,17 +221,39 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
                 }
             }
         });
-        String image = getIntent().getStringExtra("images");
-        if (!TextUtils.isEmpty(image)) {
-            String[] images = image.split(",");
+        if (dataBean != null) {
+            express_status = dataBean.getExpress_status();
+            if (!TextUtils.isEmpty(dataBean.getName()))
+                goodTitle.setText(dataBean.getName());
+            if (!TextUtils.isEmpty(dataBean.getContent()))
+                etInformation.setText(dataBean.getContent());
+            if (dataBean.getCredit() > 0)
+                needStepDollar.setText(String.valueOf(dataBean.getCredit()));
+            if (!TextUtils.isEmpty(dataBean.getExpress_price()))
+                needTriffDollar.setText(dataBean.getExpress_price());
+            if (!TextUtils.isEmpty(dataBean.getOld_price()))
+                fullPrice.setText(dataBean.getOld_price());
+            if (dataBean.getStatus() == 1) {
+                setFreeTrf(false);
+            } else {
+                setFreeTrf(true);
+            }
+            btnConfirm.setText("确定");
+        }
+        if (dataBean != null && dataBean.getImg_arr() != null && dataBean.getImg_arr().size() > 0) {
             List<SelectPicBean> list = new ArrayList<>();
-            for (String s : images) {
+            for (int i = 0; i < dataBean.getImg_arr().size(); i++) {
                 SelectPicBean bean = new SelectPicBean();
-                bean.setImageUrl(s);
+                bean.setImageUrl(dataBean.getImg_arr().get(i));
                 list.add(bean);
+                if (!TextUtils.isEmpty(hisImage)) {
+                    hisImage += ",";
+                }
+                hisImage += dataBean.getImg_arr().get(i);
             }
             adapter.setDatas(list);
         }
+
     }
 
     private void selectPicture() {
@@ -280,6 +311,86 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
         popupCircleTypeWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
                 , 0, 0);
         popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
+
+    private void editTwoHand() {
+        Map<String, String> param = new HashMap<>();
+        if (!TextUtils.isEmpty(goodTitle.getText().toString().trim()) && !goodTitle.getText().toString().trim().equals(dataBean.getName())) {
+            param.put("name", goodTitle.getText().toString().trim());
+        }
+
+        if (!TextUtils.isEmpty(etInformation.getText().toString().trim()) &&
+                !etInformation.getText().toString().trim().equals(dataBean.getContent())) {
+            param.put("content", etInformation.getText().toString().trim());
+        }
+
+        if (!TextUtils.isEmpty(needStepDollar.getText().toString().trim())
+                && !needStepDollar.getText().toString().trim().equals(String.valueOf(dataBean.getCredit()))) {
+            param.put("credit", needStepDollar.getText().toString().trim());
+        }
+        if (!TextUtils.isEmpty(fullPrice.getText().toString()) && !fullPrice.getText().toString().trim().equals(dataBean.getOld_price())) {
+            try {
+                if (Float.parseFloat(fullPrice.getText().toString()) > 0.0f) {
+                    param.put("old_price", fullPrice.getText().toString().trim());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (!isFreeTrf) {
+            LocalLog.d(TAG, "不包邮邮费必填");
+            if (!TextUtils.isEmpty(needTriffDollar.getText().toString().trim())) {
+                try {
+                    if (Float.parseFloat(needTriffDollar.getText().toString()) > 0.0f
+                            && !needTriffDollar.getText().toString().trim().equals(dataBean.getExpress_price())) {
+                        param.put("express_price", needTriffDollar.getText().toString().trim());
+                        express_status = 1;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                PaoToastUtils.showLongToast(this, "邮费必填");
+                express_status = 0;
+            }
+        } else {
+            express_status = 2;
+        }
+        if (express_status != dataBean.getExpress_status()) {
+            param.put("express_status", String.valueOf(express_status));
+        }
+
+
+        String images = "";
+        for (SelectPicBean bean : adapter.getData()) {
+            if (!TextUtils.isEmpty(images)) {
+                images += ",";
+            }
+            images += bean.getImageUrl();
+        }
+        if (!TextUtils.isEmpty(images) && !images.equals(hisImage)) {
+            param.put("images", images);
+        }
+
+        if (param.size() < 1) {
+            PaoToastUtils.showLongToast(this, "没做任何修改!");
+            return;
+        }
+
+        Presenter.getInstance(this).putPaoBuSimple(NetApi.urlAddExChange + "/"+String.valueOf(dataBean.getId()), param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                PaoToastUtils.showLongToast(TwoHandReleaseActivity.this, "编辑成功");
+                finish();
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                PaoToastUtils.showLongToast(TwoHandReleaseActivity.this, "编辑失败");
+            }
+        });
     }
 
     private void releaseTwoHand() {
@@ -379,9 +490,15 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
                 break;
             case R.id.triff_des:
                 LocalLog.d(TAG, "查看邮费提示");
+                startActivity(TrifficSuggestActivity.class, null);
                 break;
             case R.id.btn_confirm:
-                releaseTwoHand();
+                if (dataBean != null) {
+                    editTwoHand();
+                } else {
+                    releaseTwoHand();
+                }
+
                 LocalLog.d(TAG, "发布");
                 break;
         }

@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.exchange;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,6 +24,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeGoodDeatilActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.TwoHandReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.exchange.ExPubAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
@@ -60,6 +62,7 @@ public class ExPubFragment extends BaseFragment implements SwipeMenuRecyclerView
     private int currentPage = 0;
     private List<ExPublistResponse.DataBeanX.DataBean> listData = new ArrayList<>();
     private ExPubAdapter exPubAdapter;
+    private final static int REQUEST_EDIT = 4;
 
     public void setType(int type) {
         this.type = type;
@@ -232,6 +235,10 @@ public class ExPubFragment extends BaseFragment implements SwipeMenuRecyclerView
                     break;
                 case "编辑":
                     LocalLog.d(TAG, "进入编辑界面!");
+                    Intent intentEdit = new Intent();
+                    intentEdit.setClass(getContext(), TwoHandReleaseActivity.class);
+                    intentEdit.putExtra("data", listData.get(position));
+                    startActivityForResult(intentEdit, REQUEST_EDIT);
                     break;
             }
         }
@@ -288,5 +295,13 @@ public class ExPubFragment extends BaseFragment implements SwipeMenuRecyclerView
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EDIT && resultCode == Activity.RESULT_OK) {
+            getExPub(1);
+        }
     }
 }

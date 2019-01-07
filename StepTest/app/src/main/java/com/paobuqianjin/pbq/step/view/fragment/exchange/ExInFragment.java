@@ -192,7 +192,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
         recyclerOut.setNestedScrollingEnabled(false);
         reFresh.setOnRefreshListener(this);
         recyclerOut.setLayoutManager(linearLayoutManager);
-        recyclerOut.addItemDecoration(new ExOutFragment.SpaceItemDecoration(20));
+        recyclerOut.addItemDecoration(new SpaceItemDecoration(20));
         recyclerOut.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {

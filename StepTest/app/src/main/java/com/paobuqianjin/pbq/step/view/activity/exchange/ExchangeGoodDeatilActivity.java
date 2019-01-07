@@ -36,15 +36,12 @@ import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExGoodDetailResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ShareResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
-import com.paobuqianjin.pbq.step.view.activity.RoundRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -114,6 +111,8 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     TextView attion;
     @Bind(R.id.good_scroll)
     BounceScrollView goodScroll;
+    @Bind(R.id.want_ico)
+    ImageView wantIco;
     private String[] titles = {"商品详情", "关于商家"};
     private Fragment[] fragments;
     private int mCurrentIndex = 0;
@@ -131,6 +130,8 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     private PopupWindow popupCircleTypeWindow;
     private Rationale mRationale;
     private PermissionSetting mSetting;
+    private int isNeed = 0;
+    String ex_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,7 +148,7 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
         mSetting = new PermissionSetting(this);
         Intent intent = getIntent();
         if (intent != null) {
-            String ex_id = intent.getStringExtra("ex_id");
+            ex_id = intent.getStringExtra("ex_id");
             if (!TextUtils.isEmpty(ex_id)) {
                 getGoodDetail(ex_id);
             }
@@ -449,6 +450,12 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                         srcPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
                     }
 
+                    isNeed = exGoodDetailResponse.getData().getIs_need();
+                    if (isNeed == 1) {
+                        wantIco.setImageResource(R.drawable.had_collect);
+                    } else {
+                        wantIco.setImageResource(R.drawable.no_collect);
+                    }
                     if (Float.parseFloat(exGoodDetailResponse.getData().getExpress_price()) > 0.0f) {
                         triFree.setText("快递:" + exGoodDetailResponse.getData().getExpress_price());
                     }
@@ -457,21 +464,21 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                             exGoodDetailResponse.getData().getImgs_arr(), exGoodDetailResponse.getData().getUser_info());
                     dataBean = exGoodDetailResponse.getData();
                     if (exGoodDetailResponse.getData().getStatus() == 1) {
-                        if(exGoodDetailResponse.getData().getIs_trading() == 1){
+                        if (exGoodDetailResponse.getData().getIs_trading() == 1) {
                             buyButtone.setText("交易中");
                             buyButtone.setEnabled(false);
-                            buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this,R.drawable.buy_unenable));
-                        }else{
+                            buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this, R.drawable.buy_unenable));
+                        } else {
 
                         }
                     } else if (exGoodDetailResponse.getData().getStatus() == 1) {
                         buyButtone.setText("已下架");
                         buyButtone.setEnabled(false);
-                        buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this,R.drawable.buy_unenable));
+                        buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this, R.drawable.buy_unenable));
                     } else if (exGoodDetailResponse.getData().getStatus() == 2) {
                         buyButtone.setText("已下架");
                         buyButtone.setEnabled(false);
-                        buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this,R.drawable.buy_unenable));
+                        buyButtone.setBackground(ContextCompat.getDrawable(ExchangeGoodDeatilActivity.this, R.drawable.buy_unenable));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -489,7 +496,8 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.want_span:
-                LocalLog.d(TAG, "");
+                LocalLog.d(TAG, "想要");
+                wantGood(isNeed);
                 break;
             case R.id.talk_to:
                 if (!TextUtils.isEmpty(talkName)) {
@@ -500,12 +508,48 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                 }
                 break;
             case R.id.buy_buttone:
+                if (userId == Presenter.getInstance(this).getId()) {
+                    LocalLog.d(TAG, "不能购买自己的二手物品");
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.putExtra("good_detail", dataBean);
                 intent.setClass(this, ConfirmOrderExActivity.class);
                 startActivityForResult(intent, REQUEST_CONFIRM);
                 break;
         }
+    }
+
+    private void wantGood(final int isneed) {
+        Map<String, String> map = new HashMap<>();
+        if (TextUtils.isEmpty(ex_id)) {
+            return;
+        }
+        map.put("comm_id", ex_id);
+        if (isneed == 1) {
+            map.put("action", "unwanted");
+        } else {
+            map.put("action", "want");
+        }
+        wantSpan.setEnabled(false);
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlExWant, map, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                wantSpan.setEnabled(true);
+                if (isneed == 1) {
+                    isNeed = 0;
+                    PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "取消收藏");
+                } else {
+                    isNeed = 1;
+                    PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "收藏成功");
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                wantSpan.setEnabled(true);
+            }
+        });
     }
 
     @Override

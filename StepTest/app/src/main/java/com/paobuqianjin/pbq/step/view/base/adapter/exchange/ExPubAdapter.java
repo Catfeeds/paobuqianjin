@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.exchange;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,8 @@ public class ExPubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                     ((PubItemViewHolder) holder).tvMid.setText("下架");
                     ((PubItemViewHolder) holder).tvRight.setText("编辑");
+                    ((PubItemViewHolder) holder).tvMid.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    ((PubItemViewHolder) holder).tvRight.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                 } else if (((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 2) {
                     if (((PubItemViewHolder) holder).tvLeft.getVisibility() == View.GONE) {
                         ((PubItemViewHolder) holder).tvLeft.setVisibility(View.VISIBLE);
@@ -58,6 +61,9 @@ public class ExPubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     ((PubItemViewHolder) holder).tvLeft.setText("删除记录");
                     ((PubItemViewHolder) holder).tvMid.setText("重新上架");
                     ((PubItemViewHolder) holder).tvRight.setText("编辑");
+                    ((PubItemViewHolder) holder).tvLeft.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    ((PubItemViewHolder) holder).tvMid.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    ((PubItemViewHolder) holder).tvRight.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                 } else if (((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 3) {
                     if (((PubItemViewHolder) holder).tvLeft.getVisibility() == View.GONE) {
                         ((PubItemViewHolder) holder).tvLeft.setVisibility(View.VISIBLE);
@@ -65,6 +71,9 @@ public class ExPubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     ((PubItemViewHolder) holder).tvLeft.setText("删除记录");
                     ((PubItemViewHolder) holder).tvMid.setText("重新上架");
                     ((PubItemViewHolder) holder).tvRight.setText("编辑");
+                    ((PubItemViewHolder) holder).tvLeft.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    ((PubItemViewHolder) holder).tvMid.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
+                    ((PubItemViewHolder) holder).tvRight.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                 }
                 Presenter.getInstance(context).getPlaceErrorImage(((PubItemViewHolder) holder).goodPic, ((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getImg_arr().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);

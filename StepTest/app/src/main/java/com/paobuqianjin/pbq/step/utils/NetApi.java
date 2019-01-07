@@ -461,5 +461,8 @@ public class NetApi {
     public final static String urlExQuit = url + "v1/secondHandExchange/applyRefound";
     //买家确认收货
     public final static String urlExRecConfirm = url + "v1/secondHandExchange/confirmReceive";
-
+    //对公益宝贝想要取消想要
+    public final static String urlExWant = url + "v1/secondHandExchange/wantNeedIt";
+    //运费提示
+    public final static String urlExTriSu = url + "v1/secondHandExchange/expressTips";
 }
