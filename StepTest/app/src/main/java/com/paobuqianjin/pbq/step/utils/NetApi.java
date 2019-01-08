@@ -465,4 +465,10 @@ public class NetApi {
     public final static String urlExWant = url + "v1/secondHandExchange/wantNeedIt";
     //运费提示
     public final static String urlExTriSu = url + "v1/secondHandExchange/expressTips";
+    //获取我想要的公益换宝贝
+    public final static String urlExWantList = url + "v1/secondHandExchange/wantCommunityList";
+    //获取公益换分类
+    public final static String urlExStyles = url + "v1/secondHandExchange/communityCate";
+    //公益换宝贝搜索
+    public final static String urlExSearch = url + "v1/secondHandExchange/communitySearch";
 }

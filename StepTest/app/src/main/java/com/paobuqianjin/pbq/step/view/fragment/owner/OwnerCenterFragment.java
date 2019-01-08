@@ -43,6 +43,7 @@ import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExReleaseHisActivity;
+import com.paobuqianjin.pbq.step.view.activity.exchange.ExWantActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeInActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeOutActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -364,6 +365,7 @@ public class OwnerCenterFragment extends BaseFragment {
                 startActivity(ExchangeInActivity.class, null);
                 break;
             case R.id.ex_save:
+                startActivity(ExWantActivity.class, null);
                 break;
             default:
                 break;

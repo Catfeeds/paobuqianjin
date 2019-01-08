@@ -24,6 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
@@ -33,10 +34,12 @@ import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
+import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
 import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExPublistResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ExStyleResponse;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -56,7 +59,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.rong.imageloader.utils.L;
 import io.rong.imkit.model.RongGridView;
 
 /**
@@ -112,12 +114,14 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
     LinearLayout triSpan;
     @Bind(R.id.type_span)
     LinearLayout typeSpan;
-    @Bind(R.id.pay_by)
-    TextView payBy;
     @Bind(R.id.pay_span)
     LinearLayout paySpan;
     @Bind(R.id.btn_confirm)
     Button btnConfirm;
+    @Bind(R.id.style_tv)
+    TextView styleTv;
+    @Bind(R.id.linear_rel)
+    LinearLayout linearRel;
     private GridAddPic2Adapter adapter;
     public static final int MAX_SIZE = 9;
     private View popupCircleTypeView;
@@ -131,6 +135,9 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
     private int express_status = 0;
     private boolean isFreeTrf;//是否包邮
     private ExPublistResponse.DataBeanX.DataBean dataBean;
+    private List<String> styleList = new ArrayList<>();
+    private Map<String, String> styleCode = new HashMap<>();
+    private ChooseOneItemWheelPopWindow wheelPopWindow;
 
     @Override
 
@@ -154,7 +161,7 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             initAdapter();
             setFreeTrf(false);
         }
-
+        getStyle();
     }
 
 
@@ -379,7 +386,7 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             return;
         }
 
-        Presenter.getInstance(this).putPaoBuSimple(NetApi.urlAddExChange + "/"+String.valueOf(dataBean.getId()), param, new PaoCallBack() {
+        Presenter.getInstance(this).putPaoBuSimple(NetApi.urlAddExChange + "/" + String.valueOf(dataBean.getId()), param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 PaoToastUtils.showLongToast(TwoHandReleaseActivity.this, "编辑成功");
@@ -467,6 +474,12 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             return;
         }
 
+        if (!TextUtils.isEmpty(styleTv.getText().toString().trim())) {
+            if (!TextUtils.isEmpty(styleCode.get(styleTv.getText().toString().trim()))) {
+                param.put("cate_id", styleCode.get(styleTv.getText().toString().trim()));
+            }
+        }
+
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlAddExChange, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -482,7 +495,33 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
         });
     }
 
-    @OnClick({R.id.triff_des, R.id.btn_confirm, R.id.select_span})
+
+    private void getStyle() {
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlExStyles, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    ExStyleResponse exStyleResponse = new Gson().fromJson(s, ExStyleResponse.class);
+                    if (exStyleResponse.getData().size() > 0) {
+                        for (int i = 0; i < exStyleResponse.getData().size(); i++) {
+                            styleList.add(exStyleResponse.getData().get(i).getCategroy_name());
+                            if (!TextUtils.isEmpty(exStyleResponse.getData().get(i).getCategroy_name()))
+                                styleCode.put(exStyleResponse.getData().get(i).getCategroy_name(), String.valueOf(exStyleResponse.getData().get(i).getId()));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
+    @OnClick({R.id.triff_des, R.id.btn_confirm, R.id.select_span, R.id.pay_span})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.select_span:
@@ -500,6 +539,25 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
                 }
 
                 LocalLog.d(TAG, "发布");
+                break;
+            case R.id.pay_span:
+                if (wheelPopWindow == null && styleList.size() > 0) {
+                    wheelPopWindow = new ChooseOneItemWheelPopWindow(this, styleList);
+                    wheelPopWindow.setItemConfirmListener(new ChooseOneItemWheelPopWindow.OnWheelItemConfirmListener() {
+                        @Override
+                        public void onItemSelectLis(String result) {
+                            styleTv.setText(result);
+                        }
+                    });
+                }
+                if (wheelPopWindow != null && wheelPopWindow.isShowing()) {
+                    wheelPopWindow.cancel();
+                    return;
+                }
+                if (wheelPopWindow != null) {
+                    wheelPopWindow.setCurrentSelectValue(styleTv.getText().toString());
+                    wheelPopWindow.show();
+                }
                 break;
         }
     }

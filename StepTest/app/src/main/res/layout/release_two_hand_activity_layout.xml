@@ -354,24 +354,34 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="14dp"
                     android:layout_weight="1"
-                    android:text="交易方式"
+                    android:text="宝贝分类"
                     android:textColor="#ff161727"
                     android:textSize="15dp" />
 
                 <TextView
-                    android:id="@+id/pay_by"
+                    android:id="@+id/style_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/pay_by"
+                    android:layout_width="7dp"
+                    android:layout_height="13dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="14dp"
-                    android:text="邮寄"
-                    android:textColor="#ff8a8a8a" />
+                    android:src="@drawable/more" />
             </LinearLayout>
 
             <View
+                android:background="@color/color_f9f9f9"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" />
+                android:layout_height="1dp" />
         </LinearLayout>
     </ScrollView>
 
@@ -380,6 +390,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentStart="true"
         android:orientation="horizontal">
 
@@ -387,8 +398,11 @@
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_weight="1"
-            android:background="@drawable/rect_no_corner"
+            android:gravity="center"
+            android:background="@drawable/confirm_ng"
             android:stateListAnimator="@null"
             android:text="确定发布"
             android:textColor="@color/color_fefefe"

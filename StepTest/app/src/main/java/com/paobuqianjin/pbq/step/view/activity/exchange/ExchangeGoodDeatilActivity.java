@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity.exchange;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -536,12 +537,15 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
             @Override
             protected void onSuc(String s) {
                 wantSpan.setEnabled(true);
+                setResult(Activity.RESULT_OK);
                 if (isneed == 1) {
                     isNeed = 0;
                     PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "取消收藏");
+                    wantIco.setImageResource(R.drawable.no_collect);
                 } else {
                     isNeed = 1;
                     PaoToastUtils.showLongToast(ExchangeGoodDeatilActivity.this, "收藏成功");
+                    wantIco.setImageResource(R.drawable.had_collect);
                 }
             }
 

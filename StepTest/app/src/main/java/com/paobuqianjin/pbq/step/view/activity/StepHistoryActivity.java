@@ -138,7 +138,7 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
                             && stepHisResponse.getData().getStep_list().size() > 0) {
                         if ("1".equals(circle)) {
                             weekList.addAll(stepHisResponse.getData().getStep_list());
-                            lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.blue));
+                            lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.linechart_back));
                             lineChart.invalidate();
                         } else if ("2".equals(circle)) {
                             monthList.addAll(stepHisResponse.getData().getStep_list());
@@ -180,7 +180,7 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
                     Presenter.getInstance(StepHistoryActivity.this).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar()
                             , R.drawable.default_head_ico, R.drawable.default_head_ico);
                     listData.addAll(friendStepRankDayResponse.getData().getData().getMember());
-                    perStep.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+                    perStep.setText("当前步数 " +String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
                     likeNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getZan_count()));
                     adapter.notifyDataSetChanged(listData);
                     /*if (currentPage < friendStepRankDayResponse.getData().getPagenation().getTotalPage()) {
@@ -211,7 +211,7 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
                         switchDoll.setImageResource(R.drawable.month_switch);
                         weekStep.setVisibility(View.INVISIBLE);
                         monthStep.setVisibility(View.VISIBLE);
-                        lineChartManager1.showLineChart(monthList, "步数", getResources().getColor(R.color.blue));
+                        lineChartManager1.showLineChart(monthList, "步数", getResources().getColor(R.color.linechart_back));
                         lineChart.invalidate();
                     }
                 } else {
@@ -221,7 +221,7 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
                         switchDoll.setImageResource(R.drawable.week_switch);
                         weekStep.setVisibility(View.VISIBLE);
                         monthStep.setVisibility(View.INVISIBLE);
-                        lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.blue));
+                        lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.linechart_back));
                         lineChart.invalidate();
                     }
                 }

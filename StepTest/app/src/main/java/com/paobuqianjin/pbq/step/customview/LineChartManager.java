@@ -58,7 +58,7 @@ public class LineChartManager {
         /***图表设置***/
         //是否展示网格线
         lineChart.setDrawGridBackground(false);
-        lineChart.setBackgroundColor(ContextCompat.getColor(context, R.color.linechart_back));
+        lineChart.setBackground(ContextCompat.getDrawable(context, R.drawable.step_his_bg));
 
         //是否显示边界
         lineChart.setDrawBorders(false);
