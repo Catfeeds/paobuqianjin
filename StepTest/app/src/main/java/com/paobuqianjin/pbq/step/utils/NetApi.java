@@ -471,4 +471,6 @@ public class NetApi {
     public final static String urlExStyles = url + "v1/secondHandExchange/communityCate";
     //公益换宝贝搜索
     public final static String urlExSearch = url + "v1/secondHandExchange/communitySearch";
+    //发表评价
+    public final static String urlExPuContent = url + "v1/secondHandExchange/publishComment";
 }

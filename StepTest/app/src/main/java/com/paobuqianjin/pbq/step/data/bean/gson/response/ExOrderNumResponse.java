@@ -40,11 +40,16 @@ public class ExOrderNumResponse {
     }
 
     public static class DataBean {
+        public String getComm_money() {
+            return comm_money;
+        }
+
         /**
          * comm_order_id : 39
          * shipping_money : 10.00
+         * "comm_money":"5.00"
          */
-
+        private String comm_money;
         private String comm_order_id;
         private String shipping_money;
 

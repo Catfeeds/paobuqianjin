@@ -115,6 +115,10 @@ public class ExInOrderResponse {
         }
 
         public static class DataBean implements Serializable {
+            public String getPrice_total() {
+                return price_total;
+            }
+
             /**
              * id : 39
              * comm_no : COM20181231033922927
@@ -134,10 +138,12 @@ public class ExInOrderResponse {
              * name : 风驰电掣大运摩托
              * comm_id : 16
              * content : 公户酒
+             * price: 10.00
              * order_status_text : 已关闭
              * img_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101058365723.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101058947636.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101058335906.jpg"]
              */
 
+            private String price_total;
             private String id;
             private String comm_no;
             private int order_type;

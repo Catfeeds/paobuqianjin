@@ -135,6 +135,7 @@ public class OrderActivity extends BaseBarActivity {
             @Override
             protected void onSuc(String s) {
                 setResult(Activity.RESULT_OK);
+                finish();
             }
 
             @Override
@@ -146,6 +147,26 @@ public class OrderActivity extends BaseBarActivity {
         });
     }
 
+    private void quitOrderBuy(String comm_id) {
+        Map<String, String> param = new HashMap<>();
+        param.put("comm_order_id", comm_id);
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlExQuit, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(OrderActivity.this, errorBean.getMessage());
+                }
+            }
+        });
+    }
+
+    //卖家确认退款
     private void quitOrder(String comm_id) {
         Map<String, String> param = new HashMap<>();
         param.put("comm_order_id", comm_id);
@@ -169,25 +190,47 @@ public class OrderActivity extends BaseBarActivity {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v instanceof TextView && dataBean != null) {
+            if (v instanceof TextView && (dataBean != null || inBean != null)) {
                 switch (((TextView) v).getText().toString().trim()) {
                     case "取消订单":
-                        cancelOrder(String.valueOf(dataBean.getId()));
+                        if (dataBean != null) {
+                            cancelOrder(String.valueOf(dataBean.getId()));
+                        } else if (inBean != null) {
+                            cancelOrder(String.valueOf(inBean.getId()));
+                        }
+                        break;
+                    case "确认退款":
+                        if (dataBean != null) {
+                            quitOrder(String.valueOf(dataBean.getId()));
+                        }
                         break;
                     case "退款":
-                        quitOrder(String.valueOf(dataBean.getId()));
+                        if (dataBean != null) {
+                            quitOrder(String.valueOf(dataBean.getId()));
+                        } else if (inBean != null) {
+                            quitOrderBuy(String.valueOf(inBean.getId()));
+                        }
                         break;
                     case "立即发货":
-                        Intent intentRe = new Intent();
-                        intentRe.setClass(OrderActivity.this, AddExTriffActivity.class);
-                        intentRe.putExtra("comm_order_id", dataBean.getId());
-                        startActivityForResult(intentRe, RELEASE_TR);
+                        if (dataBean != null) {
+                            Intent intentRe = new Intent();
+                            intentRe.setClass(OrderActivity.this, AddExTriffActivity.class);
+                            intentRe.putExtra("comm_order_id", dataBean.getId());
+                            startActivityForResult(intentRe, RELEASE_TR);
+                        }
                         break;
                     case "查看物流":
-                        Intent intentTr = new Intent();
-                        intentTr.setClass(OrderActivity.this, ExTriffActivity.class);
-                        intentTr.putExtra("comm_order_no", dataBean);
-                        startActivity(intentTr);
+                        if (dataBean != null) {
+                            Intent intentTr = new Intent();
+                            intentTr.setClass(OrderActivity.this, ExTriffActivity.class);
+                            intentTr.putExtra("comm_order_no", dataBean);
+                            startActivity(intentTr);
+                        } else {
+                            Intent intentTr = new Intent();
+                            intentTr.setClass(OrderActivity.this, ExTriffActivity.class);
+                            intentTr.putExtra("comm_order_no", inBean);
+                            startActivity(intentTr);
+                        }
                         break;
                 }
             }
@@ -211,8 +254,13 @@ public class OrderActivity extends BaseBarActivity {
                     } else if (orderStatusResponse.getData().getPayment_type() == 0) {
                         payWay.setText("支付方式: 微信支付");
                     }
-                    wuliu.setText("共" + orderStatusResponse.getData().getNumber() + "个包裹，" + orderStatusResponse.getData().getCompany_name() + " " +
-                            "运单号:" + orderStatusResponse.getData().getExpress_no());
+                    if (!TextUtils.isEmpty(orderStatusResponse.getData().getExpress_no())) {
+                        wuliu.setText("共" + orderStatusResponse.getData().getNumber() + "个包裹，" + orderStatusResponse.getData().getCompany_name() + " " +
+                                "运单号:" + orderStatusResponse.getData().getExpress_no());
+                    } else {
+                        wuLiuPan.setVisibility(View.GONE);
+                        viewLine1.setVisibility(View.GONE);
+                    }
                     phoneName.setText(orderStatusResponse.getData().getBuyer_consigner());
                     phone.setText(orderStatusResponse.getData().getBuyer_mobile());
                     address.setText(orderStatusResponse.getData().getBuyer_addr() + orderStatusResponse.getData().getBuyer_address());
@@ -221,12 +269,26 @@ public class OrderActivity extends BaseBarActivity {
                     Presenter.getInstance(OrderActivity.this).getPlaceErrorImage(saleHeadIco, orderStatusResponse.getData().getUser_avatar()
                             , R.drawable.default_head_ico, R.drawable.default_head_ico);
                     saleName.setText(orderStatusResponse.getData().getUser_nickname());
-                    SpannableString stepDollarSpan = new SpannableString(String.valueOf(orderStatusResponse.getData().getCredit()) + "步币");
-                    stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), orderStatusResponse.getData().getCredit().length(),
-                            (orderStatusResponse.getData().getCredit() + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
-                    ;
-                    stepDollars.setText(stepDollarSpan);
-                    stepDollar.setText(stepDollarSpan);
+                    String showMoney = "";
+                    if (Float.parseFloat(orderStatusResponse.getData().getPrice_total()) > 0.0f) {
+                        showMoney = "￥" + orderStatusResponse.getData().getPrice_total() + "+";
+                    }
+                    if (Integer.parseInt(orderStatusResponse.getData().getCredit_total()) > 0) {
+                        if (TextUtils.isEmpty(showMoney)) {
+                            showMoney = String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币";
+                        } else {
+                            showMoney += String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币";
+                        }
+                    }
+                    if (Integer.parseInt(orderStatusResponse.getData().getCredit_total()) > 0) {
+                        SpannableString stepDollarSpan = new SpannableString(showMoney);
+                        stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), showMoney.length() - 2,
+                                showMoney.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                        stepDollars.setText(stepDollarSpan);
+                        stepDollar.setText(String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币");
+                    } else {
+                        stepDollar.setText(showMoney);
+                    }
                     Presenter.getInstance(OrderActivity.this).getPlaceErrorImage(goodPicture, orderStatusResponse.getData().getImg_url()
                             , R.drawable.bitmap_null, R.drawable.bitmap_null);
                     if (Float.parseFloat(orderStatusResponse.getData().getOld_price()) > 0.0f) {
@@ -240,28 +302,32 @@ public class OrderActivity extends BaseBarActivity {
                     goodName.setText(orderStatusResponse.getData().getName());
                     if (dataBean != null) {
                         switch (dataBean.getOrder_status()) {
+                            case -1:
+                                rightTv.setText("确认退款");
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
+                                break;
                             case 0:
                                 rightTv.setText("取消订单");
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                     /*exOutViewHolder.rightTv.setBackground();*/
                                 break;
                             case 1:
                                 leftTv.setText("退款");
                                 rightTv.setText("立即发货");
-                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_gray));
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_gray));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                             case 2:
                                 rightTv.setText("查看物流");
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                             case 3:
                                 rightTv.setText("查看物流");
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                             case 4:
                                 rightTv.setText("查看物流");
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                         }
                     } else if (inBean != null) {
@@ -269,29 +335,29 @@ public class OrderActivity extends BaseBarActivity {
                             case 0:
                                 leftTv.setText("删除订单");
                                 rightTv.setText("立即支付");
-                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_gray));
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_gray));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                     /*exOutViewHolder.rightTv.setBackground();*/
                                 break;
                             case 1:
                                 rightTv.setText("退款");
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                             case 2:
                                 leftTv.setText("查看物流");
                                 rightTv.setText("确认收货");
-                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_gray));
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_gray));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                             case 3:
                                 leftTv.setText("查看物流");
                                 rightTv.setText("待评价");
-                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_gray));
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_gray));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                             case 4:
                                 rightTv.setText("交易成功");
-                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this,R.drawable.ex_order_button_bg_red));
+                                rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
                                 break;
                         }
 

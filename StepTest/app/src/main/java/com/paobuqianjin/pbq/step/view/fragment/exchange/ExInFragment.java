@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.exchange.AddContentActvity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.AddExTriffActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExTriffActivity;
 import com.paobuqianjin.pbq.step.view.activity.exchange.ExpayActivity;
@@ -68,6 +69,7 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
     private final int RELEASE_TR = 4;
     private final int ORDER_DETAIL = 5;
     private final int REQUEST_PAY = 6;
+    private final int REQUEST_CONTENT = 7;
 
     public void setAction(String action) {
         switch (action) {
@@ -311,6 +313,12 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
                     intentTr.putExtra("comm_order_no_in", listData.get(position));
                     startActivity(intentTr);
                     break;
+                case "去评价":
+                    Intent intentContent = new Intent();
+                    intentContent.setClass(getContext(), AddContentActvity.class);
+                    intentContent.putExtra("comm_order_data", listData.get(position));
+                    startActivityForResult(intentContent, REQUEST_CONTENT);
+                    break;
 
             }
         }
@@ -345,9 +353,11 @@ public class ExInFragment extends BaseFragment implements SwipeMenuRecyclerView.
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RELEASE_TR && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
-        } else if (requestCode == ORDER_DETAIL && requestCode == Activity.RESULT_OK) {
+        } else if (requestCode == ORDER_DETAIL && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
         } else if (requestCode == REQUEST_PAY && resultCode == Activity.RESULT_OK) {
+            getExOrderByAction(1);
+        } else if (requestCode == REQUEST_CONTENT && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
         }
     }

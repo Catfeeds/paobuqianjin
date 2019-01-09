@@ -114,7 +114,11 @@ public class ExOutOrderResponse {
             }
         }
 
-        public static class DataBean implements Serializable{
+        public static class DataBean implements Serializable {
+            public String getPrice_total() {
+                return price_total;
+            }
+
             /**
              * id : 49
              * comm_no : COM20181231055146269
@@ -134,10 +138,12 @@ public class ExOutOrderResponse {
              * name : 测试付款
              * comm_id : 21
              * content:111
+             * "price_total":"10.00"
              * order_status_text : 待发货
              * img_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101734173869.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/10/35822201901101734600197.jpg"]
              */
 
+            private String price_total;
             private int id;
             private String comm_no;
             private int order_type;
@@ -163,6 +169,7 @@ public class ExOutOrderResponse {
             }
 
             private String content;
+
             public int getId() {
                 return id;
             }

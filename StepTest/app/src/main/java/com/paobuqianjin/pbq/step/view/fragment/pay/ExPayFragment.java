@@ -154,32 +154,65 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
             LocalLog.d(TAG, "addr_id =" + addr_id);
             dataBean = (ExInOrderResponse.DataBeanX.DataBean) intent.getSerializableExtra("ex_in_pay");
             if (goodBean != null && !TextUtils.isEmpty(addr_id)) {
-                SpannableString stepDollarSpan = new SpannableString(String.valueOf(goodBean.getCredit()) + "步币");
-                stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(goodBean.getCredit()).length(),
-                        (String.valueOf(goodBean.getCredit()) + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-                stepDollar.setText(stepDollarSpan);
+
+                String showMoney = "";
+                if (Float.parseFloat(goodBean.getPrice()) > 0.0f) {
+                    showMoney = "￥" + goodBean.getPrice() + "+";
+                }
+                if (goodBean.getCredit() > 0) {
+                    if (TextUtils.isEmpty(showMoney)) {
+                        showMoney += String.valueOf(goodBean.getCredit()) + "步币";
+                    } else {
+                        showMoney += goodBean.getCredit() + "步币";
+                    }
+                }
+                if (goodBean.getCredit() > 0) {
+                    SpannableString stepDollarSpan = new SpannableString(showMoney);
+                    stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), showMoney.length() - 2,
+                            showMoney.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                    stepDollar.setText(stepDollarSpan);
+                } else {
+                    stepDollar.setText(showMoney);
+                }
                 Presenter.getInstance(getContext()).getPlaceErrorImage(goodPicture, goodBean.getImgs_arr().get(0)
                         , R.drawable.null_bitmap, R.drawable.null_bitmap);
-                if (Float.parseFloat(goodBean.getExpress_price()) > 0.0f) {
+                if (Float.parseFloat(goodBean.getExpress_price()) > 0.0f || Float.parseFloat(goodBean.getPrice()) > 0.0f) {
                     price.setText("快递:" + goodBean.getExpress_price() + "元");
                  /*   price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);*/
                 } else {
                     payWx.setVisibility(View.GONE);
                 }
                 goodName.setText(goodBean.getName());
-                express_price = goodBean.getExpress_price();
+                express_price = String.valueOf(Float.parseFloat(goodBean.getExpress_price()) + Float.parseFloat(goodBean.getPrice()));
             } else if (dataBean != null) {
                 LocalLog.d(TAG, "从未支付订单跳转来");
-                SpannableString stepDollarSpan = new SpannableString(dataBean.getCredit_total() + "步币");
-                stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(dataBean.getCredit_total()).length(),
-                        (dataBean.getCredit_total() + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-                stepDollar.setText(stepDollarSpan);
+                String showMoney = "";
+                if (Float.parseFloat(dataBean.getPrice_total()) > 0.0f) {
+                    showMoney = "￥" + dataBean.getPrice_total() + "+";
+                }
+                if (Integer.parseInt(dataBean.getCredit_total()) > 0) {
+                    if (TextUtils.isEmpty(showMoney)) {
+                        showMoney += String.valueOf(dataBean.getCredit_total()) + "步币";
+                    } else {
+                        showMoney += dataBean.getCredit_total() + "步币";
+                    }
+                }
+                if (Integer.parseInt(dataBean.getCredit_total()) > 0) {
+                    SpannableString stepDollarSpan = new SpannableString(showMoney);
+                    stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), showMoney.length() - 2,
+                            showMoney.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                    stepDollar.setText(stepDollarSpan);
+                } else {
+                    stepDollar.setText(showMoney);
+                }
                 Presenter.getInstance(getContext()).getPlaceErrorImage(goodPicture, dataBean.getImg_arr().get(0)
                         , R.drawable.null_bitmap, R.drawable.null_bitmap);
-                express_price = dataBean.getExpress_price();
+                express_price = String.valueOf(Float.parseFloat(dataBean.getExpress_price()) + Float.parseFloat(dataBean.getPrice_total()));
+                ;
                 payOrderNo = dataBean.getId();
-                if (Float.parseFloat(dataBean.getExpress_price()) > 0.0f) {
-                    price.setText("快递:" + dataBean.getExpress_price() + "元");
+                if (Float.parseFloat(dataBean.getExpress_price()) > 0.0f || Float.parseFloat(dataBean.getPrice_total()) > 0.0f) {
+                    if (Float.parseFloat(dataBean.getExpress_price()) > 0.0f)
+                        price.setText("快递:" + dataBean.getExpress_price() + "元");
                  /*   price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);*/
                 } else {
                     payWx.setVisibility(View.GONE);
@@ -364,8 +397,9 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                 try {
                     ExOrderNumResponse orderNumResponse = new Gson().fromJson(s, ExOrderNumResponse.class);
                     payOrderNo = orderNumResponse.getData().getComm_order_id();
-                    payFloat = Float.parseFloat(orderNumResponse.getData().getShipping_money());
-                    payOrder(orderNumResponse.getData().getComm_order_id(), orderNumResponse.getData().getShipping_money());
+                    payFloat = Float.parseFloat(orderNumResponse.getData().getShipping_money()) + Float.parseFloat(orderNumResponse.getData().getComm_money());
+                    payOrder(orderNumResponse.getData().getComm_order_id(), String.valueOf(Float.parseFloat(orderNumResponse.getData().getShipping_money())
+                            + Float.parseFloat(orderNumResponse.getData().getComm_money())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

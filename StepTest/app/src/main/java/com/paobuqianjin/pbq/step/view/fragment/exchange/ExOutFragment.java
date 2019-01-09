@@ -270,6 +270,9 @@ public class ExOutFragment extends BaseFragment implements SwipeMenuRecyclerView
                 case "取消订单":
                     cancelOrder(String.valueOf(listData.get(position).getId()));
                     break;
+                case "确认退款":
+                    quitOrder(String.valueOf(listData.get(position).getId()));
+                    break;
                 case "退款":
                     quitOrder(String.valueOf(listData.get(position).getId()));
                     break;
@@ -319,7 +322,7 @@ public class ExOutFragment extends BaseFragment implements SwipeMenuRecyclerView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RELEASE_TR && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
-        } else if (requestCode == ORDER_DETAIL && requestCode == Activity.RESULT_OK) {
+        } else if (requestCode == ORDER_DETAIL && resultCode == Activity.RESULT_OK) {
             getExOrderByAction(1);
         }
     }

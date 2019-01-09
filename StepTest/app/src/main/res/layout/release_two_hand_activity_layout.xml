@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/linear_rel"
         android:layout_below="@+id/banner"
+        android:layout_marginBottom="60dp"
         android:scrollbars="none">
 
 
@@ -165,6 +166,53 @@
                     android:gravity="right"
                     android:hint="物品原价"
                     android:inputType="number"
+                    android:textColor="#ff161727"
+                    android:textColorHint="#ff8a8a8a"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="14dp"
+                    android:text="元"
+                    android:textColor="#ff111111"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/now_price_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="定价"
+                    android:textColor="#ff161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/now_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="物品定价"
+                    android:inputType="numberDecimal"
                     android:textColor="#ff161727"
                     android:textColorHint="#ff8a8a8a"
                     android:textSize="15dp" />
@@ -379,9 +427,9 @@
             </LinearLayout>
 
             <View
-                android:background="@color/color_f9f9f9"
                 android:layout_width="match_parent"
-                android:layout_height="1dp" />
+                android:layout_height="1dp"
+                android:background="@color/color_f9f9f9" />
         </LinearLayout>
     </ScrollView>
 
@@ -390,8 +438,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <Button
@@ -401,8 +449,8 @@
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@drawable/confirm_ng"
+            android:gravity="center"
             android:stateListAnimator="@null"
             android:text="确定发布"
             android:textColor="@color/color_fefefe"

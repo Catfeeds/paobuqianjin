@@ -10,7 +10,7 @@
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,20 +38,22 @@
                     android:layout_marginRight="27dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="名门闺秀化妆品套装化妆品套装化妆品套装"
+                    android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="15dp" />
             </LinearLayout>
 
             <EditText
+                android:id="@+id/content_edit"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:background="@null"
                 android:gravity="top"
+                android:hint="分享您对宝贝的使用心得～(100字以内)"
                 android:maxLength="100"
                 android:padding="15dp"
-                android:text="分享您对宝贝的使用心得～(100字以内)"
-                android:textColor="#ff999999"
+                android:textColor="@color/color_161727"
+                android:textColorHint="#ff999999"
                 android:textSize="15dp" />
             <!--<GridView-->
             <io.rong.imkit.model.RongGridView
@@ -91,7 +93,7 @@
                         android:id="@+id/review_h"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/good_review" />
+                        android:src="@drawable/bad_review" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="好评"
+                        android:text="中评"
                         android:textColor="#fffd403f"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -143,7 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="好评"
+                        android:text="差评"
                         android:textColor="#fffd403f"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -185,6 +187,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -199,7 +202,6 @@
                     android:id="@+id/trf_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:overScrollMode="never">
 
                 </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
@@ -208,6 +210,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -222,7 +225,6 @@
                     android:id="@+id/taidu_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:overScrollMode="never">
 
                 </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>

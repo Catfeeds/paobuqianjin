@@ -88,6 +88,7 @@ public class LineChartManager {
         leftYAxis.setDrawGridLines(false);
         //设置Y轴网格线为虚线
         leftYAxis.enableGridDashedLine(10f, 10f, 0f);
+        leftYAxis.setEnabled(false);
         rightYAxis.setEnabled(false);
 
         //X轴设置显示位置在底部

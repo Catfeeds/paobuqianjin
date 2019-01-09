@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.exchange;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,10 +81,18 @@ public class ExPubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ((PubItemViewHolder) holder).goodName.setText(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getName());
                 ((PubItemViewHolder) holder).goodDes.setText(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getContent());
                 String money_credit = "";
-                if (Float.parseFloat(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getExpress_price()) > 0.0f) {
-                    money_credit += "￥" + ((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getExpress_price() + "+";
+                if (Float.parseFloat(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getExpress_price()) > 0.0f ||
+                        Float.parseFloat(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getPrice()) > 0.0f) {
+                    money_credit = "￥" + String.valueOf(Float.parseFloat(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getExpress_price())
+                            + Float.parseFloat(((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getPrice()));
                 }
-                money_credit += ((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getCredit() + "步币";
+                if (((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getCredit() > 0) {
+                    if (TextUtils.isEmpty(money_credit)) {
+                        money_credit += ((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getCredit() + "步币";
+                    } else {
+                        money_credit += "+" + ((ExPublistResponse.DataBeanX.DataBean) mData.get(position)).getCredit() + "步币";
+                    }
+                }
                 ((PubItemViewHolder) holder).priceDes.setText(money_credit);
 
                 ((PubItemViewHolder) holder).tvLeft.setOnClickListener(new View.OnClickListener() {

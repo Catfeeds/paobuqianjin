@@ -40,6 +40,10 @@ public class OrderStatusResponse {
     }
 
     public static class DataBean {
+        public String getPrice_total() {
+            return price_total;
+        }
+
         /**
          * id : 49
          * comm_no : COM20181231055146269
@@ -71,8 +75,10 @@ public class OrderStatusResponse {
          * express_no : 8033023666676880171
          * consign_time : 0
          * order_status_text : 待收货
+         * price_total:
          */
 
+        private String  price_total;
         private int id;
         private String comm_no;
         private int shipping_type;

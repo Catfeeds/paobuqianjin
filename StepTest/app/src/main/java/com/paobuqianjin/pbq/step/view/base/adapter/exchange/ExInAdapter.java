@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.CircularImageView;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExInOrderResponse;
@@ -50,14 +51,19 @@ public class ExInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (Float.parseFloat(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price()) > 0.0f) {
                 money_credit += "￥" + ((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price() + "+";
             }
-            money_credit += ((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total() + "步币";
+            if (Integer.parseInt(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total()) > 0) {
+                money_credit += ((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total() + "步币";
+            }
             exOutViewHolder.goodPrice.setText(money_credit);
             exOutViewHolder.goodJian.setText(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getNumber());
-            String priceToStr = "合计 ￥" + ((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price();
-            SpannableString spannablePrice = new SpannableString(priceToStr);
-            spannablePrice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_161727)), "合计 ￥".length(),
-                    priceToStr.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-            exOutViewHolder.priceTotal.setText(spannablePrice);
+            if (Float.parseFloat(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price()) + Float.parseFloat(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getPrice_total()) > 0.0f) {
+                String priceToStr = "合计 ￥" + String.valueOf(Float.parseFloat(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price())
+                        + Float.parseFloat(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getPrice_total()));
+                SpannableString spannablePrice = new SpannableString(priceToStr);
+                spannablePrice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_161727)), "合计 ￥".length(),
+                        priceToStr.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                exOutViewHolder.priceTotal.setText(spannablePrice);
+            }
             exOutViewHolder.goodDes.setText(((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getContent());
             switch (((ExInOrderResponse.DataBeanX.DataBean) data.get(position)).getOrder_status()) {
                 case -1:

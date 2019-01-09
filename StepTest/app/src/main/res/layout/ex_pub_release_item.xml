@@ -47,22 +47,20 @@
                     android:id="@+id/good_des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="2dp"
                     android:text=""
                     android:textColor="#ff999999"
                     android:textSize="13dp" />
+                <TextView
+                    android:id="@+id/price_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:layout_marginTop="2dp"
+                    android:textColor="#ff111111"
+                    android:textSize="11dp" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/price_des"
-                android:layout_width="wrap_content"
-                android:layout_height="49dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="14dp"
-                android:gravity="top"
-                android:text=""
-                android:textColor="#ff111111"
-                android:textSize="11dp" />
         </LinearLayout>
 
         <LinearLayout

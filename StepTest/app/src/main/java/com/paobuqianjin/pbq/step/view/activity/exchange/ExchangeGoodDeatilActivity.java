@@ -114,6 +114,8 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
     BounceScrollView goodScroll;
     @Bind(R.id.want_ico)
     ImageView wantIco;
+    @Bind(R.id.need_num)
+    TextView needNum;
     private String[] titles = {"商品详情", "关于商家"};
     private Fragment[] fragments;
     private int mCurrentIndex = 0;
@@ -440,15 +442,33 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                     Presenter.getInstance(ExchangeGoodDeatilActivity.this).getPlaceErrorImage(headIco, exGoodDetailResponse.getData().getUser_info().getAvatar()
                             , R.drawable.default_head_ico, R.drawable.default_head_ico);
                     dearName.setText(exGoodDetailResponse.getData().getUser_info().getNickname());
-                    SpannableString stepDollarSpan = new SpannableString(String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币");
-                    stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(exGoodDetailResponse.getData().getCredit()).length(),
-                            (String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-                    stepDollor.setText(stepDollarSpan);
+                    String showMoney = "";
+                    if (Float.parseFloat(exGoodDetailResponse.getData().getPrice()) > 0.0f) {
+                        showMoney = "￥" + exGoodDetailResponse.getData().getPrice() + "+";
+                    }
+                    if (exGoodDetailResponse.getData().getCredit() > 0) {
+                        if (TextUtils.isEmpty(showMoney)) {
+                            showMoney = String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币";
+                        } else {
+                            showMoney += String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币";
+                        }
+                    }
+                    if (exGoodDetailResponse.getData().getCredit() > 0) {
+                        SpannableString stepDollarSpan = new SpannableString(showMoney);
+                        stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), showMoney.length() - 2,
+                                showMoney.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                        stepDollor.setText(stepDollarSpan);
+                    } else {
+                        stepDollor.setText(showMoney);
+                    }
                     talkName = exGoodDetailResponse.getData().getUser_info().getNickname();
                     userId = exGoodDetailResponse.getData().getUserid();
                     if (Float.parseFloat(exGoodDetailResponse.getData().getOld_price()) > 0.0f) {
                         srcPrice.setText("原价" + exGoodDetailResponse.getData().getOld_price() + "元");
                         srcPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+                    }
+                    if (exGoodDetailResponse.getData().getNeed_count() > 0) {
+                        needNum.setText(exGoodDetailResponse.getData().getNeed_count() + "人想要");
                     }
 
                     isNeed = exGoodDetailResponse.getData().getIs_need();

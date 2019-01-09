@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.paobuqianjin.pbq.step.customview.CircularImageView;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExAddResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ExGoodDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ExPublistResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -112,11 +114,27 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
                 Presenter.getInstance(this).getPlaceErrorImage(saleHeadIco, goodBean.getUser_info().getAvatar()
                         , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 saleName.setText(goodBean.getUser_info().getNickname());
-                SpannableString stepDollarSpan = new SpannableString(String.valueOf(goodBean.getCredit()) + "步币");
-                stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(goodBean.getCredit()).length(),
-                        (String.valueOf(goodBean.getCredit()) + "步币").length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-                stepDollars.setText(stepDollarSpan);
-                stepDollar.setText(stepDollarSpan);
+                String money_credit = "";
+                if (Float.parseFloat(goodBean.getExpress_price()) > 0.0f ||
+                        Float.parseFloat(goodBean.getPrice()) > 0.0f) {
+                    money_credit = "￥" + String.valueOf(Float.parseFloat(goodBean.getPrice())) + "+";
+                }
+                if (goodBean.getCredit() > 0) {
+                    if (TextUtils.isEmpty(money_credit)) {
+                        money_credit += goodBean.getCredit() + "步币";
+                    } else {
+                        money_credit += goodBean.getCredit() + "步币";
+                    }
+                }
+                if (goodBean.getCredit() > 0) {
+                    SpannableString stepDollarSpan = new SpannableString(money_credit);
+                    stepDollarSpan.setSpan(new AbsoluteSizeSpan(12, true), money_credit.length() - 2,
+                            money_credit.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                    stepDollars.setText(stepDollarSpan);
+                    stepDollar.setText(String.valueOf(goodBean.getCredit()) + "步币");
+                } else {
+                    stepDollars.setText(money_credit);
+                }
                 Presenter.getInstance(this).getPlaceErrorImage(goodPicture, goodBean.getImgs_arr().get(0)
                         , R.drawable.bitmap_null, R.drawable.bitmap_null);
                 if (Float.parseFloat(goodBean.getOld_price()) > 0.0f) {
@@ -127,8 +145,8 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
                 if (Float.parseFloat(goodBean.getExpress_price()) > 0.0f) {
                     triffMoney.setText("快递: ￥" + goodBean.getExpress_price());
                     trfFree.setText("快递: ￥" + goodBean.getExpress_price());
-                    needPay.setText("合计: ￥" + goodBean.getExpress_price());
                 }
+                needPay.setText("合计: ￥" + String.valueOf(Float.parseFloat(goodBean.getExpress_price()) + Float.parseFloat(goodBean.getPrice())));
                 goodName.setText(goodBean.getName());
 
             }
@@ -179,7 +197,7 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
                 break;
             case R.id.confirm_order:
                 UserInfoResponse.DataBean userInfo = Presenter.getInstance(this).getCurrentUser();
-                if(dataBean == null){
+                if (dataBean == null) {
                     PaoToastUtils.showLongToast(this, "请先选择地址！");
                     return;
                 }

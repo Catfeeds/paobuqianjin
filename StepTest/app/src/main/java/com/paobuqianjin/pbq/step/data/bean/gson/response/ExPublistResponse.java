@@ -114,7 +114,20 @@ public class ExPublistResponse {
         }
 
         public static class DataBean implements Serializable {
+            public String getPrice() {
+                return price;
+            }
+
+            public String getCate_id() {
+                return cate_id;
+            }
+
+            public String getCategroy_name() {
+                return categroy_name;
+            }
+
             /**
+             * "price":"10.00"
              * id : 8
              * userid : 35905
              * name : 哦哦哦
@@ -127,8 +140,11 @@ public class ExPublistResponse {
              * status : 1
              * create_time : 1546055562
              * img_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2019/1/8/35905201901081152796476.jpg"]
+             * "cate_id":1,"categroy_name":"其他"
              */
-
+            private String cate_id;
+            private String categroy_name;
+            private String price;
             private int id;
             private int userid;
             private String name;

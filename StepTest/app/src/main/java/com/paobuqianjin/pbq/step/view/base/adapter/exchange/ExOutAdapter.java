@@ -65,10 +65,15 @@ public class ExOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 case -1:
                     exOutViewHolder.statusStr.setText("退款中");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
+                    exOutViewHolder.rightTv.setText("确认退款");
+                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case -2:
                     exOutViewHolder.statusStr.setText("已退款");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
+                    exOutViewHolder.rightTv.setVisibility(View.GONE);
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
                     break;
                 case 0:
                     exOutViewHolder.statusStr.setText("待付款");

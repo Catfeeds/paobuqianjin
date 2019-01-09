@@ -122,6 +122,14 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
     TextView styleTv;
     @Bind(R.id.linear_rel)
     LinearLayout linearRel;
+    @Bind(R.id.now_price)
+    EditText nowPrice;
+    @Bind(R.id.now_price_span)
+    LinearLayout nowPriceSpan;
+    @Bind(R.id.select_span)
+    LinearLayout selectSpan;
+    @Bind(R.id.pay_by)
+    ImageView payBy;
     private GridAddPic2Adapter adapter;
     public static final int MAX_SIZE = 9;
     private View popupCircleTypeView;
@@ -229,23 +237,33 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             }
         });
         if (dataBean != null) {
-            express_status = dataBean.getExpress_status();
-            if (!TextUtils.isEmpty(dataBean.getName()))
-                goodTitle.setText(dataBean.getName());
-            if (!TextUtils.isEmpty(dataBean.getContent()))
-                etInformation.setText(dataBean.getContent());
-            if (dataBean.getCredit() > 0)
-                needStepDollar.setText(String.valueOf(dataBean.getCredit()));
-            if (!TextUtils.isEmpty(dataBean.getExpress_price()))
-                needTriffDollar.setText(dataBean.getExpress_price());
-            if (!TextUtils.isEmpty(dataBean.getOld_price()))
-                fullPrice.setText(dataBean.getOld_price());
-            if (dataBean.getStatus() == 1) {
-                setFreeTrf(false);
-            } else {
-                setFreeTrf(true);
+            try {
+                express_status = dataBean.getExpress_status();
+                if (!TextUtils.isEmpty(dataBean.getName()))
+                    goodTitle.setText(dataBean.getName());
+                if (!TextUtils.isEmpty(dataBean.getContent()))
+                    etInformation.setText(dataBean.getContent());
+                if (dataBean.getCredit() > 0)
+                    needStepDollar.setText(String.valueOf(dataBean.getCredit()));
+                if (!TextUtils.isEmpty(dataBean.getExpress_price()) && Float.parseFloat(dataBean.getExpress_price()) > 0.0f)
+                    needTriffDollar.setText(dataBean.getExpress_price());
+                if (!TextUtils.isEmpty(dataBean.getOld_price()) && Float.parseFloat(dataBean.getOld_price()) > 0.0f)
+                    fullPrice.setText(dataBean.getOld_price());
+                if (dataBean.getStatus() == 1) {
+                    setFreeTrf(false);
+                } else {
+                    setFreeTrf(true);
+                }
+                if (!TextUtils.isEmpty(dataBean.getCategroy_name())) {
+                    styleTv.setText(dataBean.getCategroy_name());
+                }
+                if (!TextUtils.isEmpty(dataBean.getPrice()) && Float.parseFloat(dataBean.getPrice()) > 0.0f) {
+                    nowPrice.setText(dataBean.getPrice());
+                }
+                btnConfirm.setText("确定");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            btnConfirm.setText("确定");
         }
         if (dataBean != null && dataBean.getImg_arr() != null && dataBean.getImg_arr().size() > 0) {
             List<SelectPicBean> list = new ArrayList<>();
@@ -381,6 +399,7 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             param.put("images", images);
         }
 
+
         if (param.size() < 1) {
             PaoToastUtils.showLongToast(this, "没做任何修改!");
             return;
@@ -478,6 +497,15 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             if (!TextUtils.isEmpty(styleCode.get(styleTv.getText().toString().trim()))) {
                 param.put("cate_id", styleCode.get(styleTv.getText().toString().trim()));
             }
+        }
+
+        if (!TextUtils.isEmpty(nowPrice.getText().toString().trim())) {
+            param.put("price", nowPrice.getText().toString().trim());
+        }
+
+        if (TextUtils.isEmpty(nowPrice.getText().toString()) && TextUtils.isEmpty(needStepDollar.getText().toString().trim())) {
+            PaoToastUtils.showLongToast(this, "定价或步币必填一个");
+            return;
         }
 
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlAddExChange, param, new PaoCallBack() {

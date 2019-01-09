@@ -78,8 +78,6 @@ public class SaleManFragment extends BaseFragment {
             gridView.setLayoutManager(linearLayoutManager);
             gridView.setHasFixedSize(true);
             gridView.setNestedScrollingEnabled(false);
-            gridView.setAdapter(exMoreAdapter);
-            gridView.addItemDecoration(new SpaceItemDecoration(7));
             gridView.setSwipeItemClickListener(new SwipeItemClickListener() {
                 @Override
                 public void onItemClick(View itemView, int position) {
@@ -89,6 +87,8 @@ public class SaleManFragment extends BaseFragment {
                     startActivity(intent);
                 }
             });
+            gridView.setAdapter(exMoreAdapter);
+            gridView.addItemDecoration(new SpaceItemDecoration(7));
 
         } catch (Exception e) {
             e.printStackTrace();
