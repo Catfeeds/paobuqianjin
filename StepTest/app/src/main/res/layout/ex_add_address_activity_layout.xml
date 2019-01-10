@@ -137,7 +137,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="14dp"
             android:layout_weight="1"
-            android:maxLength="20"
+            android:ellipsize="end"
+            android:maxLength="32"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -177,7 +178,6 @@
             android:layout_weight="1"
             android:background="@null"
             android:hint="可以不那么精确"
-            android:maxLength="8"
             android:textColor="@color/color_161727"
             android:textColorHint="#ff999999"
             android:textSize="15dp" />

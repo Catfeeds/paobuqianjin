@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,17 +50,31 @@ public class ExOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     R.drawable.bitmap_null, R.drawable.bitmap_null);
             exOutViewHolder.goodName.setText(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getName());
             String money_credit = "";
-            if (Float.parseFloat(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price()) > 0.0f) {
-                money_credit += "￥" + ((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price() + "+";
+            if (Float.parseFloat(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getPrice_total()) > 0.0f) {
+                money_credit += "￥" + ((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getPrice_total();
             }
-            money_credit += ((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total() + "步币";
+            if (Integer.parseInt(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total()) > 0) {
+                if (!TextUtils.isEmpty(money_credit)) {
+                    money_credit += "+" + ((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total() + "步币";
+                } else {
+                    money_credit += ((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getCredit_total() + "步币";
+                }
+            }
+
             exOutViewHolder.goodPrice.setText(money_credit);
             exOutViewHolder.goodJian.setText(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getNumber());
-            String priceToStr = "合计 ￥" + ((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price();
-            SpannableString spannablePrice = new SpannableString(priceToStr);
-            spannablePrice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_161727)), "合计 ￥".length(),
-                    priceToStr.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-            exOutViewHolder.priceTotal.setText(spannablePrice);
+            String priceToStr = "";
+            if (Float.parseFloat(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price()) + Float.parseFloat(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getPrice_total()) > 0) {
+                priceToStr = "合计 ￥" + String.valueOf(Float.parseFloat(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getExpress_price())
+                        + Float.parseFloat(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getPrice_total()));
+            }
+
+            if (!TextUtils.isEmpty(priceToStr)) {
+                SpannableString spannablePrice = new SpannableString(priceToStr);
+                spannablePrice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_161727)), "合计 ￥".length(),
+                        priceToStr.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                exOutViewHolder.priceTotal.setText(spannablePrice);
+            }
             exOutViewHolder.goodDes.setText(((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getContent());
             switch (((ExOutOrderResponse.DataBeanX.DataBean) data.get(position)).getOrder_status()) {
                 case -1:
@@ -67,6 +82,7 @@ public class ExOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
                     exOutViewHolder.rightTv.setText("确认退款");
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
                     exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case -2:
@@ -81,6 +97,8 @@ public class ExOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     exOutViewHolder.rightTv.setText("取消订单");
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     /*exOutViewHolder.rightTv.setBackground();*/
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
+                    exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case 1:
                     exOutViewHolder.statusStr.setText("待发货");
@@ -89,30 +107,38 @@ public class ExOutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     exOutViewHolder.rightTv.setText("立即发货");
                     exOutViewHolder.leftTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.leftTv.setVisibility(View.VISIBLE);
+                    exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case 2:
                     exOutViewHolder.statusStr.setText("待收货");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
                     exOutViewHolder.rightTv.setText("查看物流");
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
+                    exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case 3:
                     exOutViewHolder.statusStr.setText("待评价");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
                     exOutViewHolder.rightTv.setText("查看物流");
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
+                    exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case 4:
                     exOutViewHolder.statusStr.setText("交易成功");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
                     exOutViewHolder.rightTv.setText("查看物流");
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
+                    exOutViewHolder.rightTv.setVisibility(View.VISIBLE);
                     break;
                 case 5:
                     exOutViewHolder.statusStr.setText("已关闭");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
-                    exOutViewHolder.rightTv.setText("查看物流");
-                    exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
+                    exOutViewHolder.leftTv.setVisibility(View.GONE);
+                    exOutViewHolder.rightTv.setVisibility(View.GONE);
                     break;
             }
             exOutViewHolder.leftTv.setOnClickListener(new View.OnClickListener() {

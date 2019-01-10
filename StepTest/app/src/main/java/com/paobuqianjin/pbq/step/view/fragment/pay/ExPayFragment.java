@@ -157,13 +157,13 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
 
                 String showMoney = "";
                 if (Float.parseFloat(goodBean.getPrice()) > 0.0f) {
-                    showMoney = "￥" + goodBean.getPrice() + "+";
+                    showMoney = "￥" + goodBean.getPrice();
                 }
                 if (goodBean.getCredit() > 0) {
                     if (TextUtils.isEmpty(showMoney)) {
                         showMoney += String.valueOf(goodBean.getCredit()) + "步币";
                     } else {
-                        showMoney += goodBean.getCredit() + "步币";
+                        showMoney += "+" + goodBean.getCredit() + "步币";
                     }
                 }
                 if (goodBean.getCredit() > 0) {
@@ -188,13 +188,13 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                 LocalLog.d(TAG, "从未支付订单跳转来");
                 String showMoney = "";
                 if (Float.parseFloat(dataBean.getPrice_total()) > 0.0f) {
-                    showMoney = "￥" + dataBean.getPrice_total() + "+";
+                    showMoney = "￥" + dataBean.getPrice_total();
                 }
                 if (Integer.parseInt(dataBean.getCredit_total()) > 0) {
                     if (TextUtils.isEmpty(showMoney)) {
                         showMoney += String.valueOf(dataBean.getCredit_total()) + "步币";
                     } else {
-                        showMoney += dataBean.getCredit_total() + "步币";
+                        showMoney += "+" + dataBean.getCredit_total() + "步币";
                     }
                 }
                 if (Integer.parseInt(dataBean.getCredit_total()) > 0) {
@@ -434,7 +434,11 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(s, ErrorCode.class);
                                 if ("密码正确".equals(errorCode.getMessage())) {
-                                    payEx(addr_id, String.valueOf(goodBean.getId()));
+                                    if (TextUtils.isEmpty(payOrderNo)) {
+                                        payEx(addr_id, String.valueOf(goodBean.getId()));
+                                    } else {
+                                        payOrder(payOrderNo, String.valueOf(express_price));
+                                    }
                                 } else {
 
                                 }
@@ -564,11 +568,7 @@ public class ExPayFragment extends BaseBarStyleTextViewFragment implements BaseB
                         return;
                     }
                 }
-                if (TextUtils.isEmpty(payOrderNo)) {
-                    realPay();
-                } else {
-                    payOrder(payOrderNo, String.valueOf(express_price));
-                }
+                realPay();
                 break;
         }
     }

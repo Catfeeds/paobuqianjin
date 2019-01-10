@@ -429,6 +429,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:background="@color/color_f9f9f9" />
         </LinearLayout>
     </ScrollView>

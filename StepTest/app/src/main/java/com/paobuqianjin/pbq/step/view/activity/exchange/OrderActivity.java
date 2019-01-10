@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.rong.imlib.model.Conversation;
 
 /**
  * Created by pbq on 2018/12/28.
@@ -99,6 +101,8 @@ public class OrderActivity extends BaseBarActivity {
     private ExOutOrderResponse.DataBeanX.DataBean dataBean;
     private ExInOrderResponse.DataBeanX.DataBean inBean;
     private final int RELEASE_TR = 4;
+    private final int REQUEST_PAY = 6;
+    String order_no;
 
     @Override
     protected String title() {
@@ -116,10 +120,12 @@ public class OrderActivity extends BaseBarActivity {
             inBean = (ExInOrderResponse.DataBeanX.DataBean) intent.getSerializableExtra("comm_order_no_in");
             if (dataBean != null && !TextUtils.isEmpty(dataBean.getComm_no())) {
                 getOrderTail(dataBean.getComm_no());
+                order_no = dataBean.getComm_no();
                 leftTv.setOnClickListener(onClickListener);
                 rightTv.setOnClickListener(onClickListener);
             } else if (inBean != null && !TextUtils.isEmpty(inBean.getComm_no())) {
                 getOrderTail(inBean.getComm_no());
+                order_no = inBean.getComm_no();
                 leftTv.setOnClickListener(onClickListener);
                 rightTv.setOnClickListener(onClickListener);
             }
@@ -146,6 +152,28 @@ public class OrderActivity extends BaseBarActivity {
             }
         });
     }
+
+
+    private void cancelOrderBy(String comm_id) {
+        Map<String, String> param = new HashMap<>();
+        param.put("comm_order_id", comm_id);
+        param.put("type", "buy");
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlExCancel, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(OrderActivity.this, errorBean.getMessage());
+                }
+            }
+        });
+    }
+
 
     private void quitOrderBuy(String comm_id) {
         Map<String, String> param = new HashMap<>();
@@ -196,7 +224,7 @@ public class OrderActivity extends BaseBarActivity {
                         if (dataBean != null) {
                             cancelOrder(String.valueOf(dataBean.getId()));
                         } else if (inBean != null) {
-                            cancelOrder(String.valueOf(inBean.getId()));
+                            cancelOrderBy(String.valueOf(inBean.getId()));
                         }
                         break;
                     case "确认退款":
@@ -215,7 +243,7 @@ public class OrderActivity extends BaseBarActivity {
                         if (dataBean != null) {
                             Intent intentRe = new Intent();
                             intentRe.setClass(OrderActivity.this, AddExTriffActivity.class);
-                            intentRe.putExtra("comm_order_id", dataBean.getId());
+                            intentRe.putExtra("comm_order_id", String.valueOf(dataBean.getId()));
                             startActivityForResult(intentRe, RELEASE_TR);
                         }
                         break;
@@ -225,13 +253,22 @@ public class OrderActivity extends BaseBarActivity {
                             intentTr.setClass(OrderActivity.this, ExTriffActivity.class);
                             intentTr.putExtra("comm_order_no", dataBean);
                             startActivity(intentTr);
-                        } else {
+                        } else if (inBean != null) {
                             Intent intentTr = new Intent();
                             intentTr.setClass(OrderActivity.this, ExTriffActivity.class);
                             intentTr.putExtra("comm_order_no", inBean);
                             startActivity(intentTr);
                         }
                         break;
+                    case "立即支付":
+                        if (inBean != null) {
+                            Intent intentRe = new Intent();
+                            intentRe.setClass(OrderActivity.this, ExpayActivity.class);
+                            intentRe.putExtra("ex_in_pay", inBean);
+                            startActivityForResult(intentRe, REQUEST_PAY);
+                        }
+                        break;
+
                 }
             }
         }
@@ -244,7 +281,7 @@ public class OrderActivity extends BaseBarActivity {
             @Override
             protected void onSuc(String s) {
                 try {
-                    OrderStatusResponse orderStatusResponse = new Gson().fromJson(s, OrderStatusResponse.class);
+                    final OrderStatusResponse orderStatusResponse = new Gson().fromJson(s, OrderStatusResponse.class);
                     statusStr.setText(orderStatusResponse.getData().getOrder_status_text());
                     orderNo.setText("订单编号 " + orderStatusResponse.getData().getComm_no());
                     String time = DateTimeUtil.formatDateTime(orderStatusResponse.getData().getCreate_time() * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM_SS);
@@ -268,16 +305,29 @@ public class OrderActivity extends BaseBarActivity {
 
                     Presenter.getInstance(OrderActivity.this).getPlaceErrorImage(saleHeadIco, orderStatusResponse.getData().getUser_avatar()
                             , R.drawable.default_head_ico, R.drawable.default_head_ico);
+                    saleHeadIco.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!TextUtils.isEmpty(orderStatusResponse.getData().getUser_nickname())) {
+                                RongYunChatUtils.getInstance().chatTo(OrderActivity.this
+                                        , Conversation.ConversationType.PRIVATE
+                                        , orderStatusResponse.getData().getUserid() + ""
+                                        , orderStatusResponse.getData().getUser_nickname());
+
+                            }
+                        }
+                    });
+
                     saleName.setText(orderStatusResponse.getData().getUser_nickname());
                     String showMoney = "";
                     if (Float.parseFloat(orderStatusResponse.getData().getPrice_total()) > 0.0f) {
-                        showMoney = "￥" + orderStatusResponse.getData().getPrice_total() + "+";
+                        showMoney = "￥" + orderStatusResponse.getData().getPrice_total();
                     }
                     if (Integer.parseInt(orderStatusResponse.getData().getCredit_total()) > 0) {
                         if (TextUtils.isEmpty(showMoney)) {
                             showMoney = String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币";
                         } else {
-                            showMoney += String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币";
+                            showMoney += "+" + String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币";
                         }
                     }
                     if (Integer.parseInt(orderStatusResponse.getData().getCredit_total()) > 0) {
@@ -287,7 +337,7 @@ public class OrderActivity extends BaseBarActivity {
                         stepDollars.setText(stepDollarSpan);
                         stepDollar.setText(String.valueOf(orderStatusResponse.getData().getCredit_total()) + "步币");
                     } else {
-                        stepDollar.setText(showMoney);
+                        stepDollars.setText(showMoney);
                     }
                     Presenter.getInstance(OrderActivity.this).getPlaceErrorImage(goodPicture, orderStatusResponse.getData().getImg_url()
                             , R.drawable.bitmap_null, R.drawable.bitmap_null);
@@ -333,7 +383,7 @@ public class OrderActivity extends BaseBarActivity {
                     } else if (inBean != null) {
                         switch (inBean.getOrder_status()) {
                             case 0:
-                                leftTv.setText("删除订单");
+                                leftTv.setText("取消订单");
                                 rightTv.setText("立即支付");
                                 leftTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_gray));
                                 rightTv.setBackground(ContextCompat.getDrawable(OrderActivity.this, R.drawable.ex_order_button_bg_red));
@@ -375,4 +425,15 @@ public class OrderActivity extends BaseBarActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PAY && resultCode == Activity.RESULT_OK) {
+            setResult(Activity.RESULT_OK);
+            finish();
+        } else if (requestCode == RELEASE_TR && resultCode == Activity.RESULT_OK) {
+            setResult(Activity.RESULT_OK);
+            finish();
+        }
+    }
 }

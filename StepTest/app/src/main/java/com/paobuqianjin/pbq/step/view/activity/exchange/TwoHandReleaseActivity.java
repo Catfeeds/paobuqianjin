@@ -177,13 +177,13 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
         if (isFreeTrf) {
             LocalLog.d(TAG, "包邮");
             selectIcon.setImageResource(R.drawable.selected_icon);
-            needStepDollar.setEnabled(false);
-            needStepDollar.setFocusable(false);
+            needTriffDollar.setEnabled(false);
+            needTriffDollar.setFocusable(false);
         } else {
             LocalLog.d(TAG, "不包邮");
             selectIcon.setImageDrawable(null);
-            needStepDollar.setEnabled(true);
-            needStepDollar.setFocusable(true);
+            needTriffDollar.setEnabled(true);
+            needTriffDollar.setFocusable(true);
         }
         this.isFreeTrf = isFreeTrf;
     }
@@ -377,7 +377,6 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
                     e.printStackTrace();
                 }
             } else {
-                PaoToastUtils.showLongToast(this, "邮费必填");
                 express_status = 0;
             }
         } else {
@@ -437,9 +436,6 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
 
         if (!TextUtils.isEmpty(needStepDollar.getText().toString().trim())) {
             param.put("credit", needStepDollar.getText().toString().trim());
-        } else {
-            PaoToastUtils.showLongToast(this, "步币个数");
-            return;
         }
 
         if (!TextUtils.isEmpty(fullPrice.getText().toString())) {
@@ -470,7 +466,6 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
                     e.printStackTrace();
                 }
             } else {
-                PaoToastUtils.showLongToast(this, "邮费必填");
                 express_status = 0;
             }
         } else {

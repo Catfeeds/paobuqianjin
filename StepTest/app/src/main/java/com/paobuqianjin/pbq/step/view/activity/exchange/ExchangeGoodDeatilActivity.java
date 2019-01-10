@@ -444,13 +444,13 @@ public class ExchangeGoodDeatilActivity extends BaseActivity {
                     dearName.setText(exGoodDetailResponse.getData().getUser_info().getNickname());
                     String showMoney = "";
                     if (Float.parseFloat(exGoodDetailResponse.getData().getPrice()) > 0.0f) {
-                        showMoney = "￥" + exGoodDetailResponse.getData().getPrice() + "+";
+                        showMoney = "￥" + exGoodDetailResponse.getData().getPrice();
                     }
                     if (exGoodDetailResponse.getData().getCredit() > 0) {
                         if (TextUtils.isEmpty(showMoney)) {
                             showMoney = String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币";
                         } else {
-                            showMoney += String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币";
+                            showMoney += "+" + String.valueOf(exGoodDetailResponse.getData().getCredit()) + "步币";
                         }
                     }
                     if (exGoodDetailResponse.getData().getCredit() > 0) {

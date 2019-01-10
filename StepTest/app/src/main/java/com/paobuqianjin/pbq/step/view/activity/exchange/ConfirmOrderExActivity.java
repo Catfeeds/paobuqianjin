@@ -117,13 +117,13 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
                 String money_credit = "";
                 if (Float.parseFloat(goodBean.getExpress_price()) > 0.0f ||
                         Float.parseFloat(goodBean.getPrice()) > 0.0f) {
-                    money_credit = "￥" + String.valueOf(Float.parseFloat(goodBean.getPrice())) + "+";
+                    money_credit = "￥" + String.valueOf(Float.parseFloat(goodBean.getPrice()));
                 }
                 if (goodBean.getCredit() > 0) {
                     if (TextUtils.isEmpty(money_credit)) {
                         money_credit += goodBean.getCredit() + "步币";
                     } else {
-                        money_credit += goodBean.getCredit() + "步币";
+                        money_credit += "+" + goodBean.getCredit() + "步币";
                     }
                 }
                 if (goodBean.getCredit() > 0) {
