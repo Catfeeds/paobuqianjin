@@ -402,7 +402,7 @@ public class AddContentActvity extends BaseBarActivity implements BaseBarActivit
 
     @Override
     public void clickRight() {
-        LocalLog.d(TAG,"clickRight() ENTER");
+        LocalLog.d(TAG, "clickRight() ENTER");
         commit();
     }
 
@@ -429,30 +429,32 @@ public class AddContentActvity extends BaseBarActivity implements BaseBarActivit
                     param.put("comment_leavl", String.valueOf(i + 1));
                 }
             }
-
+            int badA = 0;
             for (int i = 0; i < booleanA.length; i++) {
                 if (!booleanA[i]) {
-                    desA--;
+                    badA++;
                 }
             }
+            int badB = 0;
             for (int i = 0; i < booleanB.length; i++) {
                 if (!booleanB[i]) {
-                    desB--;
+                    badB++;
                 }
             }
+            int badC = 0;
             for (int i = 0; i < booleanC.length; i++) {
                 if (!booleanC[i]) {
-                    desC--;
+                    badC++;
                 }
             }
-            param.put("desc_star", String.valueOf(desA));
-            param.put("express_star", String.valueOf(desB));
-            param.put("server_star", String.valueOf(desC));
+            param.put("desc_star", String.valueOf(desA - badA));
+            param.put("express_star", String.valueOf(desB - badB));
+            param.put("server_star", String.valueOf(desC - badC));
 
             Presenter.getInstance(this).postPaoBuSimple(NetApi.urlExPuContent, param, new PaoCallBack() {
                 @Override
                 protected void onSuc(String s) {
-                    PaoToastUtils.showLongToast(AddContentActvity.this,"评论成功");
+                    PaoToastUtils.showLongToast(AddContentActvity.this, "评论成功");
                     setResult(Activity.RESULT_OK);
                     finish();
                 }

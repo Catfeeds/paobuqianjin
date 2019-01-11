@@ -38,7 +38,7 @@
                 android:paddingTop="-7dp"
                 android:scaleType="matrix"
                 android:text="@string/home_page"
-                android:textColor="@color/color_6c71c4"
+                android:textColor="@color/color_232433"
                 android:textSize="12dp" />
 
         </RelativeLayout>

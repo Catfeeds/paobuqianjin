@@ -62,7 +62,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text="月"
-                                android:textColor="@color/color_A6A9D9"
+                                android:textColor="#fffbf1e4"
                                 android:textSize="8dp"
                                 android:visibility="invisible" />
 
@@ -74,7 +74,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text="周"
-                                android:textColor="@color/color_A6A9D9"
+                                android:textColor="#fffbf1e4"
                                 android:textSize="8dp" />
 
                         </LinearLayout>

@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -848,6 +849,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
         stepRecycler.setNestedScrollingEnabled(false);
         rankAdapter = new RankAdapter(getActivity(), stepData);
         stepRecycler.setAdapter(rankAdapter);
+        ((SimpleItemAnimator) stepRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         memberNumDes = (TextView) viewRoot.findViewById(R.id.member_num_des);
         imageButton = (RelativeLayout) viewRoot.findViewById(R.id.image_button);
         imageButton.setOnClickListener(onClickListener);
@@ -1070,6 +1072,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
                     pageCount = stepRankResponse.getData().getPagenation().getTotalPage();
                     if (page == 1) {
                         stepData.clear();
+                        rankAdapter.notifyDataSetChanged();
                         stepRecycler.scrollToPosition(0);
                     }
                     stepRecycler.loadMoreFinish(false, true);

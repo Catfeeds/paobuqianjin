@@ -101,7 +101,7 @@
             android:gravity="center"
             android:stateListAnimator="@null"
             android:text="进行中"
-            android:textColor="@color/color_6c71c4"
+            android:textColor="@color/color_232433"
             android:textSize="14dp" />
     </RelativeLayout>
 </RelativeLayout>

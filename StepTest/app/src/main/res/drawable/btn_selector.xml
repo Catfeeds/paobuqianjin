@@ -4,7 +4,7 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <!-- 填充的颜色 -->
-            <solid android:color="#6c71c4" />
+            <solid android:color="@color/color_232433" />
             <!-- 设置按钮的四个角为弧形 -->
             <!-- android:radius 弧形的半径 -->
             <corners android:radius="5dp" />

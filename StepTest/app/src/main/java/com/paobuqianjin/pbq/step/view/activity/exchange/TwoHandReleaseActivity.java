@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity.exchange;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -178,12 +179,15 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             LocalLog.d(TAG, "包邮");
             selectIcon.setImageResource(R.drawable.selected_icon);
             needTriffDollar.setEnabled(false);
+            needTriffDollar.setText(null);
             needTriffDollar.setFocusable(false);
+            needTriffDollar.setFocusableInTouchMode(false);
         } else {
             LocalLog.d(TAG, "不包邮");
             selectIcon.setImageDrawable(null);
             needTriffDollar.setEnabled(true);
             needTriffDollar.setFocusable(true);
+            needTriffDollar.setFocusableInTouchMode(true);
         }
         this.isFreeTrf = isFreeTrf;
     }
@@ -508,6 +512,7 @@ public class TwoHandReleaseActivity extends BaseBarActivity {
             protected void onSuc(String s) {
                 LocalLog.d(TAG, "发布成功！");
                 PaoToastUtils.showLongToast(TwoHandReleaseActivity.this, "发布成功");
+                setResult(Activity.RESULT_OK);
                 finish();
             }
 

@@ -142,7 +142,7 @@ public class FriendDetailActivity extends BaseBarActivity {
                         linearMark.setVisibility(View.GONE);
                         tvAttendtion.setText(R.string.attention);
                         tvAttendtion.setBackgroundResource(R.drawable.shape_14_dp_purple);
-                        tvAttendtion.setTextColor(getResources().getColor(R.color.color_6c71c4));
+                        tvAttendtion.setTextColor(getResources().getColor(R.color.color_232433));
                         break;
                     case 1:
                         btnConfirm.setBackgroundResource(R.drawable.shape_bg_round5_purple);

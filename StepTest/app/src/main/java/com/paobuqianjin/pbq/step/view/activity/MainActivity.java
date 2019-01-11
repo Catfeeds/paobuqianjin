@@ -38,7 +38,6 @@ import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.PaoBuShopFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.ShopLiveFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerCenterFragment;
-import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 import com.tot.badges.IconBadgeNumManager;
 
 
@@ -216,7 +215,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         Drawable top = getResources().getDrawable(icon[index][1]);
         top.setBounds(0, 0, 54, 54);
         mTabSelect[index].setCompoundDrawables(null, top, null, null);
-        mTabSelect[index].setTextColor(getResources().getColor(R.color.color_6c71c4));
+        mTabSelect[index].setTextColor(getResources().getColor(R.color.color_232433));
     }
 
     /*

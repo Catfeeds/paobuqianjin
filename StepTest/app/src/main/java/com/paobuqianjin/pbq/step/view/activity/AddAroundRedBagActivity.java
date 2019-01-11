@@ -935,14 +935,14 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             stepDollor.setText(data);
             crashSpan.setVisibility(View.GONE);
             stepSpan.setVisibility(View.VISIBLE);
-            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
-            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
             etRedBagNum.setHint(R.string.red_num_des_step);
         } else {
             LocalLog.d(TAG, "选择现金");
             switchDoll.setImageResource(R.drawable.sdoar_switch_b);
-            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
-            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
             crashSpan.setVisibility(View.VISIBLE);
             stepSpan.setVisibility(View.GONE);
             etRedBagTotalMoney.setText(data);
@@ -958,14 +958,14 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             crashSpan.setVisibility(View.GONE);
             stepSpan.setVisibility(View.VISIBLE);
             boolStepDoll = !boolStepDoll;
-            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
-            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
             etRedBagNum.setHint(R.string.red_num_des_step);
         } else {
             LocalLog.d(TAG, "选择现金");
             switchDoll.setImageResource(R.drawable.sdoar_switch_b);
-            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
-            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_FFFD403F));
             stepDollor.setText(data);
             crashSpan.setVisibility(View.VISIBLE);
             stepSpan.setVisibility(View.GONE);

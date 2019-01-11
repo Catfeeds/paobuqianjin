@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.home;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -271,6 +272,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private double[] nowLocation = {0, 0};
     private TencentMap tencentMap;
     private final static int PRE_LEG = -111;
+    private final static int EX_GOOD_DETAIL = 2019;
+    private final static int EX_GOOD_RELEASE = 2020;
 
     private static class ErrorBean {
         private String title;
@@ -581,7 +584,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     Intent intent = new Intent();
                     intent.putExtra("ex_id", String.valueOf(gridGoodAdpter.getExData().get(position).getId()));
                     intent.setClass(getContext(), ExchangeGoodDeatilActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, EX_GOOD_DETAIL);
                 }
             }
         });
@@ -716,6 +719,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 try {
                     ExListResponse exListResponse = new Gson().fromJson(s, ExListResponse.class);
                     pageCount = exListResponse.getData().getPagenation().getTotalPage();
+                    if (page == 1) {
+                        gridGoodAdpter.cleanData();
+                    }
                     gridGoodAdpter.setData(exListResponse.getData().getData());
                     isLoadingData = false;
                 } catch (Exception e) {
@@ -1583,8 +1589,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                                 LocalLog.d(TAG, "new Red");
                                 ImageView view = new ImageView(getContext());
                                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dibiao.getLayoutParams());
-                                layoutParams.topMargin = layoutParams.topMargin + (int) (Math.random() * (redLayout.getWidth() - dibiao.getWidth()));
-                                layoutParams.leftMargin = layoutParams.leftMargin + (int) (Math.random() * (redLayout.getHeight() - dibiao.getHeight()));
+                                layoutParams.topMargin = layoutParams.topMargin + (int) (Math.random() * (redLayout.getHeight() - dibiao.getHeight()));
+                                layoutParams.leftMargin = layoutParams.leftMargin + (int) (Math.random() * (redLayout.getWidth() - dibiao.getWidth()));
                                 view.setImageResource(R.drawable.home_red);
                                 view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                                 view.setLayoutParams(layoutParams);
@@ -1956,7 +1962,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 Intent intent = new Intent();
                 intent.setAction(RELEASE_ACTION);
                 intent.setClass(getContext(), TwoHandReleaseActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, EX_GOOD_RELEASE);
                 break;
             case R.id.parent_red:
                 bundle.putInt("style", 5);
@@ -2000,4 +2006,15 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EX_GOOD_DETAIL && resultCode == Activity.RESULT_OK) {
+            LocalLog.d(TAG, "购买了产品！");
+            getExGood(1);
+        } else if (requestCode == EX_GOOD_RELEASE && resultCode == Activity.RESULT_OK) {
+            LocalLog.d(TAG, "发布了交换品!");
+            getExGood(1);
+        }
+    }
 }

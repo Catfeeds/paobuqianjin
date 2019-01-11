@@ -410,14 +410,14 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
             moneyTaskSpan.setVisibility(View.GONE);
             stepDollarTaskSpan.setVisibility(View.VISIBLE);
             boolStepDoll = !boolStepDoll;
-            crashMoney.setTextColor(ContextCompat.getColor(getContext(), R.color.color_A6A9D9));
-            stepDolls.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6c71c4));
+            crashMoney.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FFFD403F));
+            stepDolls.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FFFD403F));
             peoplePay.setText("步币");
         } else {
             LocalLog.d(TAG, "选择现金");
             switchDoll.setImageResource(R.drawable.sdoar_switch_b);
-            crashMoney.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6c71c4));
-            stepDolls.setTextColor(ContextCompat.getColor(getContext(), R.color.color_A6A9D9));
+            crashMoney.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FFFD403F));
+            stepDolls.setTextColor(ContextCompat.getColor(getContext(), R.color.color_FFFD403F));
             targetStepDollarNum.setText(data);
             moneyTaskSpan.setVisibility(View.VISIBLE);
             stepDollarTaskSpan.setVisibility(View.GONE);

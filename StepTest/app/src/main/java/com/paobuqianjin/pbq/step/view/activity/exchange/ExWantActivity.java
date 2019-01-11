@@ -18,7 +18,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ExWantResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Constants;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.exchange.ExWantAdapter;
@@ -61,6 +60,8 @@ public class ExWantActivity extends BaseBarActivity implements BaseBarActivity.T
     LinearLayout deleteSpan;
     @Bind(R.id.all_select)
     ImageView allSelect;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private int currentPage;
     private List<ExWantResponse.DataBeanX.DataBean> listData = new ArrayList<>();
     private ExWantAdapter exWantAdapter;
@@ -145,6 +146,8 @@ public class ExWantActivity extends BaseBarActivity implements BaseBarActivity.T
                     } else {
                         wantMayRecycler.loadMoreFinish(true, false);
                     }
+                    if (notFoundData.getVisibility() == View.VISIBLE)
+                        notFoundData.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -153,6 +156,7 @@ public class ExWantActivity extends BaseBarActivity implements BaseBarActivity.T
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 wantMayRecycler.loadMoreFinish(true, false);
+                notFoundData.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -47,6 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class ConfirmOrderExActivity extends BaseBarActivity {
+    private final static String TAG = ConfirmOrderExActivity.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.time_wait)
@@ -222,10 +223,9 @@ public class ConfirmOrderExActivity extends BaseBarActivity {
         if (requestCode == REQUEST_SELECT_ADDR) {
             getAddDefault(1);
         } else if (requestCode == REQUEST_PAY && resultCode == Activity.RESULT_OK) {
-            confirmOrder.setText("已购买");
-            confirmOrder.setEnabled(false);
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            LocalLog.d(TAG, "购买成功");
+            setResult(Activity.RESULT_OK);
+            finish();
         }
     }
 }

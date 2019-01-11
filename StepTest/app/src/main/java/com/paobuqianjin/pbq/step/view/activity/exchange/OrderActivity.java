@@ -1,6 +1,9 @@
 package com.paobuqianjin.pbq.step.view.activity.exchange;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.OrderStatusResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
@@ -215,6 +219,26 @@ public class OrderActivity extends BaseBarActivity {
     }
 
 
+    private void confirmRec(String comm_id) {
+        Map<String, String> param = new HashMap<>();
+        param.put("comm_order_id", comm_id);
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlExRecConfirm, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                PaoToastUtils.showLongToast(OrderActivity.this,"已确认收货");
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(OrderActivity.this, errorBean.getMessage());
+                }
+            }
+        });
+    }
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -256,7 +280,7 @@ public class OrderActivity extends BaseBarActivity {
                         } else if (inBean != null) {
                             Intent intentTr = new Intent();
                             intentTr.setClass(OrderActivity.this, ExTriffActivity.class);
-                            intentTr.putExtra("comm_order_no", inBean);
+                            intentTr.putExtra("comm_order_no_in", inBean);
                             startActivity(intentTr);
                         }
                         break;
@@ -266,6 +290,11 @@ public class OrderActivity extends BaseBarActivity {
                             intentRe.setClass(OrderActivity.this, ExpayActivity.class);
                             intentRe.putExtra("ex_in_pay", inBean);
                             startActivityForResult(intentRe, REQUEST_PAY);
+                        }
+                        break;
+                    case "确认收货":
+                        if (inBean != null) {
+                            confirmRec(inBean.getId());
                         }
                         break;
 
@@ -281,6 +310,7 @@ public class OrderActivity extends BaseBarActivity {
             @Override
             protected void onSuc(String s) {
                 try {
+
                     final OrderStatusResponse orderStatusResponse = new Gson().fromJson(s, OrderStatusResponse.class);
                     statusStr.setText(orderStatusResponse.getData().getOrder_status_text());
                     orderNo.setText("订单编号 " + orderStatusResponse.getData().getComm_no());
@@ -298,6 +328,17 @@ public class OrderActivity extends BaseBarActivity {
                         wuLiuPan.setVisibility(View.GONE);
                         viewLine1.setVisibility(View.GONE);
                     }
+                    copy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (!TextUtils.isEmpty(orderStatusResponse.getData().getExpress_no())) {
+                                ClipboardManager cmb = (ClipboardManager) OrderActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData textClipData = ClipData.newPlainText("Label", orderStatusResponse.getData().getExpress_no());
+                                cmb.setPrimaryClip(textClipData);
+                                PaoToastUtils.showLongToast(OrderActivity.this, "快递单号复制成功！");
+                            }
+                        }
+                    });
                     phoneName.setText(orderStatusResponse.getData().getBuyer_consigner());
                     phone.setText(orderStatusResponse.getData().getBuyer_mobile());
                     address.setText(orderStatusResponse.getData().getBuyer_addr() + orderStatusResponse.getData().getBuyer_address());

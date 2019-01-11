@@ -25,7 +25,7 @@
             android:id="@+id/create_circle_confim"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/create_button"
+            android:background="@color/color_232433"
             android:stateListAnimator="@null"
             android:text="创建"
             android:textColor="@color/color_fefefe"

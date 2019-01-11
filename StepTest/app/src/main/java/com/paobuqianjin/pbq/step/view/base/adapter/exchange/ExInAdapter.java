@@ -100,8 +100,8 @@ public class ExInAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 case 2:
                     exOutViewHolder.statusStr.setText("待收货");
                     exOutViewHolder.statusStr.setTextColor(ContextCompat.getColor(context, R.color.color_fffb2003));
-                    exOutViewHolder.leftTv.setText("确认收货");
-                    exOutViewHolder.rightTv.setText("查看物流");
+                    exOutViewHolder.rightTv.setText("确认收货");
+                    exOutViewHolder.leftTv.setText("查看物流");
                     exOutViewHolder.leftTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_gray));
                     exOutViewHolder.rightTv.setBackground(ContextCompat.getDrawable(context, R.drawable.ex_order_button_bg_red));
                     exOutViewHolder.leftTv.setVisibility(View.VISIBLE);

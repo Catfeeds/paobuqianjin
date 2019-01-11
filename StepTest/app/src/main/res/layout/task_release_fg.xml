@@ -58,7 +58,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="现金"
-                        android:textColor="@color/color_6c71c4"
+                        android:textColor="#FFFD403F"
                         android:textSize="12dp" />
 
                     <TextView
@@ -69,7 +69,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="步币"
-                        android:textColor="@color/color_A6A9D9"
+                        android:textColor="#FFFD403F"
                         android:textSize="12dp" />
 
                 </LinearLayout>

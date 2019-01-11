@@ -56,6 +56,11 @@ public class CommonGoodAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void cleanData(){
+        data.clear();
+        notifyDataSetChanged();
+    }
+
     public List<CommonGoodResponse.DataBeanX.DataBean> getData() {
         return mData;
     }
