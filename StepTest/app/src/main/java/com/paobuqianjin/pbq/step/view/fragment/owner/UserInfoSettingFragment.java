@@ -1025,9 +1025,12 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     }
 
     private boolean specialCity(String province) {
-        if ("澳门".equals(province) || "台湾省".equals(province)
-                || "香港".equals(province) || "重庆市".equals(province) || "上海市".equals(province)
-                || "天津市".equals(province) || "北京市".equals(province)) {
+        if (TextUtils.isEmpty(province)) {
+            return false;
+        }
+        if (province.contains("澳门") || province.contains("台湾省")
+                || province.contains("香港") || province.contains("重庆市") || province.contains("上海市")
+                ||province.contains("天津市")|| province.contains("北京市")) {
             return true;
         }
         return false;

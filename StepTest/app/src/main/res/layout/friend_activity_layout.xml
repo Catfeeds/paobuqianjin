@@ -8,22 +8,23 @@
     <include layout="@layout/bar_return_a_style" />
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout"
+        android:id="@+id/follow_tab"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_centerHorizontal="true"
-        app:tabIndicatorColor="@color/color_232433"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/color_232433"
-        app:tabTextColor="@color/color_d9d9d9">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        app:tabIndicatorColor="@color/color_ffc14c"
+        app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
 
-    </android.support.design.widget.TabLayout>
-
+    <include
+        android:id="@+id/search_mem_bar"
+        layout="@layout/serch_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></include>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </android.support.v4.view.ViewPager>
-
 </LinearLayout>

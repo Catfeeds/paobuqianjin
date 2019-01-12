@@ -12,7 +12,7 @@ import com.paobuqianjin.pbq.step.view.fragment.owner.MyLikeFriendFragment;
  */
 
 public class MyLikeFriendActivity extends BaseActivity {
-    private final static String TAG = MyFriendActivity.class.getSimpleName();
+    private final static String TAG = MyLikeFriendActivity.class.getSimpleName();
     private MyLikeFriendFragment myLikeFriendFragment = new MyLikeFriendFragment();
 
     @Override
@@ -23,7 +23,6 @@ public class MyLikeFriendActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        super.initView();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.my_like_container, myLikeFriendFragment)
                 .show(myLikeFriendFragment)

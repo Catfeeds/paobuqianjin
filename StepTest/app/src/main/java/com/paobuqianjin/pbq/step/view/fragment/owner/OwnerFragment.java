@@ -46,21 +46,18 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
-import com.paobuqianjin.pbq.step.view.activity.FriendStepDanActivity;
+import com.paobuqianjin.pbq.step.view.activity.FriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.GetMoreMoneyActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
-import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorCollectActivity;
-import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepHistoryActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
@@ -309,7 +306,7 @@ public final class OwnerFragment extends BaseFragment {
             case R.id.friend_span:
                 LocalLog.d(TAG, "好友");
                 intent.setAction(ACTION_FRIEND_ACTION);
-                intent.setClass(getContext(), MyFriendActivity.class);
+                intent.setClass(getContext(), FriendActivity.class);
                 startActivity(intent);
                 break;
             case R.id.like_span:

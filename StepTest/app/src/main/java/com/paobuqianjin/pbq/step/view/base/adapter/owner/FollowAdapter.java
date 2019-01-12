@@ -50,21 +50,13 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
     private final static String FOLLOW_OTO_ACTION = "com.paobuqianjin.pbq.action.OTO_ACTION";
     private final static String MY_FOLLOW_ACTION = "com.paobuqianjin.pbq.action.MY_FOLLOW_ACTION";
     private final static String FOLLOW_ME_ACTION = "com.paobuqianjin.pbq.action.FOLLOME_ACTION";
-    private LocalBroadcastManager localBroadcastManager;
     private View popCircleOpBar;
     private PopupWindow popupOpWindow;
     private TranslateAnimation animationCircleType;
 
-    public FollowAdapter(Activity context, List<?> data) {
+    public FollowAdapter(Activity context, List<Object> data) {
         this.context = context;
         mData = data;
-        localBroadcastManager = LocalBroadcastManager.getInstance(context);
-    }
-
-
-    public void notifyDataSetChanged(List<?> data) {
-        this.mData = data;
-        super.notifyDataSetChanged();
     }
 
     @Override
@@ -164,7 +156,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                                 break;
                             case "已关注":
                                 mData.remove(getAdapterPosition());
-                                notifyItemRemoved(getAdapterPosition());
+                                notifyDataSetChanged();
                                 break;
                             case "对话":
                                 /*Intent intent = new Intent(FOLLOW_OTO_ACTION);
@@ -199,12 +191,11 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                                 intent.putExtra("friendinfo", dataBean);
 
                                 mData.remove(getAdapterPosition());
-                                notifyItemRemoved(getAdapterPosition());
-                                localBroadcastManager.sendBroadcast(intent);
+                                notifyDataSetChanged();
                                 break;
                             case "已关注":
                                 mData.remove(getAdapterPosition());
-                                notifyItemRemoved(getAdapterPosition());
+                                notifyDataSetChanged();
                                 break;
                             case "对话":
                                /* mData.remove(getAdapterPosition());

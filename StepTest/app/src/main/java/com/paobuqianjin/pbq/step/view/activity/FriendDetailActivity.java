@@ -97,6 +97,18 @@ public class FriendDetailActivity extends BaseBarActivity {
         }
     }
 
+    private boolean specialCity(String province) {
+        if (TextUtils.isEmpty(province)) {
+            return false;
+        }
+        if (province.contains("澳门") || province.contains("台湾省")
+                || province.contains("香港") || province.contains("重庆市") || province.contains("上海市")
+                || province.contains("天津市") || province.contains("北京市")) {
+            return true;
+        }
+        return false;
+    }
+
     private void initData() {
         Map<String, String> params = new HashMap<>();
         if (userId > -1) {
@@ -114,7 +126,12 @@ public class FriendDetailActivity extends BaseBarActivity {
                 Presenter.getInstance(FriendDetailActivity.this).getPlaceErrorImage(ivIcon, detailBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 tvName.setText(detailBean.getNickname());
                 tvNumber.setText(getString(R.string.user_no_x, detailBean.getUserno()));
-                tvAddress.setText(detailBean.getProvince() + detailBean.getCity());
+                if(specialCity(detailBean.getProvince())){
+                    tvAddress.setText(detailBean.getCity());
+                }else{
+                    tvAddress.setText(detailBean.getProvince() + detailBean.getCity());
+                }
+
                 List<FriendDetailResponse.DynamicOnlyImg> list = detailBean.getDynamic();
                 for (FriendDetailResponse.DynamicOnlyImg dImg :
                         list) {

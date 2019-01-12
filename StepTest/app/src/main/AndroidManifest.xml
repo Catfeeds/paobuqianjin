@@ -386,8 +386,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的好友 -->
+        <!-- 通讯录好友 -->
         <activity
-            android:name=".view.activity.MyFriendActivity"
+            android:name=".view.activity.FriendActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
