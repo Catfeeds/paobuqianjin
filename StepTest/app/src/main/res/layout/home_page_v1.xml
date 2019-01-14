@@ -23,7 +23,7 @@
                 <com.tencent.tencentmap.mapsdk.map.MapView
                     android:id="@+id/mapview"
                     android:layout_width="match_parent"
-                    android:layout_height="413dp"
+                    android:layout_height="265dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:scaleType="fitXY" />
@@ -151,7 +151,7 @@
                 <RelativeLayout
                     android:id="@+id/red_pkg_sq"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp"
+                    android:layout_height="200dp"
                     android:layout_marginTop="64dp"
                     android:layout_toEndOf="@+id/home_data_linear"
                     android:layout_toStartOf="@+id/push_rec">

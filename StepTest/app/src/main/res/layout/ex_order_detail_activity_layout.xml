@@ -107,6 +107,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:textIsSelectable="true"
                         android:id="@+id/wuliu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -164,6 +165,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:textIsSelectable="true"
                             android:id="@+id/phone_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -173,6 +175,7 @@
                             android:textSize="15dp" />
 
                         <TextView
+                            android:textIsSelectable="true"
                             android:id="@+id/phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -185,6 +188,7 @@
                     </LinearLayout>
 
                     <TextView
+                        android:textIsSelectable="true"
                         android:id="@+id/address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
