@@ -1469,6 +1469,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private void pullDownAroundRedBag(final String redId) {
         Map<String, String> params = new HashMap<>();
         params.put("redid", redId);
+        if (currentLocation[0] > 0d && currentLocation[1] > 0d) {
+            params.put("latitude", String.valueOf(currentLocation[0]));
+            params.put("longitude", String.valueOf(currentLocation[1]));
+        }
         Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.receiveAroundRed, params, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {

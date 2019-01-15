@@ -52,12 +52,13 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/home_ban_bg"
                         android:gravity="center"
-                        android:minWidth="67dp"
+                        android:minWidth="65dp"
+                        android:minHeight="30dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text=""
                         android:textColor="@color/color_f8"
-                        android:textSize="20dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -76,11 +77,12 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/home_ban_bg"
                         android:gravity="center"
-                        android:minWidth="67dp"
+                        android:minWidth="65dp"
+                        android:minHeight="30dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:textColor="@color/color_f8"
-                        android:textSize="20dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -99,12 +101,13 @@
                         android:layout_marginTop="5dp"
                         android:background="@drawable/home_ban_bg"
                         android:gravity="center"
-                        android:minWidth="67dp"
+                        android:minWidth="65dp"
+                        android:minHeight="30dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text=""
                         android:textColor="@color/color_f8"
-                        android:textSize="20dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -124,12 +127,14 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/home_element_white"
                         android:gravity="center"
-                        android:minWidth="67dp"
+                        android:minWidth="65dp"
+                        android:minHeight="30dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text="发红包"
+                        android:textStyle="bold"
                         android:textColor="@color/color_f8"
-                        android:textSize="20dp" />
+                        android:textSize="14dp" />
 
 
                     <TextView
@@ -139,12 +144,14 @@
                         android:layout_marginTop="20dp"
                         android:background="@drawable/home_element_white"
                         android:gravity="center"
-                        android:minWidth="67dp"
+                        android:minWidth="65dp"
+                        android:minHeight="30dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text="查记录"
+                        android:textStyle="bold"
                         android:textColor="@color/color_f8"
-                        android:textSize="20dp"
+                        android:textSize="14dp"
                         android:visibility="gone" />
                 </LinearLayout>
 
