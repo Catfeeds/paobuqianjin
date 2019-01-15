@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_shop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="345dp"
+        android:layout_height="33dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/search_shop_bg"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/search_ico"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:src="@drawable/search_shop_ico" />
+        </LinearLayout>
+
+        <EditText
+            android:descendantFocusability="blocksDescendants"
+            android:id="@+id/search_circle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="搜索商品"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="false"
+            android:textColorHint="@color/color_8a8a8a"
+            android:textSize="14dp" />
+    </LinearLayout>
+</LinearLayout>

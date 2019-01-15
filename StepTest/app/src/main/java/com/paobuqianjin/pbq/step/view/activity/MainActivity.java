@@ -1,19 +1,11 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -35,7 +27,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DragPointView;
 import com.paobuqianjin.pbq.step.view.fragment.chat.MyConversationListFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
-import com.paobuqianjin.pbq.step.view.fragment.home.PaoBuShopFragment;
+import com.paobuqianjin.pbq.step.view.fragment.home.ShopFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.ShopLiveFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerCenterFragment;
 import com.tot.badges.IconBadgeNumManager;
@@ -56,7 +48,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     private final static String TAG = MainActivity.class.getSimpleName();
     //Fragment页面索引
     private HomeFragment mHomePageFragment;
-    private PaoBuShopFragment paoBuShopFragment;
+    private ShopFragment paoBuShopFragment;
     private OwnerCenterFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
@@ -150,7 +142,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         mHomePageFragment = new HomeFragment();
         initConversationList();
         shopLiveFragment = new ShopLiveFragment();
-        paoBuShopFragment = new PaoBuShopFragment();
+        paoBuShopFragment = new ShopFragment();
         mOwnerFragment = new OwnerCenterFragment();
         mFragments = new Fragment[]{mHomePageFragment, shopLiveFragment, mConversationListFragment, paoBuShopFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
