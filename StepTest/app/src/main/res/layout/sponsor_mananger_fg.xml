@@ -35,24 +35,26 @@
                 android:id="@+id/sponsor_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_above="@+id/tv_add_sponsor"
-                android:layout_below="@+id/line" />
+                android:layout_below="@+id/line"
+                android:layout_weight="1" />
+
             <TextView
                 android:id="@+id/not_found_data"
-                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="还没有自己的商铺！"
-                android:textSize="16dp"
                 android:textColor="@color/color_161727"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:textSize="16dp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/tv_add_sponsor"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/create_button"
+                android:background="@color/color_232433"
                 android:stateListAnimator="@null"
                 android:text="添加商铺"
                 android:textColor="@color/color_fefefe"

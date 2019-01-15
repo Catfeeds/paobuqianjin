@@ -473,4 +473,8 @@ public class NetApi {
     public final static String urlExSearch = url + "v1/secondHandExchange/communitySearch";
     //发表评价
     public final static String urlExPuContent = url + "v1/secondHandExchange/publishComment";
+    //商家入驻邀请码
+    public final static String urlShopEntryCode = url + "v1/RedpacketMap/inviterNo";
+    //商家入驻信息提交
+    public final static String urlShopEntryInfo = url + "v1/RedpacketMap/applayGuide";
 }

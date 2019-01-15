@@ -167,7 +167,8 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
         String payAction = Presenter.getInstance(getContext()).getTradeStyle();
         LocalLog.d(TAG, "payAction =  " + payAction);
         if ("user".equals(payAction) || "task".equals(payAction) || "vip".equals(payAction) || "redpacket".equals(payAction)
-                || "cvip".equals(payAction) || "gvip".equals(payAction) || "red_map".equals(payAction) || "comm_id".equals(payAction)) {
+                || "cvip".equals(payAction) || "gvip".equals(payAction) || "red_map".equals(payAction) || "comm_id".equals(payAction)
+                || "apply_guide".equals(payAction)) {
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
         } else {

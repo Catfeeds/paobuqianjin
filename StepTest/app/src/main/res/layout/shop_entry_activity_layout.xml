@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/sponsor_info_bar"
+        layout="@layout/bar_return_a_style" />
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
+        android:layout_below="@+id/sponsor_info_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/sponsor_name_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/color_f8">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="店铺名"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edit_sponsor_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="输入店铺名称"
+                    android:maxEms="16"
+                    android:maxLines="1"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_d9d9d9" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_out_pics_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_name_pan"
+                android:layout_marginTop="0dp"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="店铺logo"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/edit_sponsor_out_pics"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:src="@drawable/default_head_ico" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/go_to" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_d9d9d9" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_phone_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_out_pics_pan"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="手机"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edit_sponsor_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:maxLength="11"
+                    android:gravity="right"
+                    android:hint="输入真实电话号码"
+                    android:inputType="phone"
+                    android:maxEms="16"
+                    android:maxLines="1"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_d9d9d9" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_time_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_phone_pan"
+                android:background="@color/color_f8"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="营业时间"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/edit_sponsor_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="选择营业时间"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/edit_sponsor_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/edit_sponsor_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/edit_sponsor_day"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_location_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_time_pan"
+                android:layout_marginTop="0dp"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="商铺位置"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/edit_sponsor_location_pan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/go_to_location"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:maxEms="12"
+                    android:maxLines="1"
+                    android:paddingRight="10dp"
+                    android:text="请选择地址"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/go_to_location"
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/go_to" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_d9d9d9" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_location_detail_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_location_pan"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:id="@+id/tv_adress_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="详细地址"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/edit_sponsor_location_detail_pan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_toRightOf="@+id/tv_adress_title"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:hint="输入详情地址"
+                    android:inputType="textMultiLine"
+                    android:maxLength="32"
+                    android:paddingLeft="14dp"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_d9d9d9" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/sponsor_inner_pics_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_location_detail_pan"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="店内环境照片"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/edit_sponsor_inner_pics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:gravity="right"
+                    android:maxEms="16"
+                    android:maxLines="1"
+                    android:text="请上传照片"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_invite_code_pan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_inner_pics_pan"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="推荐码"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/edit_sponsor_invite_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="right"
+                    android:hint="输入推荐码(选填)"
+                    android:inputType="textMultiLine"
+                    android:maxLength="32"
+                    android:paddingLeft="14dp"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponsor_invite_code_pan"
+                android:paddingBottom="10dp"
+                android:paddingLeft="14dp"
+                android:paddingTop="20dp"
+                android:text="经营范围"
+                android:textColor="@color/color_d9d9d9"
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/sponsors"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/text_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_f6f6f6"
+                android:gravity="top"
+                android:hint="@string/sponosor_des"
+                android:maxLength="300"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/confirm_ng"
+        android:stateListAnimator="@null"
+        android:text="保存"
+        android:textColor="@color/color_fefefe"
+        android:textSize="16dp" />
+</RelativeLayout>

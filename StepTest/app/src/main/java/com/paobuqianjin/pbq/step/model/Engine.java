@@ -2556,8 +2556,12 @@ public final class Engine {
                             if (o == null) {
                                 return;
                             }
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            innerCallBack.innerCallBack(errorCode);
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                innerCallBack.innerCallBack(errorCode);
+                            } catch (Exception err) {
+                                err.printStackTrace();
+                            }
                         }
                     }
 

@@ -44,6 +44,14 @@ taskid	任务ID	false	int
     private float total_fee;
     private int red_id;
 
+    public PayOrderParam setApply_guide_id(String apply_guide_id) {
+        this.apply_guide_id = apply_guide_id;
+        params.put("apply_guide_id", apply_guide_id);
+        return this;
+    }
+
+    private String apply_guide_id;
+
     public String getRed_map_id() {
         return red_map_id;
     }

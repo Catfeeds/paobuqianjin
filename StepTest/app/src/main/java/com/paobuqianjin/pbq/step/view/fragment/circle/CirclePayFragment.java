@@ -252,6 +252,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                             case "red_map":
                                 normalDialog.setMessage("是否取消遍地红包的发布");
                                 break;
+                            case "apply_guide":
+                                normalDialog.setMessage("是否取消商铺入驻");
+                                break;
                             default:
                                 break;
                         }
@@ -450,7 +453,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     PaoToastUtils.showLongToast(getActivity(), "金额不能为空");
                     return;
                 }
-                if (getSelect() == -1 ) {
+                if (getSelect() == -1) {
                     PaoToastUtils.showLongToast(getActivity(), "请选择支付方式");
                     return;
                 }
@@ -603,6 +606,15 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 LocalLog.d(TAG, "遍地红包订单 id " + id);
                 if (!TextUtils.isEmpty(id)) {
                     wxPayOrderParam.setRed_map_id(id)
+                            .setPayment_type("wx")
+                            .setOrder_type(payAction)
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                }
+            } else if ("apply_guide".equals(payAction)) {
+                LocalLog.d(TAG, "入驻商铺 id " + id);
+                if (!TextUtils.isEmpty(id)) {
+                    wxPayOrderParam.setApply_guide_id(id)
                             .setPayment_type("wx")
                             .setOrder_type(payAction)
                             .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
@@ -970,6 +982,14 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             LocalLog.d(TAG, "遍地红包订单");
             if (!TextUtils.isEmpty(id)) {
                 wxPayOrderParam.setRed_map_id(id)
+                        .setPayment_type("wallet")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("apply_guide".equals(payAction)) {
+            if (!TextUtils.isEmpty(id)) {
+                wxPayOrderParam.setApply_guide_id(id)
                         .setPayment_type("wallet")
                         .setOrder_type(payAction)
                         .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);

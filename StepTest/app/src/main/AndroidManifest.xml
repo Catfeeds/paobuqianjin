@@ -1142,7 +1142,7 @@
             android:name=".view.activity.exchange.AddContentActvity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.test.TtsActivity"
+            android:name=".view.activity.shop.ShopEntryActivity"
             android:icon="@drawable/default_head_ico"
             android:label="TTS"
             android:launchMode="singleInstance">
