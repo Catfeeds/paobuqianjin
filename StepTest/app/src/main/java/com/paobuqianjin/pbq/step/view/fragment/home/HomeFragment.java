@@ -42,6 +42,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.callback.BitmapCallback;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.adapter.CommonGoodAdapter;
@@ -57,6 +59,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ExListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopRedResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepReWardResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskNumResponse;
@@ -101,8 +104,11 @@ import com.tencent.map.geolocation.TencentLocationListener;
 import com.tencent.map.geolocation.TencentLocationManager;
 import com.tencent.map.geolocation.TencentLocationRequest;
 import com.tencent.map.geolocation.TencentPoi;
+import com.tencent.mapsdk.raster.model.BitmapDescriptor;
+import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
 import com.tencent.mapsdk.raster.model.LatLng;
 import com.tencent.mapsdk.raster.model.Marker;
+import com.tencent.mapsdk.raster.model.MarkerOptions;
 import com.tencent.tencentmap.mapsdk.map.MapView;
 import com.tencent.tencentmap.mapsdk.map.TencentMap;
 import com.tencent.tencentmap.mapsdk.map.UiSettings;
@@ -128,7 +134,9 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imkit.model.RongGridView;
+import okhttp3.Call;
 
 /**
  * Created by pbq on 2018/11/14.
@@ -274,6 +282,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static int PRE_LEG = -111;
     private final static int EX_GOOD_DETAIL = 2019;
     private final static int EX_GOOD_RELEASE = 2020;
+    private List<Marker> aroundShopMarkerList = new ArrayList<>();
+    private List<View> shopImageList = new ArrayList<>();
 
     private static class ErrorBean {
         private String title;
@@ -441,6 +451,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 //            tencentMap.animateTo(new LatLng(currentLocation[0], currentLocation[1]));
 /*            setPosition(latitude, longitude, true, true);*/
             getAroundRedBag();
+            getNearShopAndRed();
         } else {
             //PaoToastUtils.showShortToast(this, reason);
             LocalLog.e(TAG, s);
@@ -458,7 +469,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 //设置地图中心点
         tencentMap.setCenter(new LatLng(Presenter.getInstance(getContext()).getLocation()[1], Presenter.getInstance(getContext()).getLocation()[0]));
 //设置缩放级别
-        tencentMap.setZoom(11);
+        tencentMap.setZoom(13);
 //        tencentMap.zoomToSpan(Presenter.getInstance(this).getLocation()[1], Presenter.getInstance(this).getLocation()[0]);
         //获取UiSettings实例
         UiSettings uiSettings = mapview.getUiSettings();
@@ -596,7 +607,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 } else if (topOrBottom == 1) {
                     if (currentPage < pageCount && !isLoadingData) {
                         /*initGridGood(currentPage + 1);*/
-                        getExGood(currentPage + 1);
+                        //getExGood(currentPage + 1);
                     } else {
                         LocalLog.d(TAG, "正在加载或没有更多数据了");
                     }
@@ -630,7 +641,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         loadTextBanner();
         //loadBanner();
         /*initGridGood(1);*/
-        getExGood(1);
+        //getExGood(1);
         shopPing = (ImageView) viewRoot.findViewById(R.id.release_goods);
         goShopingTv = (TextView) viewRoot.findViewById(R.id.go_shoping_tv);
         SpannableString spannableString = new SpannableString("去商城逛逛 查看更多");
@@ -732,7 +743,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if (page == 1) {
-                    initGridGood(page);
+                    //initGridGood(page);
                 }
             }
         });
@@ -785,6 +796,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         updateHandler.removeCallbacksAndMessages(null);
         LocalLog.d(TAG, "onDestroy() enter");
         showStep = 0;
+        redArray.clear();
+        shopImageList.clear();
+        aroundShopMarkerList.clear();
         if (popupRedPkgWindow != null) {
             popupRedPkgWindow.dismiss();
             popupRedPkgWindow = null;
@@ -1536,6 +1550,95 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         });
     }
 
+    private void getNearShopAndRed() {
+        if (Presenter.getInstance(getContext()).getLocation()[0] > 0.0d && Presenter.getInstance(getContext()).getLocation()[1] > 0.0d) {
+            Map<String, String> param = new HashMap<>();
+            param.put("latitude", String.valueOf(Presenter.getInstance(getContext()).getLocation()[0]));
+            param.put("longitude", String.valueOf(Presenter.getInstance(getContext()).getLocation()[1]));
+            Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlShopNearRead, param, new PaoCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    redArray.clear();
+                    try {
+                        final ShopRedResponse shopRedResponse = new Gson().fromJson(s, ShopRedResponse.class);
+                        int redSize = shopRedResponse.getData().getRedpacket().size();
+                        LocalLog.d(TAG, "红包个数 " + redSize);
+                        int shopSize = shopRedResponse.getData().getBusiness().size();
+                        LocalLog.d(TAG, "商铺数量 " + shopSize);
+                        for (int i = 0; i < redSize; i++) {
+                            if (i == 0) {
+                                LocalLog.d(TAG, "dibiao red");
+                                dibiao = redLayout.findViewById(R.id.dibiao);
+                                dibiao.setVisibility(View.VISIBLE);
+                                RedDataBean redDataBean = new RedDataBean(dibiao,
+                                        shopRedResponse.getData().getRedpacket().get(i).getRed_id(), HomeFragment.this);
+                                redArray.add(redDataBean);
+                            } else {
+                                LocalLog.d(TAG, "new Red");
+                                ImageView view = new ImageView(getContext());
+                                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dibiao.getLayoutParams());
+                                layoutParams.topMargin = layoutParams.topMargin + (int) (Math.random() * (redLayout.getHeight() - dibiao.getHeight()));
+                                layoutParams.leftMargin = layoutParams.leftMargin + (int) (Math.random() * (redLayout.getWidth() - dibiao.getWidth()));
+                                view.setImageResource(R.drawable.home_red);
+                                view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                                view.setLayoutParams(layoutParams);
+                                redLayout.addView(view);
+                                RedDataBean redDataBean = new RedDataBean(view,
+                                        shopRedResponse.getData().getRedpacket().get(i).getRed_id(), HomeFragment.this);
+                                redArray.add(redDataBean);
+                            }
+                        }
+
+                        aroundShopMarkerList.clear();
+                        for (int j = 0; j < shopSize; j++) {
+                            final View view = View.inflate(getContext(), R.layout.make_view, null);
+                            final ImageView logo = (CircleImageView) view.findViewById(R.id.logo_shop);
+                            final int position = j;
+                            LocalLog.d(TAG, logo == null ? "null" : "logo =" + shopRedResponse.getData().getBusiness().get(j).getLogo());
+                            OkHttpUtils.get()
+                                    .url(shopRedResponse.getData().getBusiness().get(j).getLogo())
+                                    .build()
+                                    .execute(new BitmapCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int i, Object o) {
+
+                                        }
+
+                                        @Override
+                                        public void onResponse(Bitmap bitmap, int i) {
+                                            if (bitmap != null && isAdded()) {
+                                                logo.setImageBitmap(bitmap);
+                                                Marker markerShop = tencentMap.addMarker(new MarkerOptions()
+                                                        .position(new LatLng(Double.parseDouble(shopRedResponse.getData().getBusiness().get(position).getLatitude()),
+                                                                Double.parseDouble(shopRedResponse.getData().getBusiness().get(position).getLongitude())))
+                                                        .anchor(0.5f, 0.5f)
+                                                        .snippet("around:" + position)
+                                                        .icon(makeShopIco(view)).draggable(false));
+                                                aroundShopMarkerList.add(markerShop);
+                                            }
+                                        }
+                                    });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                }
+            });
+        }
+    }
+
+    private BitmapDescriptor makeShopIco(View view) {
+        return BitmapDescriptorFactory.fromView(view);
+    }
+
+    //获取全国红包
     private void getAroundRedBag() {
         LocalLog.d(TAG, "获取红包");
         Map<String, String> param = new HashMap<>();
@@ -2015,10 +2118,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EX_GOOD_DETAIL && resultCode == Activity.RESULT_OK) {
             LocalLog.d(TAG, "购买了产品！");
-            getExGood(1);
+            //getExGood(1);
         } else if (requestCode == EX_GOOD_RELEASE && resultCode == Activity.RESULT_OK) {
             LocalLog.d(TAG, "发布了交换品!");
-            getExGood(1);
+            //getExGood(1);
         }
     }
 }

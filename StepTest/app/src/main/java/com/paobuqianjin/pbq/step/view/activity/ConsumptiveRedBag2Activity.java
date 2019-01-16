@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +30,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.callback.BitmapCallback;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorSearchPositionActivity;
@@ -37,6 +40,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AroundRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopRedResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -53,6 +57,7 @@ import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
+import com.paobuqianjin.pbq.step.view.base.view.RedDataBean;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.tencent.map.geolocation.TencentLocation;
@@ -86,6 +91,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
 
 public class ConsumptiveRedBag2Activity extends BaseBarActivity implements TencentLocationListener, TencentMap.OnMarkerClickListener {
     private static final String TAG = ConsumptiveRedBag2Activity.class.getSimpleName();
@@ -150,12 +157,12 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private String current_rec_id = "";
     private ErrorBean errorBean = new ErrorBean();
     private final static int PRE_LEG = -111;
-
+    private List<Marker> aroundShopMarkerList = new ArrayList<>();
     @Override
     protected String title() {
         isNoConsumptive = getIntent().getBooleanExtra("isNoConsumptive", false);
         if (isNoConsumptive) {
-            return "精准红包";
+            return "引流红包";
         } else {
             return getString(R.string.red_bag_map);
         }
@@ -169,7 +176,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         banner = (Banner) findViewById(R.id.banner);
         isNoConsumptive = getIntent().getBooleanExtra("isNoConsumptive", false);
         if (isNoConsumptive) {
-            banner.setVisibility(View.VISIBLE);
+            //banner.setVisibility(View.VISIBLE);
             rlSearch.setVisibility(View.GONE);
         } else {
             linearHistory.setVisibility(View.GONE);
@@ -177,7 +184,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         }
         initMapView(savedInstanceState);
         currentLocation = Presenter.getInstance(this).getLocation();
-        loadBanner();
+        //loadBanner();
         canReleasePkg(false);
     }
 
@@ -423,6 +430,74 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                     .draggable(false));
             aourndRBMarkerList.add(markerRedBag);
         }
+    }
+
+
+
+    private void getNearShopAndRed() {
+        if (Presenter.getInstance(this).getLocation()[0] > 0.0d && Presenter.getInstance(this).getLocation()[1] > 0.0d) {
+            Map<String, String> param = new HashMap<>();
+            param.put("latitude", String.valueOf(Presenter.getInstance(this).getLocation()[0]));
+            param.put("longitude", String.valueOf(Presenter.getInstance(this).getLocation()[1]));
+            Presenter.getInstance(this).postPaoBuSimple(NetApi.urlShopNearRead, param, new PaoCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    try {
+                        final ShopRedResponse shopRedResponse = new Gson().fromJson(s, ShopRedResponse.class);
+                        int redSize = shopRedResponse.getData().getRedpacket().size();
+                        LocalLog.d(TAG, "红包个数 " + redSize);
+                        int shopSize = shopRedResponse.getData().getBusiness().size();
+                        LocalLog.d(TAG, "商铺数量 " + shopSize);
+                        for (int i = 0; i < redSize; i++) {
+                        }
+
+                        aroundShopMarkerList.clear();
+                        for (int j = 0; j < shopSize; j++) {
+                            final View view = View.inflate(ConsumptiveRedBag2Activity.this, R.layout.make_view, null);
+                            final ImageView logo = (CircleImageView) view.findViewById(R.id.logo_shop);
+                            final int position = j;
+                            LocalLog.d(TAG, logo == null ? "null" : "logo =" + shopRedResponse.getData().getBusiness().get(j).getLogo());
+                            OkHttpUtils.get()
+                                    .url(shopRedResponse.getData().getBusiness().get(j).getLogo())
+                                    .build()
+                                    .execute(new BitmapCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int i, Object o) {
+
+                                        }
+
+                                        @Override
+                                        public void onResponse(Bitmap bitmap, int i) {
+                                            if (bitmap != null) {
+                                                logo.setImageBitmap(bitmap);
+                                                Marker markerShop = tencentMap.addMarker(new MarkerOptions()
+                                                        .position(new LatLng(Double.parseDouble(shopRedResponse.getData().getBusiness().get(position).getLatitude()),
+                                                                Double.parseDouble(shopRedResponse.getData().getBusiness().get(position).getLongitude())))
+                                                        .anchor(0.5f, 0.5f)
+                                                        .snippet("around:" + position)
+                                                        .icon(makeShopIco(view)).draggable(false));
+                                                aroundShopMarkerList.add(markerShop);
+                                            }
+                                        }
+                                    });
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                }
+            });
+        }
+    }
+
+    private BitmapDescriptor makeShopIco(View view) {
+        return BitmapDescriptorFactory.fromView(view);
     }
 
     private void addAroundRedBagMark() {
@@ -1179,6 +1254,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             getPageData(1, true);
 /*            setPosition(latitude, longitude, true, true);*/
             getAroundRedBag();
+            getNearShopAndRed();
         } else {
             //PaoToastUtils.showShortToast(this, reason);
             LocalLog.e(TAG, reason);

@@ -521,6 +521,26 @@ public final class Presenter {
         }
     }
 
+    //只用与一处
+    private String styleSizeImage(View view, final String urlImg, final int targetWidth, final int targetHeight) {
+        if (urlImg == null) {
+            return null;
+        }
+        int w = targetWidth;
+        int h = targetHeight;
+        LocalLog.d(TAG, "w = " + w);
+        LocalLog.d(TAG, "h = " + h);
+        if (w == 0 || h == 0 || urlImg.contains("http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com")) {
+            return urlImg;
+        } else {
+            String h_size = "h_" + String.valueOf(targetWidth);
+            String w_size = "w_" + String.valueOf(targetHeight);
+            String url = urlImg + Style + h_size + "," + w_size;
+            LocalLog.d(TAG, "style imge" + url);
+            return url;
+        }
+    }
+
     private String styleSizeImage(View view, final String urlImg) {
         if (urlImg == null) {
             return null;
@@ -570,6 +590,11 @@ public final class Presenter {
                 }
             });
         }
+    }
+
+    public void getIcoImage(final ImageView view, final String urlImg, final int targetWidth, final int targetHeight) {
+        LocalLog.d(TAG, "getIcoImage() enter");
+        engine.getIcoBitMap(view, styleSizeImage(view, urlImg, targetWidth, targetHeight), targetWidth, targetHeight);
     }
 
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
@@ -717,8 +742,8 @@ public final class Presenter {
         engine.taskMyRelease(page, pagesize);
     }
 
-    public void getReleaseRecord(int style,int page, int pagesize) {
-        engine.getReleaseRecord(style,page, pagesize);
+    public void getReleaseRecord(int style, int page, int pagesize) {
+        engine.getReleaseRecord(style, page, pagesize);
     }
 
     public void getTaskDetail(int taskId) {
@@ -733,8 +758,8 @@ public final class Presenter {
         engine.putTask(action, taskId, innerCallBack);
     }
 
-    public void getAllMyRecTask(int style,int pageIndex, int pagesize) {
-        engine.getAllMyRecTask(style,pageIndex, pagesize);
+    public void getAllMyRecTask(int style, int pageIndex, int pagesize) {
+        engine.getAllMyRecTask(style, pageIndex, pagesize);
     }
 
     //TODO 用户段位

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -170,9 +171,11 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 import com.today.step.lib.ISportStepInterface;
 
@@ -3135,6 +3138,32 @@ public final class Engine {
         picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(view))
                 .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
                 .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
+    }
+
+    public void getIcoBitMap(final ImageView imageView, String urlImage, int targetWidth, int targetHeight) {
+        Picasso picasso = Picasso.with(mContext);
+
+        picasso.load(urlImage).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                LocalLog.d(TAG, "onBitmapLoaded() enter ");
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                LocalLog.d(TAG, "onBitmapFailed() enter ");
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                LocalLog.d(TAG, "onPrepareLoad() enter " + placeHolderDrawable== null ? "null" :"not null" );
+                if(placeHolderDrawable != null && imageView !=null){
+                    imageView.setImageDrawable(placeHolderDrawable);
+                }
+            }
+        });
     }
 
     //网络图片获取接口

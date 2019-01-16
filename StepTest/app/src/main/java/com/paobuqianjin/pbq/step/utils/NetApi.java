@@ -477,4 +477,6 @@ public class NetApi {
     public final static String urlShopEntryCode = url + "v1/RedpacketMap/inviterNo";
     //商家入驻信息提交
     public final static String urlShopEntryInfo = url + "v1/RedpacketMap/applayGuide";
+    //获取附近3公里商铺和周围红包
+    public final static String urlShopNearRead = url + "v1/RedpacketMap/nearBusiness";
 }

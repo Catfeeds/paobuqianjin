@@ -197,16 +197,18 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "相册");
-                ImagePicker picker = new ImagePicker()
-                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                ImagePicker picker = new ImagePicker()//设置选取类型(拍照、单选、多选)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
                         .displayer(new GlideImagePickerDisplayer());//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                 //设置最大选择数量(拍照和单选都是1，修改后也无效)
                 if (SponsorInfoActivity.ACTION_OUT_PIC.equals(intent.getAction())) {
+                    picker.pickType(ImagePickType.SINGLE);
                     picker.maxNum(1);
+                    picker.doCrop(1, 1, 0, 0);
                 } else {
                     if ((MAX_SIZE - adapter.getData().size()) / 12 == 0) {
+                        picker.pickType(ImagePickType.MULTI);
                         picker.maxNum((MAX_SIZE - adapter.getData().size()) % 12);
                     }else{
                         picker.maxNum(12);
