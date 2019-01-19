@@ -116,6 +116,7 @@ public class PaoBuApplication extends MultiDexApplication {
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
     private Activity currentActivity = null;
     private NormalDialog exitDialog;
+    private int timeCheck = 0;
 
     @Override
     public void onCreate() {
@@ -246,7 +247,7 @@ public class PaoBuApplication extends MultiDexApplication {
     }
 
     private void initBroadcastReceiver() {
-        LocalLog.d(TAG,"初始化红包检查");
+        LocalLog.d(TAG, "初始化红包检查");
         final IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
@@ -257,13 +258,19 @@ public class PaoBuApplication extends MultiDexApplication {
                     try {
                         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
                         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
-                        if (!tasks.isEmpty()) {
-                            ComponentName topActivity = tasks.get(0).topActivity;
-                            if (!topActivity.getPackageName().equals(context.getPackageName())) {
-                                LocalLog.d(TAG, "处于后台模式");
-                                //上一次上报的时间戳
-                                Intent intentCheck = new Intent(context, RedCheckService.class);
-                                context.startService(intentCheck);
+                        if (!tasks.isEmpty() || appCount <= 0) {
+                            timeCheck++;
+                            if (timeCheck % 9 < 9) {
+                                return;
+                            } else {
+                                ComponentName topActivity = tasks.get(0).topActivity;
+                                if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                                    LocalLog.d(TAG, "处于后台模式");
+                                    //上一次上报的时间戳
+                                    Intent intentCheck = new Intent(context, RedCheckService.class);
+                                    context.startService(intentCheck);
+                                }
+                                timeCheck = 0;
                             }
                         }
                     } catch (Exception c) {

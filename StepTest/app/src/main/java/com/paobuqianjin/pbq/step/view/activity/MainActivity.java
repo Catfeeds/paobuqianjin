@@ -469,7 +469,6 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            PaoToastUtils.showShortToast(MainActivity.this, "再按一次退出程序");
             long currentTimeMillis = System.currentTimeMillis();
             if (firstBackClickTime != 0 && currentTimeMillis - firstBackClickTime < 2000) {
                 //System.exit(0);
