@@ -46,6 +46,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/rl_search"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -132,7 +133,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/linear_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,7 +140,8 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="10dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_history"
@@ -183,6 +184,4 @@
         android:textColor="@color/yellow0"
         android:textSize="12sp"
         android:visibility="gone" />
-
-
 </RelativeLayout>

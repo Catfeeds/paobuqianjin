@@ -1,14 +1,20 @@
 package com.paobuqianjin.pbq.step.model.broadcast;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
 import com.baidu.mapapi.NetworkUtil;
+import com.paobuqianjin.pbq.step.model.services.RedCheckService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetWorkUtil;
 import com.squareup.picasso.NetworkPolicy;
+
+import java.util.List;
 
 public class NetStateReceiver extends BroadcastReceiver {
     private final static String TAG = NetStateReceiver.class.getSimpleName();

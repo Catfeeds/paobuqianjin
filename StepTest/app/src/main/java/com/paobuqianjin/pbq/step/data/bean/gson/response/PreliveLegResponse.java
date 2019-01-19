@@ -8,7 +8,7 @@ public class PreliveLegResponse {
     /**
      * error : 0
      * message : success
-     * data : {"has_privilege":1,"tip_msg":"","record_btn_show" : 1}
+     * data : {"has_privilege":1,"tip_msg":"","record_btn_show" : 1,"can_credit":1,"is_near":1}
      */
 
     private int error;
@@ -44,8 +44,20 @@ public class PreliveLegResponse {
          * has_privilege : 1
          * tip_msg :
          * record_btn_show: 1
+         * can_credit: 1
+         * is_near:1
          */
+        private int can_credit;
 
+        public int getCan_credit() {
+            return can_credit;
+        }
+
+        public int getIs_near() {
+            return is_near;
+        }
+
+        private int is_near;
         private int has_privilege;
         private String tip_msg;
 

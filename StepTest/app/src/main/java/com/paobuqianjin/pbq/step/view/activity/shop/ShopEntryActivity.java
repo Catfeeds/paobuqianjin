@@ -283,6 +283,7 @@ public class ShopEntryActivity extends BaseBarActivity {
             }
         } else if (requestCode == SHOP_ENTRY && resultCode == Activity.RESULT_OK) {
             PaoToastUtils.showLongToast(this, "恭喜您入驻成功");
+            setResult(Activity.RESULT_OK);
             finish();
         }
     }

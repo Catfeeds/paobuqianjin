@@ -472,7 +472,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
             PaoToastUtils.showShortToast(MainActivity.this, "再按一次退出程序");
             long currentTimeMillis = System.currentTimeMillis();
             if (firstBackClickTime != 0 && currentTimeMillis - firstBackClickTime < 2000) {
-                System.exit(0);
+                //System.exit(0);
+                moveTaskToBack(false);
                 return true;
             }
             firstBackClickTime = System.currentTimeMillis();

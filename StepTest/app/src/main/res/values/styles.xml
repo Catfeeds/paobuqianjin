@@ -34,7 +34,7 @@
     </style>
 
     <style name="ButtonPurple">
-        <item name="android:background">@drawable/create_button</item>
+        <item name="android:background">@color/color_232433</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:textColor">@color/color_fefefe</item>
     </style>

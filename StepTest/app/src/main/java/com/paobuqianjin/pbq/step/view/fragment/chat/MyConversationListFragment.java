@@ -11,7 +11,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,16 +19,24 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.FriendCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
+import com.paobuqianjin.pbq.step.view.base.view.DragPointView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import io.rong.imkit.fragment.ConversationListFragment;
 
-public class MyConversationListFragment extends ConversationListFragment implements View.OnClickListener {
+public class MyConversationListFragment extends ConversationListFragment {
 
     private static final String TAG = MyConversationListFragment.class.getSimpleName();
-    private ImageView bar_right_drawable;
-    private View popCircleOpBar;
-    private PopupWindow popupOpWindowTop;
-    private TranslateAnimation animationCircleType;
+    ImageView systemMsg;
+    DragPointView tvSystemUnread;
+    ImageView contentMsg;
+    DragPointView tvContentUnread;
+    ImageView likeMsg;
+    DragPointView tvLikeUnread;
+    ImageView cirlceMsg;
+    DragPointView tvCircleUnread;
+
     private final static String LIKE_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.LIKE_MESSAGE_ACTION";
     private final static String CONTENT_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.CONTENT_MESSAGE_ACTION";
     private final static String SYS_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.SYS_MESSAGE_ACTION";
@@ -39,12 +46,20 @@ public class MyConversationListFragment extends ConversationListFragment impleme
         super.onViewCreated(view, savedInstanceState);
         RelativeLayout layoutTop = view.findViewById(R.id.frame_top_bar);
         layoutTop.setVisibility(View.VISIBLE);
-        View topBarView = LayoutInflater.from(getActivity()).inflate(R.layout.bar_no_return, null);
+        View topBarView = LayoutInflater.from(getActivity()).inflate(R.layout.conversation_top_bar, null);
         ((TextView) topBarView.findViewById(R.id.bar_title)).setText("会话");
-        bar_right_drawable = topBarView.findViewById(R.id.bar_right_drawable);
-        bar_right_drawable.setVisibility(View.VISIBLE);
-        bar_right_drawable.setImageResource(R.drawable.conversion_more);
-        bar_right_drawable.setOnClickListener(this);
+        systemMsg = (ImageView) topBarView.findViewById(R.id.system_msg);
+        systemMsg.setOnClickListener(onClickListener);
+        tvSystemUnread = (DragPointView) topBarView.findViewById(R.id.tv_system_unread);
+        contentMsg = (ImageView) topBarView.findViewById(R.id.content_msg);
+        contentMsg.setOnClickListener(onClickListener);
+        tvContentUnread = (DragPointView) topBarView.findViewById(R.id.tv_content_unread);
+        likeMsg = (ImageView) topBarView.findViewById(R.id.like_msg);
+        likeMsg.setOnClickListener(onClickListener);
+        tvLikeUnread = (DragPointView) topBarView.findViewById(R.id.tv_like_unread);
+        cirlceMsg = (ImageView) topBarView.findViewById(R.id.cirlce_msg);
+        cirlceMsg.setOnClickListener(onClickListener);
+        tvCircleUnread = (DragPointView) topBarView.findViewById(R.id.tv_circle_unread);
 //        ViewGroup.LayoutParams params = topBarView.getLayoutParams();
 //        params.height = Utils.px2dip(getActivity(), 64f);
         layoutTop.addView(topBarView);
@@ -54,6 +69,7 @@ public class MyConversationListFragment extends ConversationListFragment impleme
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -62,85 +78,35 @@ public class MyConversationListFragment extends ConversationListFragment impleme
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.circle_text_span:
+                case R.id.cirlce_msg:
                     LocalLog.d(TAG, "社群");
                     startActivity(new Intent(getActivity(), FriendCircleActivity.class));
-                    if (popupOpWindowTop != null) {
-                        popupOpWindowTop.dismiss();
-                    }
                     break;
-                case R.id.content_text_span:
+                case R.id.content_msg:
                     LocalLog.d(TAG, "评论");
                     startActivity(new Intent().setAction(CONTENT_MESSAGE_ACTION).setClass(getContext(), MessageActivity.class));
-                    if (popupOpWindowTop != null) {
-                        popupOpWindowTop.dismiss();
-                    }
                     break;
-                case R.id.zan_text_span:
+                case R.id.like_msg:
                     LocalLog.d(TAG, "点赞");
                     startActivity(new Intent().setAction(LIKE_MESSAGE_ACTION).setClass(getContext(), MessageActivity.class));
-                    if (popupOpWindowTop != null) {
-                        popupOpWindowTop.dismiss();
-                    }
                     break;
-                case R.id.mananger_text_span:
+                case R.id.system_msg:
                     LocalLog.d(TAG, "系统消息");
                     startActivity(new Intent().setAction(SYS_MESSAGE_ACTION).setClass(getContext(), MessageActivity.class));
-                    if (popupOpWindowTop != null) {
-                        popupOpWindowTop.dismiss();
-                    }
                     break;
             }
         }
     };
 
-    private void popActionSelect() {
-        popCircleOpBar = View.inflate(getContext(), R.layout.top_conversion_linear, null);
-        popupOpWindowTop = new PopupWindow(popCircleOpBar,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popCircleOpBar.findViewById(R.id.circle_text_span).setOnClickListener(onClickListener);
-        popCircleOpBar.findViewById(R.id.content_text_span).setOnClickListener(onClickListener);
-        popCircleOpBar.findViewById(R.id.zan_text_span).setOnClickListener(onClickListener);
-        popCircleOpBar.findViewById(R.id.mananger_text_span).setOnClickListener(onClickListener);
-
-        popupOpWindowTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                popupOpWindowTop = null;
-            }
-        });
-
-        popupOpWindowTop.setFocusable(true);
-        popupOpWindowTop.setOutsideTouchable(true);
-        popupOpWindowTop.setBackgroundDrawable(new BitmapDrawable());
-
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new AccelerateInterpolator());
-        animationCircleType.setDuration(200);
-
-
-        popupOpWindowTop.showAsDropDown(bar_right_drawable, 20, -20);
-        popCircleOpBar.startAnimation(animationCircleType);
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (popupOpWindowTop != null) {
-            popupOpWindowTop.dismiss();
-            popupOpWindowTop = null;
-        }
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.bar_right_drawable:
-                LocalLog.d(TAG, "消息");
-                popActionSelect();
-                break;
-        }
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

@@ -2,8 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.home;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,18 +10,18 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.TypefaceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,20 +40,17 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.j256.ormlite.stmt.query.In;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.BitmapCallback;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
-import com.paobuqianjin.pbq.step.adapter.CommonGoodAdapter;
 import com.paobuqianjin.pbq.step.customview.LooperTextView;
 import com.paobuqianjin.pbq.step.customview.RedPkgAnimation;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AroundRedBagResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.CommonGoodResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ExListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
@@ -76,8 +71,6 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
-import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
-import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
@@ -85,16 +78,12 @@ import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedDetailActivity;
-import com.paobuqianjin.pbq.step.view.activity.ShopWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
-import com.paobuqianjin.pbq.step.view.activity.exchange.ExchangeGoodDeatilActivity;
-import com.paobuqianjin.pbq.step.view.activity.exchange.TwoHandReleaseActivity;
-import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
+import com.paobuqianjin.pbq.step.view.activity.shop.ShopEntryActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
-import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.RedDataBean;
@@ -117,10 +106,6 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONObject;
 
@@ -129,13 +114,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.rong.imkit.model.RongGridView;
 import okhttp3.Call;
 
 /**
@@ -144,44 +129,20 @@ import okhttp3.Call;
 
 public class HomeFragment extends BaseFragment implements HomePageInterface, SharedPreferences.OnSharedPreferenceChangeListener, HomeRecInterface, TencentMap.OnMapClickListener, TencentMap.OnMarkerClickListener, TencentLocationListener {
     private final static String TAG = HomeFragment.class.getSimpleName();
+    @Bind(R.id.mapview)
+    MapView mapview;
+    @Bind(R.id.today_step_label)
+    TextView todayStepLabel;
     @Bind(R.id.toay_step)
     TextView toayStep;
-    @Bind(R.id.today_income_num)
-    TextView todayIncomeNum;
-    @Bind(R.id.new_s)
-    TextView newS;
-    @Bind(R.id.home_ad_text)
-    LooperTextView homeAdText;
-    @Bind(R.id.home_ad)
-    LinearLayout homeAd;
-    @Bind(R.id.parent_red)
-    LinearLayout parentRed;
-    @Bind(R.id.baby_red)
-    LinearLayout babyRed;
-    @Bind(R.id.love_red)
-    LinearLayout loveRed;
-    @Bind(R.id.older_red)
-    LinearLayout olderRed;
-    @Bind(R.id.friend_red)
-    LinearLayout friendRed;
-    @Bind(R.id.step_dollar_shop)
-    LinearLayout stepDollarShop;
-    @Bind(R.id.good_grid)
-    RongGridView goodGrid;
-    @Bind(R.id.home_scroll)
-    BounceScrollView homeScroll;
-    @Bind(R.id.scan_mark_home)
-    ImageView scanMarkHome;
-    @Bind(R.id.linear_shop)
-    LinearLayout linearShop;
-    @Bind(R.id.home_page_v1)
-    RelativeLayout homePageV1;
-    @Bind(R.id.release_goods)
-    ImageView shopPing;
-    @Bind(R.id.go_shoping_tv)
-    TextView goShopingTv;
+    @Bind(R.id.today_doll_label)
+    TextView todayDollLabel;
     @Bind(R.id.toay_step_dollor)
     TextView toayStepDollor;
+    @Bind(R.id.today_crash_label)
+    TextView todayCrashLabel;
+    @Bind(R.id.today_income_num)
+    TextView todayIncomeNum;
     @Bind(R.id.home_data_linear)
     LinearLayout homeDataLinear;
     @Bind(R.id.push_red_pkg)
@@ -192,42 +153,64 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     LinearLayout pushRec;
     @Bind(R.id.dibiao)
     ImageView dibiao;
-    @Bind(R.id.tianmao)
-    ImageView tianmao;
-    @Bind(R.id.jingdong)
-    ImageView jingdong;
-    @Bind(R.id.weipinghui)
-    ImageView weipinghui;
-    @Bind(R.id.pingduoduo)
-    ImageView pingduoduo;
-    @Bind(R.id.mogu)
-    ImageView mogu;
+    @Bind(R.id.red_pkg_sq)
+    RelativeLayout redPkgSq;
+    @Bind(R.id.older_img)
+    ImageView olderImg;
     @Bind(R.id.older_task_num)
     TextView olderTaskNum;
+    @Bind(R.id.older_red)
+    LinearLayout olderRed;
+    @Bind(R.id.parent_img)
+    ImageView parentImg;
     @Bind(R.id.parent_task_num)
     TextView parentTaskNum;
+    @Bind(R.id.parent_red)
+    LinearLayout parentRed;
+    @Bind(R.id.love_img)
+    ImageView loveImg;
     @Bind(R.id.love_task_num)
     TextView loveTaskNum;
+    @Bind(R.id.love_red)
+    LinearLayout loveRed;
+    @Bind(R.id.baby_img)
+    ImageView babyImg;
     @Bind(R.id.baby_task_num)
     TextView babyTaskNum;
+    @Bind(R.id.baby_red)
+    LinearLayout babyRed;
+    @Bind(R.id.friend_img)
+    ImageView friendImg;
     @Bind(R.id.fiend_task_num)
     TextView fiendTaskNum;
-    @Bind(R.id.banner_tv)
-    ImageView bannerTv;
-    @Bind(R.id.banner)
-    Banner banner;
-    @Bind(R.id.today_step_label)
-    TextView todayStepLabel;
-    @Bind(R.id.today_doll_label)
-    TextView todayDollLabel;
-    @Bind(R.id.today_crash_label)
-    TextView todayCrashLabel;
-    @Bind(R.id.app_name)
-    TextView appName;
-    @Bind(R.id.mapview)
-    MapView mapview;
+    @Bind(R.id.friend_red)
+    LinearLayout friendRed;
+    @Bind(R.id.new_s)
+    TextView newS;
+    @Bind(R.id.home_ad_text)
+    LooperTextView homeAdText;
+    @Bind(R.id.home_ad)
+    LinearLayout homeAd;
     @Bind(R.id.city_name)
     TextView cityName;
+    @Bind(R.id.app_name)
+    TextView appName;
+    @Bind(R.id.scan_mark_home)
+    ImageView scanMarkHome;
+    @Bind(R.id.home_page_v1)
+    RelativeLayout homePageV1;
+    @Bind(R.id.step_ex)
+    View stepEx;
+    @Bind(R.id.shop_entry)
+    View shopEntry;
+    @Bind(R.id.new_reward)
+    View newReward;
+    @Bind(R.id.join_us)
+    View joinUs;
+    @Bind(R.id.spring_red)
+    ImageView springRed;
+    @Bind(R.id.select_down)
+    ImageView selectDown;
 
     private PopupWindow popupRedPkgWindow, vipPopWnd;
     private TranslateAnimation animationCircleType;
@@ -260,7 +243,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private SharedPreferences sharedPreferences;
     private boolean isBind = false;
     private LinearLayout barHome;
-    private CommonGoodAdapter gridGoodAdpter;
     private String shopUrl = null;
     RelativeLayout redLayout;
     ArrayList<RedDataBean> redArray = new ArrayList<>();
@@ -271,8 +253,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
     private boolean isVip = true;
     private String urlShopApply;
-    private int currentPage, pageCount;
-    private boolean isLoadingData;
     private boolean isFirstLocation = true;
     private TencentLocationManager locationManager;
     private String req;//定位类型
@@ -282,9 +262,13 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static int PRE_LEG = -111;
     private final static int EX_GOOD_DETAIL = 2019;
     private final static int EX_GOOD_RELEASE = 2020;
+    private final static int SHOP_ENTRY = 2021;
     private List<Marker> aroundShopMarkerList = new ArrayList<>();
     private List<View> shopImageList = new ArrayList<>();
-
+    private String currentCity;
+    private final static String COUNTRY = "全国";
+    private TextToSpeech textToSpeech = null;
+    private Vibrator mVibrator;
     private static class ErrorBean {
         private String title;
 
@@ -331,6 +315,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         intentFilter.addAction(STEP_ACTION);
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
+        initTTS();
+        mVibrator =(Vibrator)getContext().getSystemService(Service.VIBRATOR_SERVICE);
         Presenter.getInstance(getContext()).attachUiInterface(this);
         Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 1);
         initMapView(savedInstanceState);
@@ -351,6 +337,37 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     @Override
     public void onMapClick(LatLng latLng) {
         startActivity(new Intent(getContext(), ConsumptiveRedBag2Activity.class).putExtra("isNoConsumptive", true));
+    }
+
+
+    private void startAuto(String data) {
+        if (!TextUtils.isEmpty(data) && textToSpeech != null) {
+            textToSpeech.setPitch(1.0f);
+            textToSpeech.setSpeechRate(1.0f);
+            textToSpeech.speak(data, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+
+    private void initTTS() {
+        textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == textToSpeech.SUCCESS) {
+                    textToSpeech.setPitch(1.0f);
+                    textToSpeech.setSpeechRate(1.0f);
+
+                    int result1 = textToSpeech.setLanguage(Locale.US);
+                    int result2 = textToSpeech.setLanguage(Locale.SIMPLIFIED_CHINESE);
+
+                    boolean a = (result1 == TextToSpeech.LANG_MISSING_DATA || result1 == TextToSpeech.LANG_NOT_SUPPORTED);
+                    boolean b = (result2 == TextToSpeech.LANG_MISSING_DATA || result2 == TextToSpeech.LANG_NOT_SUPPORTED);
+
+                    LocalLog.d(TAG, "US支持否？" + a + "\nzh-cn支持否" + b);
+                } else {
+                    PaoToastUtils.showLongToast(getContext(), "数据丢失或不支持！");
+                }
+            }
+        });
     }
 
     /**
@@ -437,7 +454,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             stopLocation();
             logMsg(location);
             String city = location.getCity();
+            currentCity = city;
             cityName.setText(city);
+            selectDown.setVisibility(View.VISIBLE);
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             Presenter.getInstance(getContext()).setLocationAction(latitude, longitude);
@@ -450,7 +469,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             tencentMap.setCenter(new LatLng(currentLocation[0], currentLocation[1]));
 //            tencentMap.animateTo(new LatLng(currentLocation[0], currentLocation[1]));
 /*            setPosition(latitude, longitude, true, true);*/
-            getAroundRedBag();
+            //getAroundRedBag();
             getNearShopAndRed();
         } else {
             //PaoToastUtils.showShortToast(this, reason);
@@ -509,7 +528,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         this.nowLocation[0] = latitude;
         this.nowLocation[1] = longitude;
         tencentMap.setCenter(new LatLng(currentLocation[0], currentLocation[1]));
-        getAroundRedBag();
+        //getAroundRedBag();
     }
 
     @Override
@@ -529,7 +548,15 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         super.onResume();
         Presenter.getInstance(getContext()).refreshStep();
         updateIncome();
-        getAroundRedBag();
+        switch (cityName.getText().toString().trim()) {
+            case COUNTRY:
+                getAroundRedBag();
+                break;
+            default:
+                getNearShopAndRed();
+                break;
+        }
+
         getTaskNum();
         //updateUiTime();
     }
@@ -538,6 +565,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     public void onStop() {
         mapview.onStop();
         super.onStop();
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
     }
 
     @Override
@@ -558,7 +589,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         pushRedPkg = (TextView) viewRoot.findViewById(R.id.push_red_pkg);
         historyRecord = (TextView) viewRoot.findViewById(R.id.history_record);
         isBind = Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
-        homeScroll = (BounceScrollView) viewRoot.findViewById(R.id.home_scroll);
         barHome = (LinearLayout) viewRoot.findViewById(R.id.bar_home);
         toayStepDollor = (TextView) viewRoot.findViewById(R.id.toay_step_dollor);
         olderTaskNum = (TextView) viewRoot.findViewById(R.id.older_task_num);
@@ -566,96 +596,20 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         fiendTaskNum = (TextView) viewRoot.findViewById(R.id.fiend_task_num);
         babyTaskNum = (TextView) viewRoot.findViewById(R.id.baby_task_num);
         loveTaskNum = (TextView) viewRoot.findViewById(R.id.love_task_num);
-        gridGoodAdpter = new CommonGoodAdapter(getContext(), 12);
-        goodGrid = (RongGridView) viewRoot.findViewById(R.id.good_grid);
         todayStepLabel = (TextView) viewRoot.findViewById(R.id.today_step_label);
         todayDollLabel = (TextView) viewRoot.findViewById(R.id.today_doll_label);
         todayCrashLabel = (TextView) viewRoot.findViewById(R.id.today_crash_label);
-        banner = (Banner) viewRoot.findViewById(R.id.banner);
         scanMarkHome = (ImageView) viewRoot.findViewById(R.id.scan_mark_home);
         cityName = (TextView) viewRoot.findViewById(R.id.city_name);
+        selectDown = (ImageView) viewRoot.findViewById(R.id.select_down);
         for (int i = 1; i <= 5; i++) {
             TaskNumResponse.DataBean dataBean = new TaskNumResponse.DataBean();
             dataBean.setType(i);
             dataBean.setCount(0);
             arrayList.add(dataBean);
         }
-        goodGrid.setAdapter(gridGoodAdpter);
         redLayout = (RelativeLayout) viewRoot.findViewById(R.id.red_pkg_sq);
-        goodGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (gridGoodAdpter.getData().size() > 0 && position < gridGoodAdpter.getData().size()) {
-                    if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getTarget_url())) {
-                        String goodUrl = gridGoodAdpter.getData().get(position).getTarget_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
-                        startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url",
-                                goodUrl));
-                    }
-                } else if (gridGoodAdpter.getExData().size() > 0 && position < gridGoodAdpter.getExData().size()) {
-                    Intent intent = new Intent();
-                    intent.putExtra("ex_id", String.valueOf(gridGoodAdpter.getExData().get(position).getId()));
-                    intent.setClass(getContext(), ExchangeGoodDeatilActivity.class);
-                    startActivityForResult(intent, EX_GOOD_DETAIL);
-                }
-            }
-        });
-        homeScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
-            @Override
-            public void topBottom(int topOrBottom) {
-                if (topOrBottom == 0) {
-
-                } else if (topOrBottom == 1) {
-                    if (currentPage < pageCount && !isLoadingData) {
-                        /*initGridGood(currentPage + 1);*/
-                        //getExGood(currentPage + 1);
-                    } else {
-                        LocalLog.d(TAG, "正在加载或没有更多数据了");
-                    }
-                }
-            }
-        });
-        homeScroll.setScrollListener(new BounceScrollView.ScrollListener() {
-            @Override
-            public void scrollOritention(int l, int t, int oldl, int oldt) {
-                LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
-                if (Utils.px2dip(getContext(), (float) t) > 64 / 2) {
-                    barHome.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_232433));
-                    scanMarkHome.setImageResource(R.drawable.scan);
-                    cityName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
-                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
-                } else {
-                    barHome.setBackground(null);
-                    scanMarkHome.setImageResource(R.drawable.scan_withe_day);
-                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff333333));
-                    cityName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_ff333333));
-                    /*if (isWhite()) {
-                        scanMarkHome.setImageResource(R.drawable.scan_withe_day);
-                        appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
-                    } else {
-                        scanMarkHome.setImageResource(R.drawable.scan);
-                        appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-                    }*/
-                }
-            }
-        });
         loadTextBanner();
-        //loadBanner();
-        /*initGridGood(1);*/
-        //getExGood(1);
-        shopPing = (ImageView) viewRoot.findViewById(R.id.release_goods);
-        goShopingTv = (TextView) viewRoot.findViewById(R.id.go_shoping_tv);
-        SpannableString spannableString = new SpannableString("去商城逛逛 查看更多");
-        spannableString.setSpan(new TypefaceSpan("default-bold"), 1, 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new ForegroundColorSpan(0xFFFFA202), 1, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        goShopingTv.setText(spannableString);
-/*        if (isWhite()) {
-            scanMarkHome.setImageResource(R.drawable.scan_withe_day);
-            appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
-        } else {
-            scanMarkHome.setImageResource(R.drawable.scan);
-            appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-        }
-        updateUiTime();*/
         shopApplyUrl();
         canReleasePkg(false);
     }
@@ -714,78 +668,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         todayCrashLabel.setTextColor(Color);
     }
 
-    private void getExGood(final int page) {
-        LocalLog.d(TAG, "getExGood() enter");
-        currentPage = page;
-        Map<String, String> param = new HashMap<>();
-        param.put("page", String.valueOf(page));
-        param.put("pagesize", String.valueOf(12));
-        isLoadingData = true;
-        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlExchangeList, param, new PaoCallBack() {
-            @Override
-            protected void onSuc(String s) {
-                if (!isAdded()) {
-                    return;
-                }
-                try {
-                    ExListResponse exListResponse = new Gson().fromJson(s, ExListResponse.class);
-                    pageCount = exListResponse.getData().getPagenation().getTotalPage();
-                    if (page == 1) {
-                        gridGoodAdpter.cleanData();
-                    }
-                    gridGoodAdpter.setData(exListResponse.getData().getData());
-                    isLoadingData = false;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (page == 1) {
-                    //initGridGood(page);
-                }
-            }
-        });
-    }
-
-    private void initGridGood(final int page) {
-        LocalLog.d(TAG, "init() enter");
-        currentPage = page;
-        Map<String, String> param = new HashMap<>();
-        param.put("page", String.valueOf(page));
-        param.put("pagesize", String.valueOf(12));
-        isLoadingData = true;
-        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlCommonGoods, param, new PaoCallBack() {
-            @Override
-            protected void onSuc(String s) {
-                if (!isAdded())
-                    return;
-                try {
-                    CommonGoodResponse homeGoodResponse = new Gson().fromJson(s, CommonGoodResponse.class);
-                    pageCount = homeGoodResponse.getData().getPagenation().getTotalPage();
-                    gridGoodAdpter.setDatas(homeGoodResponse.getData().getData());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                isLoadingData = false;
-            }
-
-            @Override
-            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                isLoadingData = false;
-                if (!isAdded()) {
-                    return;
-                }
-                if (errorBean != null) {
-
-                } else {
-
-                }
-            }
-        });
-    }
-
     @Override
     public void onDestroy() {
         if (mapview != null) {
@@ -806,6 +688,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         if (vipPopWnd != null) {
             vipPopWnd.dismiss();
             vipPopWnd = null;
+        }
+        if(mVibrator != null){
+            mVibrator.cancel();
         }
     }
 
@@ -1137,79 +1022,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         LocalLog.d(TAG, "responseAllIncome() enter " + incomeResponse.toString());
     }
 
-
-    private void loadBanner() {
-        final String bannerUrl = NetApi.urlAd + "?position=redpack_list" + Presenter.getInstance(getContext()).getLocationStrFormat();
-        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
-        Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
-            @Override
-            protected void onSuc(String s) {
-                try {
-                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                    final ArrayList<AdObject> adList = new ArrayList<>();
-                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
-                        int size = adresponse.getData().size();
-                        for (int i = 0; i < size; i++) {
-                            if (adresponse.getData().get(i).getImgs() != null
-                                    && adresponse.getData().get(i).getImgs().size() > 0) {
-                                int imgSize = adresponse.getData().get(i).getImgs().size();
-                                for (int j = 0; j < imgSize; j++) {
-                                    AdObject adObject = new AdObject();
-                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
-                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
-                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
-                                    adList.add(adObject);
-                                }
-                            }
-                        }
-                    }
-                    banner.setImageLoader(new BannerImageLoader())
-                            .setImages(adList)
-                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                            .setBannerAnimation(Transformer.Default)
-                            .isAutoPlay(true)
-                            .setDelayTime(2000)
-                            .setIndicatorGravity(BannerConfig.CENTER)
-                            .setOnBannerListener(new OnBannerListener() {
-                                @Override
-                                public void OnBannerClick(int position) {
-                                    if (adList.get(position).getRid() == 0) {
-                                        LocalLog.d(TAG, "复制微信号");
-                                        ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
-                                        cmb.setPrimaryClip(textClipData);
-                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
-                                        PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
-                                    }
-                                    String targetUrl = adList.get(position).getTarget_url();
-                                    String result = ShopToolUtil.taoBaoString(targetUrl);
-                                    if (!TextUtils.isEmpty(result)) {
-                                        if (result.startsWith(ShopToolUtil.TaoBaoSchema)
-                                                && Utils.checkPackage(getContext(), ShopToolUtil.TaoBao)) {
-                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(intent);
-                                        } else {
-                                            startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", targetUrl));
-                                        }
-                                    }
-
-                                }
-                            })
-                            .start();
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                LocalLog.d(TAG, "获取失败!");
-            }
-        });
-    }
-
-
     private void loadTextBanner() {
         String bannerUrl = NetApi.urlAd + "?position=homepage";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
@@ -1519,7 +1331,14 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 intent.putExtra(getContext().getPackageName() + "red_result", result);
                 intent.putExtra(getContext().getPackageName() + "type", type);
                 startActivity(intent);
-                getAroundRedBag();
+                switch (cityName.getText().toString().trim()) {
+                    case COUNTRY:
+                        getAroundRedBag();
+                        break;
+                    default:
+                        getNearShopAndRed();
+                        break;
+                }
             }
 
             @Override
@@ -1533,7 +1352,14 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 } else {
                     if (errorBean.getError() == 2) {
                         LocalLog.d(TAG, "领红包已经达到上限!需要开通会员");
-                        getAroundRedBag();
+                        switch (cityName.getText().toString().trim()) {
+                            case COUNTRY:
+                                getAroundRedBag();
+                                break;
+                            default:
+                                getNearShopAndRed();
+                                break;
+                        }
                         return;
                     } else {
                         result = getString(R.string.slow_text);
@@ -1545,10 +1371,18 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 intent.putExtra(getContext().getPackageName() + "red_id", redId);
                 intent.putExtra(getContext().getPackageName() + "red_result", result);
                 startActivity(intent);
-                getAroundRedBag();
+                switch (cityName.getText().toString().trim()) {
+                    case COUNTRY:
+                        getAroundRedBag();
+                        break;
+                    default:
+                        getNearShopAndRed();
+                        break;
+                }
             }
         });
     }
+
 
     private void getNearShopAndRed() {
         if (Presenter.getInstance(getContext()).getLocation()[0] > 0.0d && Presenter.getInstance(getContext()).getLocation()[1] > 0.0d) {
@@ -1558,6 +1392,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlShopNearRead, param, new PaoCallBack() {
                 @Override
                 protected void onSuc(String s) {
+                    clear();
                     redArray.clear();
                     try {
                         final ShopRedResponse shopRedResponse = new Gson().fromJson(s, ShopRedResponse.class);
@@ -1565,6 +1400,47 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                         LocalLog.d(TAG, "红包个数 " + redSize);
                         int shopSize = shopRedResponse.getData().getBusiness().size();
                         LocalLog.d(TAG, "商铺数量 " + shopSize);
+                        switch (shopRedResponse.getData().getIs_receive()) {
+                            case 0:
+                                popVipWindow(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive());
+                                break;
+                            case 1:
+                                LocalLog.d(TAG, "无限制领取");
+                                break;
+                            case -1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                popVipWindow(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive());
+                                break;
+                            default:
+                                if (checkShowedToday(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive())) {
+
+                                } else {
+                                    popVipWindow(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive());
+                                }
+                                break;
+                        }
+
+                        errorBean.setTitle(shopRedResponse.getData().getMessage());
+                        errorBean.setErr(shopRedResponse.getData().getIs_receive());
+                        if (shopRedResponse.getData().getAlert_type() == 1) {
+                            LocalLog.d(TAG, "语音提醒");
+                            startAuto(shopRedResponse.getData().getTips());
+                        } else if (shopRedResponse.getData().getAlert_type() == 2) {
+                            LocalLog.d(TAG, "震动提醒");
+                            if(mVibrator != null){
+                                mVibrator.vibrate(new long[]{100,10,100,1000},-1);
+                            }
+                        } else if (shopRedResponse.getData().getAlert_type() == 3) {
+                            LocalLog.d(TAG, "语音+震动");
+                            startAuto(shopRedResponse.getData().getTips());
+                            if(mVibrator != null){
+                                mVibrator.vibrate(new long[]{100,10,100,1000},-1);
+                            }
+                        }
                         for (int i = 0; i < redSize; i++) {
                             if (i == 0) {
                                 LocalLog.d(TAG, "dibiao red");
@@ -1590,6 +1466,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                         }
 
                         aroundShopMarkerList.clear();
+                        for (int i = 0; i < aroundShopMarkerList.size(); i++) {
+                            aroundShopMarkerList.get(i).remove();
+                        }
                         for (int j = 0; j < shopSize; j++) {
                             final View view = View.inflate(getContext(), R.layout.make_view, null);
                             final ImageView logo = (CircleImageView) view.findViewById(R.id.logo_shop);
@@ -1628,7 +1507,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
                 @Override
                 protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
+                    clear();
                 }
             });
         }
@@ -2046,8 +1925,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         });
     }
 
-    @OnClick({R.id.go_shoping_tv, R.id.release_goods, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.tianmao,
-            R.id.jingdong, R.id.weipinghui, R.id.pingduoduo, R.id.mogu, R.id.scan_mark_home, R.id.push_red_pkg, R.id.history_record})
+    @OnClick({R.id.step_ex, R.id.shop_entry, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.new_reward,
+            R.id.join_us, R.id.spring_red, R.id.scan_mark_home, R.id.push_red_pkg, R.id.history_record, R.id.select_city})
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
@@ -2059,17 +1938,14 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             case R.id.push_red_pkg:
                 canReleasePkg(true);
                 break;
-            case R.id.go_shoping_tv:
-                if (!TextUtils.isEmpty(shopUrl))
-                    startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
+            case R.id.step_ex:
+                LocalLog.d(TAG, "步币兑换!");
                 break;
-            case R.id.release_goods:
-                //发布步币兑换商品
-           /*     releaseGoods();*/
-                Intent intent = new Intent();
-                intent.setAction(RELEASE_ACTION);
-                intent.setClass(getContext(), TwoHandReleaseActivity.class);
-                startActivityForResult(intent, EX_GOOD_RELEASE);
+            case R.id.shop_entry:
+                LocalLog.d(TAG, "店铺入驻!");
+                Intent intentEntry = new Intent();
+                intentEntry.setClass(getContext(), ShopEntryActivity.class);
+                startActivityForResult(intentEntry, SHOP_ENTRY);
                 break;
             case R.id.parent_red:
                 bundle.putInt("style", 5);
@@ -2091,24 +1967,31 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 bundle.putInt("style", 1);
                 startActivity(TaskActivity.class, bundle);
                 break;
-            case R.id.tianmao:
-                startActivity(TianMaoActivity.class, null);
+            case R.id.new_reward:
+                LocalLog.d(TAG, "新手奖励!");
                 break;
-            case R.id.jingdong:
-                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.urlJd));
+            case R.id.join_us:
+                LocalLog.d(TAG, "加盟我们!");
                 break;
-            case R.id.weipinghui:
-                PaoToastUtils.showLongToast(getContext(), "敬请期待");
-                break;
-            case R.id.pingduoduo:
-                LocalLog.d(TAG, "拼多多");
-                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.tickXiXiUrl));
-                break;
-            case R.id.mogu:
-                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.urlMoguUrl));
+            case R.id.spring_red:
+                LocalLog.d(TAG, "春节红包!");
                 break;
             case R.id.scan_mark_home:
                 requestPermissionScan(Permission.Group.CAMERA);
+                break;
+            case R.id.select_city:
+                if (!TextUtils.isEmpty(cityName.getText().toString().trim())) {
+                    switch (cityName.getText().toString().trim()) {
+                        case COUNTRY:
+                            cityName.setText(currentCity);
+                            getNearShopAndRed();
+                            break;
+                        default:
+                            cityName.setText(COUNTRY);
+                            getAroundRedBag();
+                            break;
+                    }
+                }
                 break;
         }
     }
@@ -2116,12 +1999,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EX_GOOD_DETAIL && resultCode == Activity.RESULT_OK) {
-            LocalLog.d(TAG, "购买了产品！");
+        if (requestCode == SHOP_ENTRY && resultCode == Activity.RESULT_OK) {
+            LocalLog.d(TAG, "商家入驻!");
             //getExGood(1);
-        } else if (requestCode == EX_GOOD_RELEASE && resultCode == Activity.RESULT_OK) {
-            LocalLog.d(TAG, "发布了交换品!");
-            //getExGood(1);
+            getNearShopAndRed();
         }
     }
 }

@@ -837,6 +837,10 @@
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
+        <service
+            android:name=".model.services.RedCheckService"
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
@@ -1143,15 +1147,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.shop.ShopEntryActivity"
-            android:icon="@drawable/default_head_ico"
-            android:label="TTS"
-            android:launchMode="singleInstance">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
     </application>
 

@@ -94,7 +94,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Call;
 
-public class ConsumptiveRedBag2Activity extends BaseBarActivity implements TencentLocationListener, TencentMap.OnMarkerClickListener {
+public class ConsumptiveRedBag2Activity extends BaseBarActivity implements TencentLocationListener, TencentMap.OnMarkerClickListener, BaseBarActivity.ToolBarListener {
     private static final String TAG = ConsumptiveRedBag2Activity.class.getSimpleName();
     private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
     private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
@@ -121,6 +121,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     boolean isRefreshOne = false;
     private List<ShopSendedRedBagResponse.ShopSendedRedBagBean> listData = new ArrayList<>();
     private List<AroundRedBagResponse.AroundRedBagBean> listAroundRedBagBean = new ArrayList<>();
+    private List<ShopRedResponse.DataBean.RedpacketBean> listShopRedRedBagBean = new ArrayList<>();
     private TencentLocationManager locationManager;
     private boolean isFirstLocation = true;
     /**
@@ -158,6 +159,12 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private ErrorBean errorBean = new ErrorBean();
     private final static int PRE_LEG = -111;
     private List<Marker> aroundShopMarkerList = new ArrayList<>();
+
+    @Override
+    public Object right() {
+        return "附近商家";
+    }
+
     @Override
     protected String title() {
         isNoConsumptive = getIntent().getBooleanExtra("isNoConsumptive", false);
@@ -173,6 +180,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumptive_red_bag2);
         ButterKnife.bind(this);
+        setToolBarListener();
         banner = (Banner) findViewById(R.id.banner);
         isNoConsumptive = getIntent().getBooleanExtra("isNoConsumptive", false);
         if (isNoConsumptive) {
@@ -186,6 +194,16 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         currentLocation = Presenter.getInstance(this).getLocation();
         //loadBanner();
         canReleasePkg(false);
+    }
+
+    @Override
+    public void clickLeft() {
+        onBackPressed();
+    }
+
+    @Override
+    public void clickRight() {
+        LocalLog.d(TAG, "附近商家!");
     }
 
     /*如果通过点击则弹框，否则不弹框*/
@@ -387,6 +405,11 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         }).start();
     }
 
+
+    private BitmapDescriptor mapIcon(ShopRedResponse.DataBean.RedpacketBean bagBean) {
+        return BitmapDescriptorFactory.fromResource(R.mipmap.ic_around_red_bag);
+    }
+
     private BitmapDescriptor mapIcon(AroundRedBagResponse.AroundRedBagBean bagBean) {
         if (bagBean != null) {
             if (bagBean.getUserid().equals(String.valueOf(Presenter.getInstance(this).getId()))) {
@@ -408,7 +431,31 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         }
     }
 
-    //只更新界面
+    //只更新附近3公里红包
+    private void followCameShopRed(double latitude, double longitude) {
+        if (aourndRBMarkerList.size() == 0) {
+            return;
+        }
+        int size = aourndRBMarkerList.size();
+        for (int i = 0; i < size; i++) {
+            aourndRBMarkerList.get(i).remove();
+        }
+        aourndRBMarkerList.clear();
+        for (int i = 0; i < listShopRedRedBagBean.size(); i++) {
+            final ShopRedResponse.DataBean.RedpacketBean redBagBean = listShopRedRedBagBean.get(i);
+            double offSetY = getRandomOffSet(0.21);
+            double offSetX = getRandomOffSet(0.16);
+            Marker markerRedBag = tencentMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude + offSetY, longitude + offSetX))
+                    .anchor(0.5f, 0.5f)
+                    .snippet("near:" + i)
+                    .icon(mapIcon(redBagBean))
+                    .draggable(false));
+            aourndRBMarkerList.add(markerRedBag);
+        }
+    }
+
+    //只更新全国界面
     private void followCameraRed(double latitude, double longitude) {
         if (aourndRBMarkerList.size() == 0) {
             return;
@@ -433,7 +480,6 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     }
 
 
-
     private void getNearShopAndRed() {
         if (Presenter.getInstance(this).getLocation()[0] > 0.0d && Presenter.getInstance(this).getLocation()[1] > 0.0d) {
             Map<String, String> param = new HashMap<>();
@@ -442,15 +488,57 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             Presenter.getInstance(this).postPaoBuSimple(NetApi.urlShopNearRead, param, new PaoCallBack() {
                 @Override
                 protected void onSuc(String s) {
+                    hideLoadingBar();
                     try {
                         final ShopRedResponse shopRedResponse = new Gson().fromJson(s, ShopRedResponse.class);
                         int redSize = shopRedResponse.getData().getRedpacket().size();
                         LocalLog.d(TAG, "红包个数 " + redSize);
                         int shopSize = shopRedResponse.getData().getBusiness().size();
                         LocalLog.d(TAG, "商铺数量 " + shopSize);
-                        for (int i = 0; i < redSize; i++) {
+                        switch (shopRedResponse.getData().getIs_receive()) {
+                            case 0:
+                                popVipWindow(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive());
+                                break;
+                            case 1:
+                                LocalLog.d(TAG, "无限制领取");
+                                break;
+                            case -1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                popVipWindow(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive());
+                                break;
+                            default:
+                                if (checkShowedToday(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive())) {
+
+                                } else {
+                                    popVipWindow(shopRedResponse.getData().getMessage(), shopRedResponse.getData().getIs_receive());
+                                }
+                                break;
                         }
 
+                        errorBean.setTitle(shopRedResponse.getData().getMessage());
+                        errorBean.setErr(shopRedResponse.getData().getIs_receive());
+
+                        listShopRedRedBagBean.clear();
+                        listShopRedRedBagBean.addAll(shopRedResponse.getData().getRedpacket());
+                        if (cameraLocation[0] != 0 && !isRefreshOne) {
+                            LocalLog.d(TAG, "followCameraRed() enter");
+                            followCameShopRed(cameraLocation[0], cameraLocation[1]);
+                        } else {
+                            LocalLog.d(TAG, "addAroundRedBagMark() enter");
+                            addNearRedBagMark();
+                            if (tencentMap != null) {
+                                tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
+                            }
+                            isRefreshOne = false;
+                        }
+                        addMyLocation();
+                        for (int i = 0; i < aroundShopMarkerList.size(); i++) {
+                            aroundShopMarkerList.get(i).remove();
+                        }
                         aroundShopMarkerList.clear();
                         for (int j = 0; j < shopSize; j++) {
                             final View view = View.inflate(ConsumptiveRedBag2Activity.this, R.layout.make_view, null);
@@ -474,7 +562,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                                                         .position(new LatLng(Double.parseDouble(shopRedResponse.getData().getBusiness().get(position).getLatitude()),
                                                                 Double.parseDouble(shopRedResponse.getData().getBusiness().get(position).getLongitude())))
                                                         .anchor(0.5f, 0.5f)
-                                                        .snippet("around:" + position)
+                                                        .snippet("near:" + position)
                                                         .icon(makeShopIco(view)).draggable(false));
                                                 aroundShopMarkerList.add(markerShop);
                                             }
@@ -490,7 +578,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
 
                 @Override
                 protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
+                    hideLoadingBar();
                 }
             });
         }
@@ -500,6 +588,28 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         return BitmapDescriptorFactory.fromView(view);
     }
 
+    //附近3公里红包
+    private void addNearRedBagMark() {
+        int size = aourndRBMarkerList.size();
+        for (int i = 0; i < size; i++) {
+            aourndRBMarkerList.get(i).remove();
+        }
+        aourndRBMarkerList.clear();
+        for (int i = 0; i < listShopRedRedBagBean.size(); i++) {
+            final ShopRedResponse.DataBean.RedpacketBean redBagBean = listShopRedRedBagBean.get(i);
+            double offSetY = getRandomOffSet(0.02);
+            double offSetX = getRandomOffSet(0.01);
+            Marker markerRedBag = tencentMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(currentLocation[0] + offSetY, currentLocation[1] + offSetX))
+                    .anchor(0.5f, 0.5f)
+                    .snippet("near:" + i)
+                    .icon(mapIcon(redBagBean))
+                    .draggable(false));
+            aourndRBMarkerList.add(markerRedBag);
+        }
+    }
+
+    //全国红包
     private void addAroundRedBagMark() {
         int size = aourndRBMarkerList.size();
         for (int i = 0; i < size; i++) {
@@ -879,6 +989,80 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         SharedPreferencesUtil.put("around_error" + String.valueOf(errorCode), DateTimeUtil.getCurrentTime());
     }
 
+
+    public void popNearRedBag(final int position) {
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "红包在显示");
+            return;
+        }
+        if (!TextUtils.isEmpty(current_rec_id)) {
+            PaoToastUtils.showLongToast(this, "网络拥堵，请稍候...！");
+            return;
+        } else {
+            if (listShopRedRedBagBean.get(position) != null)
+                current_rec_id = listShopRedRedBagBean.get(position).getRed_id();
+
+        }
+        popRedPkgView = View.inflate(this, R.layout.round_pkg_pop_window, null);
+        ImageView cancle = (ImageView) popRedPkgView.findViewById(R.id.cancel_red);
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+        openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.round_open);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+                current_rec_id = "";
+            }
+        });
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        openRedPkgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "领取遍地红包");
+                final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
+                animation.setDuration(500);
+                animation.setRepeatCount(Animation.INFINITE);
+                animation.setFillAfter(true);
+                view.setAnimation(animation);
+                view.startAnimation(animation);
+                if (openRedPkgView == null) {
+                    return;
+                }
+                openRedPkgView.setEnabled(false);
+                pullDownNearRedBag(position);
+                openRedPkgView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE
+                                && popupRedPkgWindow != null
+                                && popupRedPkgWindow.isShowing()) {
+                            openRedPkgView.clearAnimation();
+                            openRedPkgView.setEnabled(true);
+                        }
+                    }
+                }, 2 * 60 * 1000);
+
+            }
+        });
+        popupRedPkgWindow.showAtLocation(findViewById(R.id.consum_red_bag2), Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
+    }
+
     public void popRoundRedPkg(final int position) {
         if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
             LocalLog.d(TAG, "红包在显示");
@@ -890,6 +1074,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         } else {
             if (listAroundRedBagBean.get(position) != null)
                 current_rec_id = listAroundRedBagBean.get(position).getRed_id();
+
         }
         popRedPkgView = View.inflate(this, R.layout.round_pkg_pop_window, null);
         ImageView cancle = (ImageView) popRedPkgView.findViewById(R.id.cancel_red);
@@ -949,6 +1134,82 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         popupRedPkgWindow.showAtLocation(findViewById(R.id.consum_red_bag2), Gravity.CENTER, 0, 0);
 
         popRedPkgView.startAnimation(animationCircleType);
+    }
+
+    private void pullDownNearRedBag(final int position) {
+        if (listShopRedRedBagBean.size() < position) return;
+        Map<String, String> params = new HashMap<>();
+        params.put("redid", listShopRedRedBagBean.get(position).getRed_id());
+        if (currentLocation[0] > 0d && currentLocation[1] > 0d) {
+            params.put("latitude", String.valueOf(currentLocation[0]));
+            params.put("longitude", String.valueOf(currentLocation[1]));
+        }
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.receiveAroundRed, params, new PaoTipsCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                current_rec_id = "";
+                PaoToastUtils.showShortToast(ConsumptiveRedBag2Activity.this, "领取成功");
+                // TODO: hqp 2018/8/16
+                String result = "";
+                int type = -1;
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String allmoney = jsonObj.getString("amount");
+                    type = jsonObj.getInt("type");
+                    LocalLog.d(TAG, "type = " + type);
+                    float redMoney = Float.parseFloat(allmoney);
+                    if (redMoney > 0.0f) {
+                        result = allmoney;
+                    } else {
+                        result = getString(R.string.slow_text);
+                    }
+                } catch (Exception e) {
+                    result = getString(R.string.error_red);
+                }
+                if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+                    popupRedPkgWindow.dismiss();
+                }
+                //TODO hqp go to red detail
+                if (listShopRedRedBagBean.size() < position) return;
+                Intent intent = new Intent();
+                intent.setClass(ConsumptiveRedBag2Activity.this, RoundRedDetailActivity.class);
+                intent.putExtra(getPackageName() + "red_id", listShopRedRedBagBean.get(position).getRed_id());
+                intent.putExtra(getPackageName() + "red_result", result);
+                intent.putExtra(getPackageName() + "type", type);
+                startActivity(intent);
+                listShopRedRedBagBean.remove(position);
+                aourndRBMarkerList.get(position).remove();
+                getNearShopAndRed();
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                current_rec_id = "";
+                if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+                    popupRedPkgWindow.dismiss();
+                }
+                String result = "";
+                if (errorBean == null) {
+                    result = getString(R.string.error_red);
+                } else {
+                    if (errorBean.getError() == 2) {
+                        LocalLog.d(TAG, "领红包已经达到上限!需要开通会员");
+                        getNearShopAndRed();
+                        return;
+                    } else {
+                        result = getString(R.string.slow_text);
+                    }
+
+                }
+                Intent intent = new Intent();
+                intent.setClass(ConsumptiveRedBag2Activity.this, RoundRedDetailActivity.class);
+                intent.putExtra(getPackageName() + "red_id", listShopRedRedBagBean.get(position).getRed_id());
+                intent.putExtra(getPackageName() + "red_result", result);
+                startActivity(intent);
+                getNearShopAndRed();
+            }
+        });
     }
 
     private void pullDownAroundRedBag(final int position) {
@@ -1253,7 +1514,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
 //            tencentMap.animateTo(new LatLng(currentLocation[0], currentLocation[1]));
             getPageData(1, true);
 /*            setPosition(latitude, longitude, true, true);*/
-            getAroundRedBag();
+            //getAroundRedBag();
             getNearShopAndRed();
         } else {
             //PaoToastUtils.showShortToast(this, reason);
@@ -1280,7 +1541,13 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 cameraLocation[0] = cameraPosition.getTarget().getLatitude();
                 cameraLocation[1] = cameraPosition.getTarget().getLongitude();
             }
-            followCameraRed(cameraLocation[0], cameraLocation[1]);
+            if (listAroundRedBagBean.size() > 1) {
+                followCameraRed(cameraLocation[0], cameraLocation[1]);
+            }
+
+            if (listShopRedRedBagBean.size() > 1) {
+                followCameShopRed(cameraLocation[0], cameraLocation[1]);
+            }
         }
 
         @Override
@@ -1341,6 +1608,32 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                     }
                 }
                 return true;
+            } else if (markerIdStr.contains("near")) {
+                if (tvCutdownTime.getVisibility() == View.GONE) {
+                    markerIdStr = markerIdStr.split(":")[1];
+                    int position = Integer.parseInt(markerIdStr);
+                    if (position < listShopRedRedBagBean.size()) {
+                        if (canRev) {
+                            if (errorBean != null && errorBean.getErr() >= 7) {
+                                popVipWindow(errorBean.getTitle(), errorBean.getErr());
+                                return true;
+                            } else {
+                                popNearRedBag(position);
+                            }
+                        } else {
+                            LocalLog.d(TAG, "不能领取");
+                            popVipWindow(vip_message, 0);
+                        }
+
+                    }
+                } else {
+                    if (tvCutdownTime.getText().toString().contains("明天")) {
+                        PaoToastUtils.showShortToast(this, "您的手气真好,明天再来试试吧");
+                    } else {
+                        PaoToastUtils.showShortToast(this, "您的手气真好,等会再来试试吧");
+                    }
+                }
+                return true;
             } else {
                 //消费红包
                 int position = Integer.parseInt(marker.getSnippet());
@@ -1373,7 +1666,8 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         }
         if (requestCode == REQUEST_AROUND || requestCode == REQUEST_VIP || requestCode == AD_RED) {
             LocalLog.d(TAG, "刷新红包列表");
-            getAroundRedBag();
+            //getAroundRedBag();
+            getNearShopAndRed();
             isRefreshOne = true;
         }
     }
@@ -1404,7 +1698,8 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             @Override
             public void onFinish() {
                 tvCutdownTime.setVisibility(View.GONE);
-                getAroundRedBag();
+                //getAroundRedBag();
+                getNearShopAndRed();
             }
         };
         countDownTimer.start();
@@ -1455,6 +1750,6 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         this.city = city;
         tencentMap.setCenter(new LatLng(currentLocation[0], currentLocation[1]));
         getPageData(1, true);
-        getAroundRedBag();
+        //getAroundRedBag();
     }
 }

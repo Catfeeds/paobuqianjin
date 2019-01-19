@@ -54,6 +54,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PreliveLegResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RedSendHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
@@ -154,6 +155,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     LinearLayout peopleTargetSpan;
     @Bind(R.id.target_people_detail)
     TextView targetPeopleDetail;
+    @Bind(R.id.switch_span)
+    RelativeLayout switchSpan;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -200,6 +203,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     private String address;
     private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
     private final static int REQUEST_TARGET_PEOPLE = 0;
+    private int Is_Near_Need = 0;
 
     @Override
     protected String title() {
@@ -212,6 +216,11 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         setContentView(R.layout.activity_add_around_red_bag);
         ButterKnife.bind(this);
         setToolBarListener(this);
+        canReleasePkg();
+    }
+
+
+    private void initUI() {
         dialog = new ProgressDialog(this);
         dialog.setMessage("上传中");
         dialog.setCancelable(false);
@@ -283,6 +292,34 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             }
         }
         getVipStatus();
+    }
+
+    private void canReleasePkg() {
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlPreLeg, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    PreliveLegResponse preliveLegResponse = new Gson().fromJson(s, PreliveLegResponse.class);
+                    if (preliveLegResponse.getData().getCan_credit() == 1) {
+                        if (switchSpan.getVisibility() == View.GONE)
+                            switchSpan.setVisibility(View.VISIBLE);
+
+                    } else {
+                        if (switchSpan.getVisibility() == View.VISIBLE)
+                            switchSpan.setVisibility(View.GONE);
+                    }
+                    Is_Near_Need = preliveLegResponse.getData().getIs_near();
+                    initUI();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     private void initEdit(final RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean dataBean, boolean canEditable) {
@@ -1146,6 +1183,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         }
                     if (params.keySet().size() <= 0) {
                         PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "参数为空");
+                        return;
+                    }
+                    if (Is_Near_Need == 1 && ((latitudeStr < 0.0d && longitudeStr < 0.0d) || TextUtils.isEmpty(distanceStr))) {
+                        PaoToastUtils.showLongToast(this, "目标位置和范围必填");
                         return;
                     }
                     //0表示添加

@@ -1,10 +1,14 @@
 package com.paobuqianjin.pbq.step.view.base;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.app.Notification;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -38,6 +42,7 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.model.services.RedCheckService;
 import com.paobuqianjin.pbq.step.model.services.baidu.LocationService;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
@@ -53,7 +58,6 @@ import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.emoji.IImageLoader;
 import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.today.step.lib.TodayStepManager;
 import com.today.step.lib.TodayStepService;
 import com.umeng.commonsdk.UMConfigure;
@@ -75,6 +79,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -123,7 +128,7 @@ public class PaoBuApplication extends MultiDexApplication {
         initUmeng();
         initRongYunChat();
         sApplication = this;
-
+        initBroadcastReceiver();
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -238,6 +243,37 @@ public class PaoBuApplication extends MultiDexApplication {
         });
 
         RongYunChatUtils.init(this);
+    }
+
+    private void initBroadcastReceiver() {
+        LocalLog.d(TAG,"初始化红包检查");
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                if (Intent.ACTION_TIME_TICK.equals(intent.getAction())) {
+                    LocalLog.d(TAG, "获取红包消息。。。。。");
+                    try {
+                        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+                        if (!tasks.isEmpty()) {
+                            ComponentName topActivity = tasks.get(0).topActivity;
+                            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                                LocalLog.d(TAG, "处于后台模式");
+                                //上一次上报的时间戳
+                                Intent intentCheck = new Intent(context, RedCheckService.class);
+                                context.startService(intentCheck);
+                            }
+                        }
+                    } catch (Exception c) {
+                        c.printStackTrace();
+                    }
+                }
+            }
+        };
+        registerReceiver(mBatInfoReceiver, filter);
+
     }
 
     private void initUmeng() {
@@ -378,7 +414,7 @@ public class PaoBuApplication extends MultiDexApplication {
 
     private void initTencentBugly() {
         LocalLog.d(TAG, "initTencentBugly() enter");
-        Bugly.init(getApplicationContext(), "a7472c9378", true);
+        Bugly.init(getApplicationContext(), "a7472c9378", false);
     }
 
     private boolean initBaiDuSDK(Context context) {
